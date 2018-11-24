@@ -4,19 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainConstraint"
     tools:context=".MainActivity">
 
+
     <FrameLayout
-        android:id="@+id/img_icon3"
+        android:id="@+id/outermost"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#5CF5FC"
+        android:background="@drawable/borderouter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.60" >
+
         <!--
              android:id="@+id/divider"
             android:layout_width="10dp"
@@ -25,15 +28,17 @@
             app:layout_constraintBottom_toBottomOf="@+id/img_icon3"/>
 
         -->
+
+
         <View
-            android:id="@+id/divider5"
+            android:id="@+id/horizontalOuter"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="10dp"
             android:background="#000000" />
 
         <View
-            android:id="@+id/divider3"
+            android:id="@+id/verticalOuter"
             android:layout_width="10dp"
             android:layout_height="match_parent"
             android:background="#000000"
@@ -46,18 +51,19 @@
 
 
     <FrameLayout
-        android:id="@+id/img_icon"
+        android:id="@+id/middleLayer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/bordermiddle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.4" >
+
         <View
-            android:id="@+id/divider4"
+            android:id="@+id/middleVertical"
             android:layout_width="10dp"
             android:layout_height="match_parent"
             android:background="#000000"
@@ -65,23 +71,288 @@
             android:layout_gravity="center"
             />
         <View
-            android:id="@+id/divider6"
+            android:id="@+id/middlerHorizontal"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="10dp"
             android:background="#000000" />
     </FrameLayout>
     <FrameLayout
-        android:id="@+id/img_icon2"
+        android:id="@+id/innerMostFrame"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#FFFF33"
+        android:background="@drawable/borderinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" >
+
+
+    </FrameLayout>
+
+
+
+
+    <ImageView
+        android:id="@+id/outerMostTopLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="@id/outermost"
+        app:layout_constraintTop_toTopOf="@id/outermost"
+        android:translationX="-15dp"
+        android:translationY="-15dp"
+        />
+    <ImageView
+        android:id="@+id/middleTopLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="@id/middleLayer"
+        app:layout_constraintTop_toTopOf="@id/middleLayer"
+        android:translationX="-15dp"
+        android:translationY="-15dp"
+        />
+    <ImageView
+        android:id="@+id/innerTopLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
+        app:layout_constraintTop_toTopOf="@id/innerMostFrame"
+        android:translationX="-15dp"
+        android:translationY="-15dp"
+        />
+
+    <ImageView
+        android:id="@+id/outerMostTopRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintRight_toRightOf="@id/outermost"
+        app:layout_constraintTop_toTopOf="@id/outermost"
+        android:translationY="-15dp"
+        android:translationX="15dp"
+        />
+    <ImageView
+        android:id="@+id/middleMostTopRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintRight_toRightOf="@id/middleLayer"
+        app:layout_constraintTop_toTopOf="@id/middleLayer"
+        android:translationY="-15dp"
+        android:translationX="15dp"
+        />
+
+    <ImageView
+        android:id="@+id/innerMostTopRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintRight_toRightOf="@id/innerMostFrame"
+        app:layout_constraintTop_toTopOf="@id/innerMostFrame"
+        android:translationY="-15dp"
+        android:translationX="15dp"
+        />
+
+
+
+    <ImageView
+        android:id="@+id/middleMostTopCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="@id/middleLayer"
+        app:layout_constraintRight_toRightOf="@id/middleLayer"
+        app:layout_constraintTop_toTopOf="@id/middleLayer"
+        android:translationY="-15dp"
+        />
+
+    <ImageView
+        android:id="@+id/innerMostTopCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
+        app:layout_constraintRight_toRightOf="@id/innerMostFrame"
+        app:layout_constraintTop_toTopOf="@id/innerMostFrame"
+        android:translationY="-15dp"
+        />
+
+
+    <ImageView
+        android:id="@+id/outerMostTopCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintTop_toTopOf="@id/outermost"
+        app:layout_constraintLeft_toLeftOf="@id/outerMostTopRight"
+        app:layout_constraintRight_toRightOf="@id/outerMostTopLeft"
+        android:translationY="-15dp"
+        />
+
+
+
+    <ImageView
+        android:id="@+id/middleLeftBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintTop_toTopOf="@id/outermost"
+        app:layout_constraintBottom_toBottomOf="@id/outermost"
+        app:layout_constraintLeft_toLeftOf="@id/outerMostTopLeft"
+        android:translationX="-15dp"
+        />
+    <ImageView
+    android:id="@+id/middleLeftmiddle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:srcCompat="@drawable/circle"
+    app:layout_constraintTop_toTopOf="@id/middleLayer"
+    app:layout_constraintBottom_toBottomOf="@id/middleLayer"
+    app:layout_constraintLeft_toLeftOf="@id/middleTopLeft"
+    android:translationX="-15dp"
+
+    />
+    <ImageView
+        android:id="@+id/innerLeftmiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintTop_toTopOf="@id/innerMostFrame"
+        app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
+        app:layout_constraintLeft_toLeftOf="@id/innerTopLeft"
+        android:translationX="-15dp"
+
+        />
+    <ImageView
+        android:id="@+id/middleRightBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintTop_toTopOf="@id/outermost"
+        app:layout_constraintBottom_toBottomOf="@id/outermost"
+        app:layout_constraintRight_toRightOf="@id/outerMostTopRight"
+        android:translationX="15dp"
+        />
+    <!-- -->
+    <ImageView
+        android:id="@+id/middleRightmiddleBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintTop_toTopOf="@id/middleLayer"
+        app:layout_constraintBottom_toBottomOf="@id/middleLayer"
+        app:layout_constraintRight_toRightOf="@id/middleMostTopRight"
+        android:translationX="15dp"
+        />
+    <ImageView
+        android:id="@+id/innerRightmiddleBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintTop_toTopOf="@id/innerMostFrame"
+        app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
+        app:layout_constraintRight_toRightOf="@id/innerMostTopRight"
+        android:translationX="15dp"
+        />
+
+    <ImageView
+        android:id="@+id/bottomLeftBallOuter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/outermost"
+        app:layout_constraintLeft_toLeftOf="@id/outermost"
+        app:srcCompat="@drawable/circle"
+        android:translationX="-15dp"
+        android:translationY="15dp"/>
+
+    <ImageView
+    android:id="@+id/bottomLeftBallMiddle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="@id/middleLayer"
+    app:layout_constraintLeft_toLeftOf="@id/middleLayer"
+    app:srcCompat="@drawable/circle"
+    android:translationX="-15dp"
+    android:translationY="15dp"/>
+
+    <ImageView
+        android:id="@+id/bottomLeftBallInner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
+        app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
+        app:srcCompat="@drawable/circle"
+        android:translationX="-15dp"
+        android:translationY="15dp"/>
+
+
+    <ImageView
+        android:id="@+id/bottomRightBallOuter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/outermost"
+        app:layout_constraintRight_toRightOf="@id/outermost"
+        android:translationX="15dp"
+        android:translationY="15dp"
+        />
+    <ImageView
+        android:id="@+id/bottomRightBallInner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
+        app:layout_constraintRight_toRightOf="@id/innerMostFrame"
+        android:translationX="15dp"
+        android:translationY="15dp"
+        />
+    <ImageView
+        android:id="@+id/bottomRightBallMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/middleLayer"
+        app:layout_constraintRight_toRightOf="@id/middleLayer"
+        android:translationX="15dp"
+        android:translationY="15dp"
+        />
+
+
+    <ImageView
+    android:id="@+id/bottomCenterBallOuter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:srcCompat="@drawable/circle"
+    app:layout_constraintLeft_toLeftOf="@id/bottomRightBallOuter"
+    app:layout_constraintRight_toRightOf="@id/bottomLeftBallOuter"
+    app:layout_constraintBottom_toBottomOf="@id/outermost"
+    android:translationY="15dp"
+    />
+    <ImageView
+    android:id="@+id/bottomCenterBallMiddle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:srcCompat="@drawable/circle"
+    app:layout_constraintLeft_toLeftOf="@id/bottomRightBallMiddle"
+    app:layout_constraintRight_toRightOf="@id/bottomLeftBallMiddle"
+    app:layout_constraintBottom_toBottomOf="@id/middleLayer"
+    android:translationY="15dp"
+    />
+    <ImageView
+        android:id="@+id/bottomCenterBallInner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="@id/bottomRightBallInner"
+        app:layout_constraintRight_toRightOf="@id/bottomLeftBallInner"
+        app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
+        android:translationY="15dp"
+        />
 
 
 </android.support.constraint.ConstraintLayout>
