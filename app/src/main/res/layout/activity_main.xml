@@ -18,7 +18,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.60" >
+        app:layout_constraintWidth_percent="0.60"
+        app:layout_constraintVertical_bias="0.15"
+        >
 
         <!--
              android:id="@+id/divider"
@@ -55,11 +57,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bordermiddle"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/outermost"
+        app:layout_constraintTop_toTopOf="@id/outermost"
+        app:layout_constraintLeft_toLeftOf="@id/outermost"
+        app:layout_constraintRight_toRightOf="@id/outermost"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintWidth_percent="0.4" >
 
         <View
@@ -82,14 +85,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/borderinner"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/middleLayer"
+        app:layout_constraintLeft_toLeftOf="@id/middleLayer"
+        app:layout_constraintRight_toRightOf="@id/middleLayer"
+        app:layout_constraintTop_toTopOf="@id/middleLayer"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.20" >
-
-
     </FrameLayout>
 
 
@@ -353,6 +354,17 @@
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         android:translationY="15dp"
         />
+
+    <ImageButton
+        android:id="@+id/pinkball"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+
+        android:background="@null"
+        app:srcCompat="@drawable/circleplayerone" />
 
 
 </android.support.constraint.ConstraintLayout>
