@@ -14,6 +14,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -24,11 +27,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
+
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
+    private GameHandler gameHandler;
     private ImageView nmnImg;
     private ImageButton pinkButton;
     private ConstraintLayout constraintLayout;
@@ -47,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
+        gameHandler = GameHandler.getInstance();
+        gameHandler.setOngoingGame(true);
+        System.out.println(gameHandler.typeOfCheckerAtPosition(1));
+        gameHandler.tryLegalMove(1, 0, 1);
+        System.out.println(gameHandler.typeOfCheckerAtPosition(1));
 
     }
 
@@ -55,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gameHandler = GameHandler.getInstance();
         pinkButton = (ImageButton) findViewById(R.id.pinkball);
 
         pinkButton.setTag(IMAGEVIEW_TAG);
@@ -111,6 +122,23 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_new_game:
+                gameHandler.restartGame();
+                //TODO: Reset view
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NineManMorris</string>
+    <string name="newGameString">New Game</string>
+    <string name="pathToSaveFile">nineManMorrisSave.ser</string>
 </resources>
