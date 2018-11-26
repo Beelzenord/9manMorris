@@ -2,43 +2,45 @@ package com.s3plan.gw.ninemanmorris;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.opengl.Matrix;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.AbsoluteLayout;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnDragListener{
     private ImageView nmnImg;
     private ImageButton pinkButton;
     private ConstraintLayout constraintLayout;
     private FrameLayout outerMost;
     private static final String IMAGEVIEW_TAG = "icon bitmap";
+    private View imageView;
 
     int x;
     int y;
     int leftMost;
     int rightMost;
+
+    //private MyDragEventListener myDragEventListener;
+
+    private MyTouchListener myTouchListener;
+    private LinearLayout linearLayout;
+
+
+    //Version 2
+
+
+    private MyDragEventListener myDragEventListener;
 
 
 
@@ -55,41 +57,72 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pinkButton = (ImageButton) findViewById(R.id.pinkball);
-
-        pinkButton.setTag(IMAGEVIEW_TAG);
-
-        pinkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
-
-                ClipData dragData = new ClipData(
-                        (CharSequence) v.getTag(),
-                        new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN },
-                        item);
 
 
-                View.DragShadowBuilder myShadow = new MyDragShadowBuilder(pinkButton);
+       // myDragEventListener = new MyDragEventListener();
 
-                // Starts the drag
+        imageView = (View) findViewById(R.id.middleRightBall);
+        linearLayout = (LinearLayout) findViewById(R.id.playerPieces);
 
-                v.startDrag(dragData,  // the data to be dragged
-                        myShadow,  // the drag shadow builder
-                        null,      // no need to use local data
-                        0          // flags (not currently used, set to 0)
-                );
 
+       //Version 1
+        myTouchListener = new MyTouchListener();
+
+
+        //Version 2
+
+        myDragEventListener = new MyDragEventListener();
+        imageView.setOnDragListener(this);
+        //imageView.setOnDragListener(this);
+        //linearLayout.setOnDragListener(this);
+
+        //linearLayout.setOnDragListener(this);
+      //  imageView.setOnDragListener(this);
+       // imageView.setOnDragListener(myDragListener);
+        initCheckers();
+        //pinkButton.setOnDragListener(myDragListener);
+      // pinkButton.setOnDragListener(myDragListener);
+        //linearLayout.setOnDragListener(myDragListener);
+       // pinkButton.setOnTouchListener(myTouchListener);
+
+
+
+
+
+    }
+
+    private void initCheckers() {
+        View[] viewsPlayer1 = new View[9];
+        View[] viewsPlayer2 = new View[9];
+        Drawable drawable = getDrawable(R.drawable.circleplayerone);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
+       /* for(View v : viewsPlayer1){
+
+
+            ImageButton btnTag = new ImageButton(this);
+
+            btnTag.setOnTouchListener(myTouchListener);
+            btnTag.setImageResource(R.drawable.circleplayerone);
+            btnTag.setBackgroundColor(Color.TRANSPARENT);
+            btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            linearLayout.addView(btnTag);
+        }*/
+
+       // initialize checkers for player 1
+        for (int i = 0; i < 3; i++) {
+            LinearLayout row = new LinearLayout(this);
+            row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            for (int j = 0; j < 3; j++) {
+                ImageButton btnTag = new ImageButton(this);
+                btnTag.setOnTouchListener(myTouchListener);
+                btnTag.setImageResource(R.drawable.circleplayerone);
+                btnTag.setBackgroundColor(Color.TRANSPARENT);
+                btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                row.addView(btnTag);
             }
-
-
-        });
-
-            //pinkButton.setOnClickListener(new );
-
-
-
+            linearLayout.addView(row);
+        }
     }
 
     @Override
@@ -111,6 +144,162 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
     }
 
+    // Handle Drag Events
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        final int action = event.getAction();
+        System.out.println("Something here");
+        // Handles each of the expected events
+        Drawable drawable = getDrawable(R.drawable.circlesample);
+        Drawable normal = getDrawable(R.drawable.circle);
+
+        switch(action) {
+
+            case DragEvent.ACTION_DRAG_STARTED:
+
+                // Determines if this View can accept the dragged data
+                /**
+                 * Get A tag to Show whether or not we should accept this
+                 */
+                if (event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+
+                    // As an example of what your application might do,
+                    // applies a blue color tint to the View to indicate that it can accept
+                    // data.
+                    System.out.println("can insert here");
+                       //v.setColorFilter(Color.BLUE);
+                  //  v.setBackground(drawable);
+                    // Invalidate the view to force a redraw in the new tint
+                   // v.invalidate();
+
+                    // returns true to indicate that the View can accept the dragged data.
+                    return true;
+
+                }
+               // v.invalidate();
+                // Returns false. During the current drag and drop operation, this View will
+                // not receive events again until ACTION_DRAG_ENDED is sent.
+                v.setVisibility(View.VISIBLE);
+                return false;
+
+                //When users entered droppable area
+            case DragEvent.ACTION_DRAG_ENTERED:
+
+                // Applies a green tint to the View. Return true; the return value is ignored.
+
+                //  v.setColorFilter(Color.GREEN);
+
+                // Invalidate the view to force a redraw in the new tint
+                System.out.println("ENTERED");
+                //v.setBackground(drawable);
 
 
+                //ImageView imageView = (ImageView) v;
+             //   imageView.setImageResource(R.drawable.circlesample);
+               // v.setBackgroundColor(getResources().getColor(R.color.colorAccent);
+               // v.setBackgroundResource(R.drawable.circlesample);
+             //   v.setVisibility(View.INVISIBLE);
+                v.setBackground(drawable);
+                v.invalidate();
+
+                return true;
+
+            case DragEvent.ACTION_DRAG_LOCATION:
+
+                // Ignore the event
+             //   v.setVisibility(View.VISIBLE);
+                return true;
+
+                //exit draggable area
+            case DragEvent.ACTION_DRAG_EXITED:
+                v.setBackground(normal);
+                // Re-sets the color tint to blue. Returns true; the return value is ignored.
+                //    v.setColorFilter(Color.BLUE);
+
+                // Invalidate the view to force a redraw in the new tint
+               // v.invalidate();
+
+
+                System.out.println("Fuckin exiting");
+                v.invalidate();
+                v.setVisibility(View.VISIBLE);
+
+                return true;
+
+            case DragEvent.ACTION_DROP:
+
+                // Gets the item containing the dragged data
+                ClipData.Item item = event.getClipData().getItemAt(0);
+
+                // Gets the text data from the item.
+                //     dragData = item.getText();
+
+                // Displays a message containing the dragged data.
+                //    Toast.makeText(this, "Dragged data is " + dragData, Toast.LENGTH_LONG).show();
+
+                // Turns off any color tints
+                //      v.clearColorFilter();
+
+                // Invalidates the view to force a redraw
+                System.out.println("should invalidate");
+
+                View view2 = (View) event.getLocalState();
+                ViewGroup owner = (ViewGroup) view2.getParent();
+                owner.removeView(view2 );//remove the dragged view
+
+             //   v.invalidate();
+                v.setVisibility(View.VISIBLE);
+
+
+                // Returns true. DragEvent.getResult() will return true.
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENDED:
+
+                System.out.println("should end");
+
+                // Turns off any color tinting
+                //    v.clearColorFilter();
+
+                // Invalidates the view to force a redraw
+            //    v.invalidate();
+
+                System.out.println("DROP");
+
+                if(v.getVisibility() == View.VISIBLE){
+                    System.out.println("should be visible");
+                }
+
+
+                View view = (View) event.getLocalState();
+              //  view.setX(x_cord - (view.getWidth() / 2));
+               // view.setY(y_cord - (view.getWidth() / 2));
+                view.setVisibility(View.VISIBLE);
+
+
+                // Does a getResult(), and displays what happened.
+                if (event.getResult()) {
+                    Toast.makeText(this, "The drop was handled.", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(this, "The drop didn't work.", Toast.LENGTH_LONG).show();
+
+                }
+
+                // returns true; the value is ignored.
+                return true;
+
+            // An unknown action type was received.
+            default:
+                Log.e("DragDrop Example","Unknown action type received by OnDragListener.");
+                break;
+        }
+
+        return false;
+    }
 }
+
+
+
+
+
