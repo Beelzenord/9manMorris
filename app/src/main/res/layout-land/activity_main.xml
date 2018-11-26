@@ -103,63 +103,63 @@
 
 
 
-    <ImageView
+    <View
         android:id="@+id/outerMostTopLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/outermost"
         app:layout_constraintTop_toTopOf="@id/outermost"
         android:translationX="-15dp"
         android:translationY="-15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/middleTopLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/middleLayer"
         app:layout_constraintTop_toTopOf="@id/middleLayer"
         android:translationX="-15dp"
         android:translationY="-15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/innerTopLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
         android:translationX="-15dp"
         android:translationY="-15dp"
         />
 
-    <ImageView
+    <View
         android:id="@+id/outerMostTopRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintRight_toRightOf="@id/outermost"
         app:layout_constraintTop_toTopOf="@id/outermost"
         android:translationY="-15dp"
         android:translationX="15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/middleMostTopRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintRight_toRightOf="@id/middleLayer"
         app:layout_constraintTop_toTopOf="@id/middleLayer"
         android:translationY="-15dp"
         android:translationX="15dp"
         />
 
-    <ImageView
+    <View
         android:id="@+id/innerMostTopRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintRight_toRightOf="@id/innerMostFrame"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
         android:translationY="-15dp"
@@ -168,22 +168,22 @@
 
 
 
-    <ImageView
+    <View
         android:id="@+id/middleMostTopCenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background= "@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/middleLayer"
         app:layout_constraintRight_toRightOf="@id/middleLayer"
         app:layout_constraintTop_toTopOf="@id/middleLayer"
         android:translationY="-15dp"
         />
 
-    <ImageView
+    <View
         android:id="@+id/innerMostTopCenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
         app:layout_constraintRight_toRightOf="@id/innerMostFrame"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
@@ -191,11 +191,11 @@
         />
 
 
-    <ImageView
+    <View
         android:id="@+id/outerMostTopCenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
         app:layout_constraintLeft_toLeftOf="@id/outerMostTopRight"
         app:layout_constraintRight_toRightOf="@id/outerMostTopLeft"
@@ -204,126 +204,138 @@
 
 
 
-    <ImageView
+    <View
         android:id="@+id/middleLeftBall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
         app:layout_constraintLeft_toLeftOf="@id/outerMostTopLeft"
         android:translationX="-15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/middleLeftmiddle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/middleLayer"
         app:layout_constraintBottom_toBottomOf="@id/middleLayer"
         app:layout_constraintLeft_toLeftOf="@id/middleTopLeft"
         android:translationX="-15dp"
 
         />
-    <ImageView
+    <View
         android:id="@+id/innerLeftmiddle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         app:layout_constraintLeft_toLeftOf="@id/innerTopLeft"
         android:translationX="-15dp"
 
         />
-    <ImageView
+    <View
         android:id="@+id/middleRightBall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
         app:layout_constraintRight_toRightOf="@id/outerMostTopRight"
         android:translationX="15dp"
         />
+    <!-- <ImageView
+         android:id="@+id/middleRightBall"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:srcCompat="@drawable/circle"
+         app:layout_constraintTop_toTopOf="@id/outermost"
+         app:layout_constraintBottom_toBottomOf="@id/outermost"
+         app:layout_constraintRight_toRightOf="@id/outerMostTopRight"
+         android:translationX="15dp"
+         /> -->
     <!-- -->
-    <ImageView
+    <View
         android:id="@+id/middleRightmiddleBall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/middleLayer"
         app:layout_constraintBottom_toBottomOf="@id/middleLayer"
         app:layout_constraintRight_toRightOf="@id/middleMostTopRight"
         android:translationX="15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/innerRightmiddleBall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         app:layout_constraintRight_toRightOf="@id/innerMostTopRight"
         android:translationX="15dp"
         />
 
-    <ImageView
+    <View
         android:id="@+id/bottomLeftBallOuter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
         app:layout_constraintLeft_toLeftOf="@id/outermost"
-        app:srcCompat="@drawable/circle"
+
         android:translationX="-15dp"
         android:translationY="15dp"/>
 
-    <ImageView
+    <View
         android:id="@+id/bottomLeftBallMiddle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="@id/middleLayer"
         app:layout_constraintLeft_toLeftOf="@id/middleLayer"
-        app:srcCompat="@drawable/circle"
+
         android:translationX="-15dp"
         android:translationY="15dp"/>
 
-    <ImageView
+    <View
         android:id="@+id/bottomLeftBallInner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
-        app:srcCompat="@drawable/circle"
         android:translationX="-15dp"
         android:translationY="15dp"/>
 
 
-    <ImageView
+    <View
         android:id="@+id/bottomRightBallOuter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
         app:layout_constraintRight_toRightOf="@id/outermost"
         android:translationX="15dp"
         android:translationY="15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/bottomRightBallInner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         app:layout_constraintRight_toRightOf="@id/innerMostFrame"
         android:translationX="15dp"
         android:translationY="15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/bottomRightBallMiddle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="@id/middleLayer"
         app:layout_constraintRight_toRightOf="@id/middleLayer"
         android:translationX="15dp"
@@ -331,50 +343,75 @@
         />
 
 
-    <ImageView
+    <View
         android:id="@+id/bottomCenterBallOuter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/bottomRightBallOuter"
         app:layout_constraintRight_toRightOf="@id/bottomLeftBallOuter"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
         android:translationY="15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/bottomCenterBallMiddle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/bottomRightBallMiddle"
         app:layout_constraintRight_toRightOf="@id/bottomLeftBallMiddle"
         app:layout_constraintBottom_toBottomOf="@id/middleLayer"
         android:translationY="15dp"
         />
-    <ImageView
+    <View
         android:id="@+id/bottomCenterBallInner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="@id/bottomRightBallInner"
         app:layout_constraintRight_toRightOf="@id/bottomLeftBallInner"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         android:translationY="15dp"
         />
 
-    <ImageButton
-        android:id="@+id/pinkball"
+
+    <LinearLayout
+        android:id="@+id/playerPieces"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@id/outermost"
+        app:layout_constraintTop_toBottomOf="@id/middleRightBall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <!--
+        app:layout_constraintRight_toLeftOf="@id/bottomCenterBallOuter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outermost"
+        app:layout_constraintBottom_toBottomOf="parent"
+        > -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playerPieces2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.713"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/circleplayerone" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/middleRightBall"
+        app:layout_constraintLeft_toRightOf="@id/outermost"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+    </LinearLayout>
+
+
+
 
 
 </android.support.constraint.ConstraintLayout>
