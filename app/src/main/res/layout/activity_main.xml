@@ -229,16 +229,26 @@
         android:translationX="-15dp"
 
         />
-    <ImageView
+    <View
         android:id="@+id/middleRightBall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
         app:layout_constraintRight_toRightOf="@id/outerMostTopRight"
         android:translationX="15dp"
         />
+    <!-- <ImageView
+         android:id="@+id/middleRightBall"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:srcCompat="@drawable/circle"
+         app:layout_constraintTop_toTopOf="@id/outermost"
+         app:layout_constraintBottom_toBottomOf="@id/outermost"
+         app:layout_constraintRight_toRightOf="@id/outerMostTopRight"
+         android:translationX="15dp"
+         /> -->
     <!-- -->
     <ImageView
         android:id="@+id/middleRightmiddleBall"
@@ -355,16 +365,23 @@
         android:translationY="15dp"
         />
 
-    <ImageButton
-        android:id="@+id/pinkball"
+
+    <LinearLayout
+        android:id="@+id/playerPieces"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="16dp"
         android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintRight_toLeftOf="@id/bottomCenterBallOuter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outermost">
 
-        android:background="@null"
-        app:srcCompat="@drawable/circleplayerone" />
+
+    </LinearLayout>
+
+
+
 
 
 </android.support.constraint.ConstraintLayout>
