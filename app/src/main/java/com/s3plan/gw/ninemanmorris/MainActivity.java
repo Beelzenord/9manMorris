@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnDragListen
             case DragEvent.ACTION_DRAG_STARTED:
 
                 // Determines if this View can accept the dragged data
+                if(v.getBackground() == getDrawable(R.drawable.circlesample)){
+                    System.out.println("is equal to the checker");
+                }
                 /**
                  * Get A tag to Show whether or not we should accept this
                  */
@@ -220,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnDragListen
                // v.invalidate();
 
 
-                System.out.println("Fuckin exiting");
+              //  System.out.println("Fuckin exiting");
                 v.invalidate();
                 v.setVisibility(View.VISIBLE);
 
@@ -278,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnDragListen
 
 
                 // Does a getResult(), and displays what happened.
+
                 if (event.getResult()) {
                     Toast.makeText(this, "The drop was handled.", Toast.LENGTH_LONG).show();
 
