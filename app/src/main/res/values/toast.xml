@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toastNameAlreadyExists"> does already exist</string>
+    <integer name="toastOffsetX">0</integer>
+    <integer name="toastOffsetY">-250</integer>
+</resources>

@@ -8,6 +8,7 @@ public class GameHandler implements Serializable {
     private GameState gameState;
     private NineMenMorrisRules theGame;
     private boolean ongoingGame;
+    private String name;
     private static GameHandler gameHandler;
 
     private GameHandler() {
@@ -29,7 +30,10 @@ public class GameHandler implements Serializable {
     }
 
     public void setGameHandler(GameHandler gameHandler) {
-        this.gameHandler = gameHandler;
+        this.gameState = gameHandler.gameState;
+        this.theGame = gameHandler.theGame;
+        this.ongoingGame = gameHandler.ongoingGame;
+//        this.gameHandler = gameHandler;
     }
 
     public GameState getState() {
@@ -66,5 +70,13 @@ public class GameHandler implements Serializable {
 
     public void setOngoingGame(boolean ongoingGame) {
         this.ongoingGame = ongoingGame;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

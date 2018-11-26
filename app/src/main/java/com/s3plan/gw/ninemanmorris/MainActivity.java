@@ -1,16 +1,21 @@
 package com.s3plan.gw.ninemanmorris;
 
-import android.annotation.SuppressLint;
-import android.content.ClipData;
+import android.annotation.SuppressLint;import android.content.ClipData;
+import android.app.Activity;
 import android.content.ClipDescription;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.FileObserver;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,13 +27,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.s3plan.gw.ninemanmorris.IO.FileManager;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
+import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
+import com.s3plan.gw.ninemanmorris.Model.SavedGames;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int SELECT_SAVEDGAME = 0;
+    public static final String SAVEDGAME_RESULT = "SAVEDGAME_RESULT";
     private GameHandler gameHandler;
+    private SavedGames savedGames;
     private ImageView nmnImg;
     private ImageButton pinkButton;
     private ConstraintLayout constraintLayout;
@@ -36,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String IMAGEVIEW_TAG = "icon bitmap";
     private View imageView;
     private NineMenMorrisRules nineMenMorrisRules;
-    private int playerTurn = 1;
+
     int x;
     int y;
     int leftMost;
@@ -64,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-
+        gameHandler = GameHandler.getInstance();
 
     }
 
@@ -74,6 +84,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gameHandler = GameHandler.getInstance();
+        if (!gameHandler.isOngoingGame()) {
+            try { // might not need try catch but why not
+                SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile));
+            } catch (Exception e) {
+                gameHandler.restartGame();
+            }
+        }
+        gameHandler.setOngoingGame(true);
+        savedGames = SavedGames.getInstance();
+        if (savedGames.getSavedGames().size() <= 0) {
+            SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
+        }
+        /** for testing **/
+        gameHandler.tryLegalMove(1, 0, 2);
+        addSavedGame("first");
+        gameHandler.restartGame();
+        gameHandler.tryLegalMove(2, 0, 2);
+        gameHandler.tryLegalMove(3, 0, 1);
+        addSavedGame("second");
+
+
+
 
 
        // myDragEventListener = new MyDragEventListener();
@@ -91,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         nineMenMorrisRules = new NineMenMorrisRules();
         myDragEventListener = new MyDragEventListener(this,nineMenMorrisRules);
-        imageView.setOnDragListener(myDragEventListener);
+        //imageView.setOnDragListener(myDragEventListener);
 
         initCheckers();
         initPlaceHolders();
@@ -345,6 +377,12 @@ public class MainActivity extends AppCompatActivity {
     // Handle Drag Events
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
+    }
+
     /**
      * The options menu for the activity is created.
      * @param menu The menu to be created.
@@ -365,13 +403,65 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_new_game:
+            case R.id.menu_new_game :
                 gameHandler.restartGame();
                 //TODO: update view
                 return true;
+            case R.id.menu_load_game :
+                Intent intent = new Intent(MainActivity.this, LoadGameActivity.class);
+                startActivityForResult(intent, SELECT_SAVEDGAME);
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent result) {
+        super.onActivityResult(requestCode, resultCode, result);
+
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case SELECT_SAVEDGAME:
+                    String name = result.getStringExtra(SAVEDGAME_RESULT);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(getResources().getString(R.string.pathToSaveFilePrefix));
+                    sb.append(name);
+                    sb.append(getResources().getString(R.string.pathToSaveFileSuffix));
+                    SaveHandler.readSaveFile(this, sb.toString());
+                    break;
+            }
+        }
+    }
+
+    public void addSavedGame(String name) {
+        if (!savedGames.getSavedGames().contains(name)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(getResources().getString(R.string.pathToSaveFilePrefix));
+            sb.append(name);
+            sb.append(getResources().getString(R.string.pathToSaveFileSuffix));
+            SaveHandler.createSaveFile(this, sb.toString());
+            savedGames.add(name);
+            SaveHandler.createSavedGamesFile(this, getResources().getString(R.string.pathToSavedGamesFile));
+        }
+        else {
+            StringBuilder sb = new StringBuilder();
+            sb.append(name);
+            sb.append(getResources().getString(R.string.toastNameAlreadyExists));
+            showToast(sb.toString());
+        }
+
+    }
+
+    /**
+     * Shows a short toast message in the middle of the screen.
+     * @param msg The message to show.
+     */
+    private void showToast(String msg) {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, msg, duration);
+        toast.setGravity(Gravity.CENTER, getResources().getInteger(R.integer.toastOffsetX), getResources().getInteger(R.integer.toastOffsetY));
+        toast.getView().getBackground().setColorFilter(getResources().getColor(R.color.toastBackground), PorterDuff.Mode.SRC.SRC_IN);
+        toast.show();
     }
 }
 

@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">NineManMorris</string>
     <string name="newGameString">New Game</string>
+    <string name="loadGameString">Load Game</string>
     <string name="pathToSaveFile">nineManMorrisSave.ser</string>
+    <string name="pathToSaveFilePrefix">customMorrisSave</string>
+    <string name="pathToSaveFileSuffix">.ser</string>
+    <string name="pathToSavedGamesFile">nineManMorrisSavedGames.ser</string>
 </resources>

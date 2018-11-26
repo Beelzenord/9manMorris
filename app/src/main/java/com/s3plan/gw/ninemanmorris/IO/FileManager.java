@@ -3,21 +3,12 @@ package com.s3plan.gw.ninemanmorris.IO;
 import android.app.Activity;
 import android.content.Context;
 
-import com.s3plan.gw.ninemanmorris.MainActivity;
-import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Reader;
 
 public class FileManager {
 
@@ -65,7 +56,7 @@ public class FileManager {
     /**
      * Reads Synchronously from a file.
      */
-    public static Result readFile(MainActivity activity, String fileName) {
+    public static Result readFile(Activity activity, String fileName) {
         FileManager.Result result = null;
         FileInputStream inputStream = null;
         try {
@@ -81,7 +72,7 @@ public class FileManager {
                 result = new FileManager.Result(new NullPointerException());
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             result = new FileManager.Result(e);
         } catch (IOException e) {
             e.printStackTrace();
