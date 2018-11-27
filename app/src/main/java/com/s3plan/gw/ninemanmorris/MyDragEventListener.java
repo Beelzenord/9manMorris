@@ -123,10 +123,10 @@ public class MyDragEventListener implements View.OnDragListener {
                 // Invalidate the view to force a redraw in the new tint
                 // v.invalidate();
 
-
+                v.setVisibility(View.VISIBLE);
 
                 v.invalidate();
-                v.setVisibility(View.VISIBLE);
+
 
                 return true;
 
@@ -172,6 +172,7 @@ public class MyDragEventListener implements View.OnDragListener {
                     v.setVisibility(View.INVISIBLE);
 
                     nineMenMorrisRules.showGamePlane();
+                    return true;
                    // updateBoardButton(redOrBlue,v);
                 }
                 else{
@@ -190,7 +191,7 @@ public class MyDragEventListener implements View.OnDragListener {
 
 
                 // Returns true. DragEvent.getResult() will return true.
-                return true;
+
 
             case DragEvent.ACTION_DRAG_ENDED:
 
