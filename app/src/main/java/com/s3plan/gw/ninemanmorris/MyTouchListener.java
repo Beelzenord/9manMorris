@@ -5,7 +5,15 @@ import android.content.ClipDescription;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
+
 public class MyTouchListener implements View.OnTouchListener{
+    private NineMenMorrisRules nineMenMorrisRules;
+
+    public MyTouchListener(NineMenMorrisRules nineMenMorrisRules) {
+          this.nineMenMorrisRules = nineMenMorrisRules;
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -16,8 +24,12 @@ public class MyTouchListener implements View.OnTouchListener{
             String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
             ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
 
-            System.out.println(" on Touch data " + data.toString());
+            System.out.println(" on Touch data " + data.toString()) ;
+
+            System.out.print("touch shows game plan ");
+            nineMenMorrisRules.showGamePlane();
            // event.getClipData().getItemAt(0);
+
 
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
                     v);

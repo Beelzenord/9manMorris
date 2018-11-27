@@ -1,6 +1,7 @@
 package com.s3plan.gw.ninemanmorris.Model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author Jonas W�hsl�n, jwi@kth.se. 
@@ -244,5 +245,13 @@ public class NineMenMorrisRules implements Serializable {
 			return (from == 3 || from == 21 || from == 23);
 		}
 		return false;
+	}
+
+	public int[] getGameplan() {
+		return gameplan;
+	}
+
+	public void showGamePlane(){
+		System.out.println(Arrays.toString(gameplan));
 	}
 }
