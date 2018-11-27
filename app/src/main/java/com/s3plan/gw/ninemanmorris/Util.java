@@ -8,7 +8,10 @@ public class Util {
 
         System.out.println("obtained radius " + radius);
 
+        //reset translation
 
+        view.setTranslationX(0);
+        view.setTranslationY(0);
 
 
         /*
@@ -23,6 +26,8 @@ public class Util {
          * 21           18           15
          *
          */
+
+        System.out.println("in switch ID " + id + " " + view.getTranslationX() + " " + view.getTranslationY());
         switch (id){
             case 1:case 2:case 3: view.setTranslationX(-radius); view.setTranslationY(-radius);break;
             case 4: case 5: case 6: view.setTranslationY(-radius);break;
