@@ -115,13 +115,11 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
 
 
-       //Version 1
-        myTouchListener = new MyTouchListener();
-
-
-        //Version 2
-
         nineMenMorrisRules = new NineMenMorrisRules();
+        myTouchListener = new MyTouchListener(nineMenMorrisRules);
+
+
+
         myDragEventListener = new MyDragEventListener(this,nineMenMorrisRules);
         //imageView.setOnDragListener(myDragEventListener);
 

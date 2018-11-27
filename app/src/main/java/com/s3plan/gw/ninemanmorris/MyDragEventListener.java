@@ -5,11 +5,13 @@ import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
@@ -18,9 +20,17 @@ public class MyDragEventListener implements View.OnDragListener {
 
     private Context context;
 
+    private Drawable player1StationedIcon;
+
+    private Drawable player2StationedIcon;
+
+
     private  NineMenMorrisRules nineMenMorrisRules;
     public MyDragEventListener(Context context, NineMenMorrisRules nineMenMorrisRules) {
         this.context = context;
+        this.nineMenMorrisRules = nineMenMorrisRules;
+        this.player1StationedIcon = this.context.getDrawable(R.drawable.playeronestationed);
+        this.player2StationedIcon = this.context.getDrawable(R.drawable.playertwostationed);
     }
 
     @Override
@@ -30,6 +40,13 @@ public class MyDragEventListener implements View.OnDragListener {
         // Handles each of the expected events
         Drawable drawable = this.context.getDrawable(R.drawable.circlesample);
         Drawable normal = this.context.getDrawable(R.drawable.circle);
+
+        View draggedView = (View) event.getLocalState();
+        ViewGroup vg = (ViewGroup) v.getParent();
+        ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
+        ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) v.getLayoutParams();
+
+
 
         switch(action) {
 
@@ -118,6 +135,10 @@ public class MyDragEventListener implements View.OnDragListener {
                 // Gets the item containing the dragged data
               //  ClipData.Item item = event.getClipData().getItemAt(0);
 
+                String data =  event.getClipDescription().getLabel().toString();
+
+                int redOrBlue = Integer.parseInt(data.trim().substring(data.length() - 1));
+
 
 
                 // Gets the text data from the item.
@@ -130,14 +151,42 @@ public class MyDragEventListener implements View.OnDragListener {
                 //      v.clearColorFilter();
 
                 // Invalidates the view to force a redraw
-                System.out.println("should invalidate");
+                System.out.println("should invalidate " + redOrBlue);
 
-                View view2 = (View) event.getLocalState();
-                ViewGroup owner = (ViewGroup) view2.getParent();
-                owner.removeView(view2 );//remove the dragged view
+                if(nineMenMorrisRules.tryLegalMove(v.getId(),0,redOrBlue)){
+
+                    ViewGroup owner = (ViewGroup) draggedView.getParent();
+                    owner.removeView(draggedView);
+                    draggedView.setLayoutParams(p);
+                    draggedView.setVisibility(View.VISIBLE);
+                  //  View view2 = (View) event.getLocalState();
+                   // ViewGroup owner = (ViewGroup) view2.getParent();
+                   // owner.removeView(view2 );
+                    // take the radius of the view so that the placed draggable is exactly where
+                    //the circular place holder was originally
+                    int radius = (v.getRight() - v.getLeft()) / 2;
+
+                    Util.boardPosition(v.getId(),draggedView,radius);
+
+                    rl.addView(draggedView);
+                    v.setVisibility(View.INVISIBLE);
+
+                    nineMenMorrisRules.showGamePlane();
+                   // updateBoardButton(redOrBlue,v);
+                }
+                else{
+                    System.out.println("It didn't work ");
+                    v.setBackground(normal);
+                    Toast.makeText(this.context,"It's not your move, bucko!",Toast.LENGTH_SHORT).show();
+
+                    return false;
+                }
+
+              //  nineMenMorrisRules.tryLegalMove(v.getId(),-1,v.get)
+              //remove the dragged view
 
                 //   v.invalidate();
-                v.setVisibility(View.VISIBLE);
+           //     v.setVisibility(View.VISIBLE);
 
 
                 // Returns true. DragEvent.getResult() will return true.
@@ -145,7 +194,7 @@ public class MyDragEventListener implements View.OnDragListener {
 
             case DragEvent.ACTION_DRAG_ENDED:
 
-                System.out.println("should end");
+
 
                 // Turns off any color tinting
                 //    v.clearColorFilter();
@@ -153,11 +202,7 @@ public class MyDragEventListener implements View.OnDragListener {
                 // Invalidates the view to force a redraw
                 //    v.invalidate();
 
-                System.out.println("DROP");
 
-                if(v.getVisibility() == View.VISIBLE){
-                    System.out.println("should be visible");
-                }
 
 
                 View view = (View) event.getLocalState();
@@ -185,5 +230,14 @@ public class MyDragEventListener implements View.OnDragListener {
         }
 
         return false;
+    }
+
+    private void updateBoardButton(int redOrBlue, View boardView) {
+        if(redOrBlue==1){ // BLUE == 1
+           boardView.setBackground(this.player1StationedIcon);
+        }
+        else{
+            boardView.setBackground(this.player2StationedIcon);
+        }
     }
 }

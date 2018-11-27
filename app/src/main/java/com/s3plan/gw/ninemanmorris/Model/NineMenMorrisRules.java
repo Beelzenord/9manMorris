@@ -1,6 +1,7 @@
 package com.s3plan.gw.ninemanmorris.Model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author Jonas W�hsl�n, jwi@kth.se. 
@@ -213,7 +214,7 @@ public class NineMenMorrisRules implements Serializable {
 	/**
 	 * Check whether this is a legal move.
 	 */
-	private boolean isValidMove(int to, int from) {
+	public boolean isValidMove(int to, int from) {
 		
 		if(this.gameplan[to] != EMPTY_SPACE) return false;
 		
@@ -304,5 +305,9 @@ public class NineMenMorrisRules implements Serializable {
 		if (color == BLUE_MARKER)
 			return blueonboardmarker;
 		return redonboardmarker;
+	}
+
+	public void showGamePlane(){
+		System.out.println(Arrays.toString(gameplan));
 	}
 }

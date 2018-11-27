@@ -1,5 +1,6 @@
 package com.s3plan.gw.ninemanmorris.Model.GameState;
 
+import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisAI;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 
 import java.io.Serializable;
@@ -8,13 +9,16 @@ public class GameHandler implements Serializable {
     private GameState gameState;
     private NineMenMorrisRules theGame;
     private boolean ongoingGame;
+    private boolean isAIgame;
     private String name;
     private static GameHandler gameHandler;
+    private NineMenMorrisAI nineMenMorrisAI;
 
     private GameHandler() {
         gameState = GameState.PLACE;
         theGame = new NineMenMorrisRules();
         ongoingGame = false;
+        nineMenMorrisAI = new NineMenMorrisAI(theGame, NineMenMorrisRules.BLUE_MARKER);
     }
 
     public static GameHandler getInstance() {
