@@ -2,7 +2,6 @@ package com.s3plan.gw.ninemanmorris;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ public class LoadGameActivity extends AppCompatActivity implements LoadGameAdapt
     private LoadGameAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SavedGames savedGames;
-//    private WeatherLocations weatherLocations;
 
     /**
      * Gets the weatherLocations model contains the locations to show.
@@ -66,8 +64,6 @@ public class LoadGameActivity extends AppCompatActivity implements LoadGameAdapt
         Intent result = new Intent(
                 LoadGameActivity.this,
                 MainActivity.class);
-//        Location location = mAdapter.getLocation(position);
-//        result.putExtra(MainActivity.LOCATION_RESULT, (Parcelable) location);
         String s = mAdapter.getName(position);
         result.putExtra(MainActivity.SAVEDGAME_RESULT, s);
         setResult(Activity.RESULT_OK, result);

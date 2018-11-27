@@ -1,10 +1,7 @@
 package com.s3plan.gw.ninemanmorris;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +9,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * Functionality to click on a item in the recycler view is from https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example.
+ * Adapter for a RecyclerView to let the user choose to load a saved game.
+ */
 public class LoadGameAdapter extends RecyclerView.Adapter<LoadGameAdapter.MyViewHolder> {
     private Activity activity;
     private List<String> mDataset;
@@ -22,9 +23,9 @@ public class LoadGameAdapter extends RecyclerView.Adapter<LoadGameAdapter.MyView
     }
 
     /**
-     * Returns the location selected at position i.
+     * Returns the name of a saved game selected at position i.
      * @param i The position selected.
-     * @return The location at position i.
+     * @return The name at position i.
      */
     public String getName(int i) {
         return mDataset.get(i);
@@ -72,6 +73,9 @@ public class LoadGameAdapter extends RecyclerView.Adapter<LoadGameAdapter.MyView
         this.mClickListener = itemClickListener;
     }
 
+    /**
+     * Interface so another class can be used to to get the information from a click.
+     */
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
