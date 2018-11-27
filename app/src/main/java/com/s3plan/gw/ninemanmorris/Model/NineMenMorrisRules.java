@@ -1,5 +1,8 @@
 package com.s3plan.gw.ninemanmorris.Model;
 
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -33,11 +36,15 @@ public class NineMenMorrisRules implements Serializable {
 	public static final int BLUE_MARKER = 4;
 	public static final int RED_MARKER = 5;
 
+	public GameHandler gameHandler;
+
+
 	public NineMenMorrisRules() {
 		gameplan = new int[25]; // zeroes
 		bluemarker = 9;
 		redmarker = 9;
 		turn = RED_MOVES;
+
 	}
 
 	/**
@@ -254,4 +261,17 @@ public class NineMenMorrisRules implements Serializable {
 	public void showGamePlane(){
 		System.out.println(Arrays.toString(gameplan));
 	}
+
+	public void getBlueRedMarker(){
+		System.out.println("Player 1 (Blue) " + bluemarker + ", Player 2 (Red) " + redmarker);
+	}
+
+	public void gameHandlerCohesion(GameHandler gameHandler){
+		this.gameHandler = gameHandler;
+
+	}
+
+    public int getTurn() {
+        return turn;
+    }
 }

@@ -39,4 +39,18 @@ public class Util {
             case 22: case 23: case 24 : view.setTranslationX(-radius);
         }
     }
+
+    public static int getIDOfDraggable(String tag){
+        return Integer.valueOf(tag.indexOf(2));
+    }
+
+    public static void numberPiecePositionOnBoard(View v, int id){
+        String tag = (String)v.getTag();
+
+        if(tag.length() > 3){
+
+        }
+    }
+
+
 }

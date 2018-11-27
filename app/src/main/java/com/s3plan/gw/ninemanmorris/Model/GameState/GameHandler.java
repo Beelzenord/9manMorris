@@ -79,4 +79,12 @@ public class GameHandler implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setTheGame(NineMenMorrisRules theGame) {
+        this.theGame = theGame;
+    }
 }

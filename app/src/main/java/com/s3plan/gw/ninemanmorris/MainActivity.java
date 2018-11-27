@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
     int leftMost;
     int rightMost;
 
-    private static final String PLAYER1_RED = "RED1";
-    private static final String PLAYER2_BLUE = "BLUE2";
+    private static final String PLAYER2_RED = "R,2";
+    private static final String PLAYER1_BLUE = "B,1";
 
 
     //private MyDragEventListener myDragEventListener;
@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         nineMenMorrisRules = new NineMenMorrisRules();
-        myTouchListener = new MyTouchListener(nineMenMorrisRules);
+        nineMenMorrisRules.gameHandlerCohesion(gameHandler);
+        myTouchListener = new MyTouchListener(nineMenMorrisRules,this);
 
 
 
@@ -328,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                 btnTag.setOnTouchListener(myTouchListener);
                 btnTag.setImageResource(R.drawable.circleplayerone);
                 btnTag.setBackgroundColor(Color.TRANSPARENT);
-                btnTag.setTag(PLAYER1_RED);
+                btnTag.setTag(PLAYER1_BLUE);
                 btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 row.addView(btnTag);
             }
@@ -343,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                 btnTag.setOnTouchListener(myTouchListener);
                 btnTag.setImageResource(R.drawable.circleplayertwo);
                 btnTag.setBackgroundColor(Color.TRANSPARENT);
-                btnTag.setTag(PLAYER2_BLUE);
+                btnTag.setTag(PLAYER2_RED);
                 btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 row.addView(btnTag);
             }

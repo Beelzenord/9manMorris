@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 
 public class MyDragEventListener implements View.OnDragListener {
@@ -62,13 +63,14 @@ public class MyDragEventListener implements View.OnDragListener {
                     // As an example of what your application might do,
                     // applies a blue color tint to the View to indicate that it can accept
                     // data.
-                    System.out.println("can insert here");
+                   // System.out.println("can insert here " + v.getId());
                     //v.setColorFilter(Color.BLUE);
                     //  v.setBackground(drawable);
                     // Invalidate the view to force a redraw in the new tint
                     // v.invalidate();
 
                     // returns true to indicate that the View can accept the dragged data.
+                    v.setVisibility(View.VISIBLE);
                     return true;
 
                 }
@@ -116,6 +118,7 @@ public class MyDragEventListener implements View.OnDragListener {
 
             //exit draggable area
             case DragEvent.ACTION_DRAG_EXITED:
+                System.out.println("Exited");
                 v.setBackground(normal);
                 // Re-sets the color tint to blue. Returns true; the return value is ignored.
                 //    v.setColorFilter(Color.BLUE);
@@ -164,14 +167,25 @@ public class MyDragEventListener implements View.OnDragListener {
                    // owner.removeView(view2 );
                     // take the radius of the view so that the placed draggable is exactly where
                     //the circular place holder was originally
+
                     int radius = (v.getRight() - v.getLeft()) / 2;
 
                     Util.boardPosition(v.getId(),draggedView,radius);
-
                     rl.addView(draggedView);
-                    v.setVisibility(View.INVISIBLE);
+                    if(nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())){
+
+                        Toast.makeText(this.context,"MILL!",Toast.LENGTH_SHORT).show();
+                        nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
+
+
+                    }
+                   // v.setVisibility(View.INVISIBLE);
+
+                    System.out.println(event.getClipDescription().getLabel().toString() + " String size "  + event.getClipDescription().getLabel().toString().trim().length());
 
                     nineMenMorrisRules.showGamePlane();
+                    nineMenMorrisRules.getBlueRedMarker();
+
                     return true;
                    // updateBoardButton(redOrBlue,v);
                 }
@@ -204,7 +218,7 @@ public class MyDragEventListener implements View.OnDragListener {
                 //    v.invalidate();
 
 
-
+               // System.out.println("Drag " + v.getId());
 
                 View view = (View) event.getLocalState();
                 //  view.setX(x_cord - (view.getWidth() / 2));
