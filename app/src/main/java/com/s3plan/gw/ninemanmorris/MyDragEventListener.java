@@ -133,7 +133,7 @@ public class MyDragEventListener implements View.OnDragListener {
                    if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE){
                        if(Util.isThePieceOnThBoard((String)draggedView.getTag().toString())){
                            handleDelete(draggedView,v,event);
-                           
+
                            int idToBeDeleted = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
                            int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
                            if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
@@ -148,7 +148,7 @@ public class MyDragEventListener implements View.OnDragListener {
                                nineMenMorrisRules.gameHandler.setState(GameState.DRAG);
                            }
                            else{
-                               nineMenMorrisRules.gameHandler.setState(GameState.PLACE);    
+                               nineMenMorrisRules.gameHandler.setState(GameState.PLACE);
                            }
                            return true;
                        }
@@ -158,7 +158,7 @@ public class MyDragEventListener implements View.OnDragListener {
                    }
                    return false;
                 }
-                else{
+                else {
                     String data = event.getClipDescription().getLabel().toString();
                     int radius = (v.getRight() - v.getLeft()) / 2;
                     //identify which piece (blue or red)
@@ -166,85 +166,60 @@ public class MyDragEventListener implements View.OnDragListener {
                     int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
 
                     int from = 0;
-                    /*****/
-                    if(nineMenMorrisRules.gameHandler.getGameState()== GameState.DRAG){
+                    boolean premiseForMove = false;
+                    //false if taking from a board
+
+                    //checkIfIts from the side
+
+                   //reject it
+                    if(Util.isThePieceOnThBoard(draggedView.getTag().toString()) && !nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)){
+                        Toast.makeText(this.context,"Use pieces outside the board",Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    else if((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
+                            nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
                         from = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
-                        if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
-                            if(nineMenMorrisRules.switchPlace(from,playerPieceToBeRemoved)){
-                                updateNewPosition(draggedView,p,radius,rl,v);
-                            }
-                            else{
-
-                            }
-                            if (nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())) {
-                                Toast.makeText(this.context, "MILL!", Toast.LENGTH_SHORT).show();
-                                nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
-                                nineMenMorrisRules.showGamePlane();
-                                if (redOrBlue == 1) {
-                                    nineMenMorrisRules.setTurn(1);
-                                } else {
-                                    nineMenMorrisRules.setTurn(2);
-                                }
-
-                                return true;
-                            }
-
-                            return true;
-
-
-                        }
-                        else{
-                            Toast.makeText(this.context,"Illegal Move ",Toast.LENGTH_SHORT).show();
-                        }
-
-                        return false;
+                        premiseForMove = true;
                     }
-                    else if (nineMenMorrisRules.gameHandler.getGameState() == GameState.PLACE ) {
-
-
-                        //if the piece is from the board and and there is still pieces outside the board, because he can't drag cancel
-                        // this is here in case one player is on drag but the other player still has pieces
-                        if(Util.isThePieceOnThBoard(draggedView.getTag().toString()) && !nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)){
-                            Toast.makeText(this.context,"Use pieces outside the board",Toast.LENGTH_SHORT).show();
-                            return false;
+                    else{
+                        premiseForMove = true;
+                    }
+                    if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
+                        //if in DRAG STATE
+                        if((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
+                                nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
+                            nineMenMorrisRules.switchPlace(from,playerPieceToBeRemoved);
                         }
-                        //else
-                        if (nineMenMorrisRules.tryLegalMove(v.getId(), 0, redOrBlue)) {
-                            updateNewPosition(draggedView,p,radius,rl,v);
-                            if (nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())) {
-                                Toast.makeText(this.context, "MILL!", Toast.LENGTH_SHORT).show();
-                                nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
 
-                                nineMenMorrisRules.showGamePlane();
-                                if (redOrBlue == 1) {
-                                    nineMenMorrisRules.setTurn(1);
-                                } else {
-                                    nineMenMorrisRules.setTurn(2);
-                                }
-                                // nineMenMorrisRules.toggleTurn();
-                                return true;
+                        updateNewPosition(draggedView,p,radius,rl,v);
+
+                        if (nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())) {
+                            Toast.makeText(this.context, "MILL!", Toast.LENGTH_SHORT).show();
+                            nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
+
+                            nineMenMorrisRules.showGamePlane();
+                            if (redOrBlue == 1) {
+                                nineMenMorrisRules.setTurn(1);
+                            } else {
+                                nineMenMorrisRules.setTurn(2);
                             }
-                            else if(nineMenMorrisRules.allCheckersOnTheBoard(1) && nineMenMorrisRules.allCheckersOnTheBoard(2)){
-                                nineMenMorrisRules.gameHandler.setState(GameState.DRAG);
-                                return true;
-                            }
+                            // nineMenMorrisRules.toggleTurn();
                             return true;
                         }
-                        else{
 
-                            Toast.makeText(this.context,"Not legal move",Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-
-                        v.setBackground(normal);
-                        Toast.makeText(this.context, "Move is not permitted", Toast.LENGTH_SHORT).show();
-
+                      return true;
+                    }
+                    else{
+                        Toast.makeText(this.context,"Illegal Move ",Toast.LENGTH_SHORT).show();
                         return false;
                     }
+
+                    /*****/
 
 
                 }
-                    /***/
+
+                /***/
 
 
 
