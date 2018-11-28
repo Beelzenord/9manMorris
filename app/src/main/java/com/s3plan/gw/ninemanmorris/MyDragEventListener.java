@@ -1,19 +1,16 @@
 package com.s3plan.gw.ninemanmorris;
 
-import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 
@@ -198,7 +195,15 @@ public class MyDragEventListener implements View.OnDragListener {
                                 // nineMenMorrisRules.toggleTurn();
                                 return true;
                             }
-
+                            AIMover aiMover = AIMover.getInstance();
+                            GameHandler gameHandler = GameHandler.getInstance();
+                            if (gameHandler.makeAIMove()) {
+                                Log.i("Test", "AI MADE A MOVE");
+                                aiMover.updateUIfromAImove(nineMenMorrisRules.getLatestTo(), nineMenMorrisRules.getLatestFrom());
+                            }
+                            else {
+                                Log.i("Test", "AI did not make a move");
+                            }
                             return true;
                 }
                 else{

@@ -40,6 +40,10 @@ public class GameHandler implements Serializable {
 //        this.gameHandler = gameHandler;
     }
 
+    public boolean makeAIMove() {
+        return nineMenMorrisAI.makeMove();
+    }
+
     public GameState getState() {
         return gameState;
     }
@@ -90,5 +94,12 @@ public class GameHandler implements Serializable {
 
     public void setTheGame(NineMenMorrisRules theGame) {
         this.theGame = theGame;
+        nineMenMorrisAI.setGame(theGame);
     }
+
+    public NineMenMorrisRules getTheGame() {
+        return theGame;
+    }
+
+
 }

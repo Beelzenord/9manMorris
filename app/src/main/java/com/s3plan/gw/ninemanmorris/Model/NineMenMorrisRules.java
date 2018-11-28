@@ -28,6 +28,7 @@ public class NineMenMorrisRules implements Serializable {
 	private int[] gameplan;
 	private int bluemarker, redmarker;
 	private int blueonboardmarker, redonboardmarker;
+	private int latestTo, latestFrom;
 	private int turn; // player in turn
 
 	public static final int BLUE_MOVES = 1;
@@ -46,6 +47,7 @@ public class NineMenMorrisRules implements Serializable {
 		redmarker = 9;
 		blueonboardmarker = 0;
 		redonboardmarker = 0;
+		latestTo = -1; latestFrom = -1;
 		turn = RED_MOVES;
 
 	}
@@ -62,6 +64,7 @@ public class NineMenMorrisRules implements Serializable {
 						gameplan[To] = RED_MARKER;
 						redmarker--;
 						redonboardmarker++;
+						latestTo = To; latestFrom = -1;
 						turn = BLUE_MOVES;
 						return true;
 					}
@@ -73,6 +76,7 @@ public class NineMenMorrisRules implements Serializable {
 						gameplan[To] = RED_MARKER;
 						redonboardmarker++;
 						turn = BLUE_MOVES;
+                        latestTo = To; latestFrom = From;
 						return true;
 					} else {
 						System.out.println("FIRST False");
@@ -89,6 +93,7 @@ public class NineMenMorrisRules implements Serializable {
 						bluemarker--;
 						blueonboardmarker++;
 						turn = RED_MOVES;
+                        latestTo = To; latestFrom = -1;
 						System.out.println("blue made a move");
 						return true;
 					}
@@ -99,6 +104,7 @@ public class NineMenMorrisRules implements Serializable {
 						gameplan[To] = BLUE_MARKER;
 						blueonboardmarker++;
 						turn = RED_MOVES;
+                        latestTo = To; latestFrom = From;
 						return true;
 					} else {
 							System.out.println("THIRD False");
@@ -397,4 +403,17 @@ public class NineMenMorrisRules implements Serializable {
 	   }
 		    return false;
 	}
+
+	private void setLatestMove(int to, int from) {
+	    latestTo = to;
+	    latestFrom = from;
+    }
+
+    public int getLatestTo() {
+        return latestTo;
+    }
+
+    public int getLatestFrom() {
+        return latestFrom;
+    }
 }

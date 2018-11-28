@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String BIN_TAG = "BIN_TAG";
     private View imageView;
     private NineMenMorrisRules nineMenMorrisRules;
+    private AIMover aiMover;
 
 
     int x;
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gameHandler = GameHandler.getInstance();
+        aiMover = AIMover.getInstance();
         if (!gameHandler.isOngoingGame()) {
             try { // might not need try catch but why not
                 SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile));
@@ -100,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
             SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
         }
         /** for testing **/
-        gameHandler.tryLegalMove(1, 0, 2);
-        addSavedGame("first");
-        gameHandler.restartGame();
-        gameHandler.tryLegalMove(2, 0, 2);
-        gameHandler.tryLegalMove(3, 0, 1);
-        addSavedGame("second");
+//        gameHandler.tryLegalMove(1, 0, 2);
+//        addSavedGame("first");
+//        gameHandler.restartGame();
+//        gameHandler.tryLegalMove(2, 0, 2);
+//        gameHandler.tryLegalMove(3, 0, 1);
+//        addSavedGame("second");
 
 
 
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         nineMenMorrisRules = new NineMenMorrisRules();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
+        gameHandler.setTheGame(nineMenMorrisRules);
         myTouchListener = new MyTouchListener(nineMenMorrisRules,this);
 
 
@@ -287,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
          imageViews[15].setTag("HOLDER_15");
         imageViews[15].setOnDragListener(myDragEventListener);
 
-
+        aiMover.setImageViews(imageViews);
 
 
 
@@ -356,7 +359,8 @@ public class MainActivity extends AppCompatActivity {
             }
             linearLayoutPlayer2.addView(row);
         }
-
+        aiMover.setLinearLayoutPlayer1(linearLayoutPlayer1);
+        aiMover.setLinearLayoutPlayer2(linearLayoutPlayer2);
 
     }
 
