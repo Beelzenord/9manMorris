@@ -60,7 +60,9 @@ public class NineMenMorrisRules implements Serializable {
 				if (redmarker >= 0 || redonboardmarker <= 3) {
 					if (gameplan[To] == EMPTY_SPACE) {
 						gameplan[To] = RED_MARKER;
-						redmarker--;
+						if(redmarker!=0){
+						 	redmarker--;
+						}
 						redonboardmarker++;
 						turn = BLUE_MOVES;
 						return true;
@@ -86,7 +88,9 @@ public class NineMenMorrisRules implements Serializable {
 				if (bluemarker >= 0 || blueonboardmarker <= 3) {
 					if (gameplan[To] == EMPTY_SPACE) {
 						gameplan[To] = BLUE_MARKER;
-						bluemarker--;
+						if(bluemarker!=0){
+							bluemarker--;
+						}
 						blueonboardmarker++;
 						turn = RED_MOVES;
 						System.out.println("blue made a move");
@@ -192,6 +196,7 @@ public class NineMenMorrisRules implements Serializable {
 	 * Returns true if the marker where successfully removed
 	 */
 	public boolean remove(int From, int color) {
+		System.out.println("inside remove: " + From + " " + color + " "  +gameplan[From]);
 		if (gameplan[From] == color) {
 			gameplan[From] = EMPTY_SPACE;
 			if (color == BLUE_MARKER || color == BLUE_MOVES){
@@ -202,6 +207,21 @@ public class NineMenMorrisRules implements Serializable {
 			else{
 				redonboardmarker--;
 				turn = RED_MOVES;
+			}
+			return true;
+		} else
+			return false;
+	}
+
+	public boolean switchPlace(int From, int color) {
+		System.out.println("inside remove: " + From + " " + color + " "  +gameplan[From]);
+		if (gameplan[From] == color) {
+			gameplan[From] = EMPTY_SPACE;
+			if (color == BLUE_MARKER || color == BLUE_MOVES){
+			   	blueonboardmarker--;
+			}
+			else{
+				redonboardmarker--;
 			}
 			return true;
 		} else
@@ -379,22 +399,40 @@ public class NineMenMorrisRules implements Serializable {
 	}
 
     public boolean allCheckersOnTheBoard(int color){
+
 	   if(color == RED_MOVES){
-	   	 if(redmarker==0){
+	   	 if(redmarker<=0){
+			 System.out.println("all checkers boolean " + color  + " " + redmarker);
 	   	 	return true;
 		 }
 		 else{
+			 System.out.println("return false 1");
 	   	 	return false;
 		 }
 	   }
 	   if(color == BLUE_MOVES){
-	   	    if(bluemarker==0){
+	   	    if(bluemarker<=0){
+	   	     System.out.println("all checkers boolean " + color  + " " + redmarker);
 	   	    	return true;
 			}
 			else{
+	   	    	 System.out.println("return false 2");
 	   	    	return false;
 			}
 	   }
+	    System.out.println("return false 3");
 		    return false;
+	}
+
+
+	@Override
+	public String toString() {
+		return "NineMenMorrisRules{" +
+				"bluemarker=" + bluemarker +
+				", redmarker=" + redmarker +
+				", blueonboardmarker=" + blueonboardmarker +
+				", redonboardmarker=" + redonboardmarker +
+				", turn=" + turn +
+				'}';
 	}
 }
