@@ -411,6 +411,20 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/binID"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/binnormal"
+        app:layout_constraintLeft_toRightOf="@id/playerPieces2"
+        app:layout_constraintBottom_toTopOf="@id/playerPieces"
+        app:layout_constraintTop_toBottomOf="@id/playerPieces2"
+        android:layout_margin="30dp"
+        >
+
+
+    </FrameLayout>
+
 
 
 

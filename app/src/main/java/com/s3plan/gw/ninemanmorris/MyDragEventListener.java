@@ -23,6 +23,7 @@ public class MyDragEventListener implements View.OnDragListener {
 
     private Drawable player1StationedIcon;
 
+    private static final String BIN_TAG = "BIN_TAG";
     private Drawable player2StationedIcon;
 
 
@@ -41,15 +42,15 @@ public class MyDragEventListener implements View.OnDragListener {
         // Handles each of the expected events
         Drawable drawable = this.context.getDrawable(R.drawable.circlesample);
         Drawable normal = this.context.getDrawable(R.drawable.circle);
-
+        Drawable binAlter = this.context.getDrawable(R.drawable.binalter);
+        Drawable binNormal = this.context.getDrawable(R.drawable.binnormal);
         View draggedView = (View) event.getLocalState();
         ViewGroup vg = (ViewGroup) v.getParent();
         ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
         ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) v.getLayoutParams();
 
 
-
-        switch(action) {
+        switch (action) {
 
             case DragEvent.ACTION_DRAG_STARTED:
 
@@ -63,7 +64,7 @@ public class MyDragEventListener implements View.OnDragListener {
                     // As an example of what your application might do,
                     // applies a blue color tint to the View to indicate that it can accept
                     // data.
-                   // System.out.println("can insert here " + v.getId());
+                    // System.out.println("can insert here " + v.getId());
                     //v.setColorFilter(Color.BLUE);
                     //  v.setBackground(drawable);
                     // Invalidate the view to force a redraw in the new tint
@@ -83,30 +84,33 @@ public class MyDragEventListener implements View.OnDragListener {
             //When users entered droppable area
             case DragEvent.ACTION_DRAG_ENTERED:
 
+                System.out.println("TAG of entered : " + v.getTag().toString());
+
                 // Applies a green tint to the View. Return true; the return value is ignored.
 
                 //  v.setColorFilter(Color.GREEN);
 
+
                 // Invalidate the view to force a redraw in the new tint
-                System.out.println("ENTERED " +  v.getId() + " " + event.getClipDescription().getLabel().toString());
+                System.out.println("ENTERED " + v.getId() + " " + event.getClipDescription().getLabel().toString());
 
-//                ClipData.Item item = event.getClipData().getItemAt(0);
+                if (!Util.isThePieceOnThBoard((String) draggedView.getTag().toString())) { // returns false if it isn't on the board
 
-                // Gets the text data from the item.
-               // String dragData = item.getText().toString();
+                } else {
 
-                //Toast.makeText(context, dragData, Toast.LENGTH_SHORT).show();
+                }
+                if (nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE) {
 
-                //v.setBackground(drawable);
+                    return false;
+                }
+                if(v.getTag().toString().equals(BIN_TAG)){
+                    v.setBackground(binAlter);
+                }
+                else{
+                    v.setBackground(drawable);
+                    v.invalidate();
+                }
 
-
-                //ImageView imageView = (ImageView) v;
-                //   imageView.setImageResource(R.drawable.circlesample);
-                // v.setBackgroundColor(getResources().getColor(R.color.colorAccent);
-                // v.setBackgroundResource(R.drawable.circlesample);
-                //   v.setVisibility(View.INVISIBLE);
-                v.setBackground(drawable);
-                v.invalidate();
 
                 return true;
 
@@ -118,96 +122,158 @@ public class MyDragEventListener implements View.OnDragListener {
 
             //exit draggable area
             case DragEvent.ACTION_DRAG_EXITED:
-                System.out.println("Exited");
-                v.setBackground(normal);
+
+                /* if(Util.isThePieceOnThBoard((String)draggedView.getTag().toString()) && nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE){
+
+                     View view = (View) event.getLocalState();
+                     ViewGroup owner = (ViewGroup) view.getParent();
+                     owner.removeView(view);
+
+                }*/
+                if(v.getTag().toString().equals(BIN_TAG)){
+                    v.setBackground(binNormal);
+
+                }
+                else{
+                    v.setBackground(normal);
+
+                }
+
+                v.invalidate();
                 // Re-sets the color tint to blue. Returns true; the return value is ignored.
                 //    v.setColorFilter(Color.BLUE);
 
                 // Invalidate the view to force a redraw in the new tint
                 // v.invalidate();
 
-                v.setVisibility(View.VISIBLE);
-
-                v.invalidate();
-
-
                 return true;
 
             case DragEvent.ACTION_DROP:
 
+
                 // Gets the item containing the dragged data
-              //  ClipData.Item item = event.getClipData().getItemAt(0);
+                //  ClipData.Item item = event.getClipData().getItemAt(0);
+                /*
+                 * The game board positions
+                 *
+                 * 03           06           09
+                 *     02       05       08
+                 *         01   04   07
+                 * 24  23  22        10  11  12
+                 *         19   16   13
+                 *     20       17       14
+                 * 21           18           15
+                 *
+                 */
 
-                String data =  event.getClipDescription().getLabel().toString();
+                System.out.println("Entered Dropped ");
+                nineMenMorrisRules.getTurnStatement();
+                if(v.getTag().toString().trim().equals(BIN_TAG)){
+                   if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE){
+                       if(Util.isThePieceOnThBoard((String)draggedView.getTag().toString())){
+                           draggedView.setVisibility(View.INVISIBLE);
+                           View view = (View) event.getLocalState();
+                           ViewGroup owner = (ViewGroup) view.getParent();
+                           owner.removeView(view);
+                           System.out.println("remove " + draggedView.getTag().toString());
+                           int idToBeDeleted = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
+                           int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
+                           //  nineMenMorrisRules.remove()
+                           System.out.println("ID " + idToBeDeleted);
+                           nineMenMorrisRules.getTurnStatement();
+                           if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
+                               System.out.println("REMOVED");
+                               nineMenMorrisRules.showGamePlane();
+                               //nineMenMorrisRules.toggleTurn();
+                           }
+                           else{
+                               System.out.println("NOT REMOVED");
+                           }
+                           nineMenMorrisRules.gameHandler.setState(GameState.PLACE);
+                           return true;
+                       }
+                   }
+                   else{
+                       Toast.makeText(this.context,"Can't make that move",Toast.LENGTH_SHORT).show();
+                   }
 
-                int redOrBlue = Integer.parseInt(data.trim().substring(data.length() - 1));
-
-
-
-                // Gets the text data from the item.
-                //     dragData = item.getText();
-
-                // Displays a message containing the dragged data.
-                //    Toast.makeText(this, "Dragged data is " + dragData, Toast.LENGTH_LONG).show();
-
-                // Turns off any color tints
-                //      v.clearColorFilter();
-
-                // Invalidates the view to force a redraw
-                System.out.println("should invalidate " + redOrBlue);
-
-                if(nineMenMorrisRules.tryLegalMove(v.getId(),0,redOrBlue)){
-
-                    ViewGroup owner = (ViewGroup) draggedView.getParent();
-                    owner.removeView(draggedView);
-                    draggedView.setLayoutParams(p);
-                    draggedView.setVisibility(View.VISIBLE);
-                  //  View view2 = (View) event.getLocalState();
-                   // ViewGroup owner = (ViewGroup) view2.getParent();
-                   // owner.removeView(view2 );
-                    // take the radius of the view so that the placed draggable is exactly where
-                    //the circular place holder was originally
-
-                    int radius = (v.getRight() - v.getLeft()) / 2;
-
-                    Util.boardPosition(v.getId(),draggedView,radius);
-                    rl.addView(draggedView);
-                    if(nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())){
-
-                        Toast.makeText(this.context,"MILL!",Toast.LENGTH_SHORT).show();
-                        nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
-
-
-                    }
-                   // v.setVisibility(View.INVISIBLE);
-
-                    System.out.println(event.getClipDescription().getLabel().toString() + " String size "  + event.getClipDescription().getLabel().toString().trim().length());
-
-                    nineMenMorrisRules.showGamePlane();
-                    nineMenMorrisRules.getBlueRedMarker();
-
-                    return true;
-                   // updateBoardButton(redOrBlue,v);
+                   return false;
                 }
                 else{
-                    System.out.println("It didn't work ");
-                    v.setBackground(normal);
-                    Toast.makeText(this.context,"It's not your move, bucko!",Toast.LENGTH_SHORT).show();
 
-                    return false;
                 }
 
-              //  nineMenMorrisRules.tryLegalMove(v.getId(),-1,v.get)
-              //remove the dragged view
+                  String data = event.getClipDescription().getLabel().toString();
+                int radius = (v.getRight() - v.getLeft()) / 2;
+
+
+                int redOrBlue = Integer.parseInt(data.trim().substring(data.length() - 1));
+                if (nineMenMorrisRules.gameHandler.getGameState() == GameState.PLACE) {
+
+                    if (nineMenMorrisRules.tryLegalMove(v.getId(), 0, redOrBlue)) {
+
+                        ViewGroup owner = (ViewGroup) draggedView.getParent();
+                        owner.removeView(draggedView);
+                        draggedView.setLayoutParams(p);
+                        draggedView.setVisibility(View.VISIBLE);
+                        Util.numberPiecePositionOnBoard(draggedView, v.getId());
+                        Util.boardPosition(v.getId(), draggedView, radius);
+                        rl.addView(draggedView);
+                        if (nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())) {
+
+                            Toast.makeText(this.context, "MILL!", Toast.LENGTH_SHORT).show();
+                            nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
+
+                            nineMenMorrisRules.showGamePlane();
+                            nineMenMorrisRules.getBlueRedMarker();
+                            if (redOrBlue == 1) {
+                                nineMenMorrisRules.setTurn(1);
+                                System.out.println("Blue scored");
+                            } else {
+                                nineMenMorrisRules.setTurn(2);
+                                System.out.println("Red scored");
+                            }
+                            // nineMenMorrisRules.toggleTurn();
+                            return true;
+                        }
+
+                        return true;
+                    } else {
+
+                        v.setBackground(normal);
+                        Toast.makeText(this.context, "Not your turn", Toast.LENGTH_SHORT).show();
+
+                        return false;
+                    }
+
+
+                }
+
+                //  nineMenMorrisRules.tryLegalMove(v.getId(),-1,v.get)
+                //remove the dragged view
 
                 //   v.invalidate();
-           //     v.setVisibility(View.VISIBLE);
+                //     v.setVisibility(View.VISIBLE);
 
 
                 // Returns true. DragEvent.getResult() will return true.
 
 
             case DragEvent.ACTION_DRAG_ENDED:
+
+
+
+                // ViewGroup owner = (ViewGroup) draggedView.getParent();
+                if(v.getTag().toString().equals(BIN_TAG)){
+                    v.setBackground(binNormal);
+                }
+                else{
+                    v.setBackground(normal);
+                }
+
+
+                draggedView.setVisibility(View.VISIBLE);
+                return true;
 
 
 
@@ -218,15 +284,33 @@ public class MyDragEventListener implements View.OnDragListener {
                 //    v.invalidate();
 
 
-               // System.out.println("Drag " + v.getId());
+                // System.out.println("Drag " + v.getId());
 
-                View view = (View) event.getLocalState();
-                //  view.setX(x_cord - (view.getWidth() / 2));
-                // view.setY(y_cord - (view.getWidth() / 2));
-                view.setVisibility(View.VISIBLE);
+             /*   if (nineMenMorrisRules.gameHandler.getGameState() != GameState.DELETE) {
+                    //
+                    draggedView.setVisibility(View.VISIBLE);
+                } else if (!event.getResult()) {
+
+                    System.out.println("this is where we can delete");
+                    if (nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE) {
+                        View view = (View) event.getLocalState();
+                           view.setVisibility(View.VISIBLE);
+                           vg.removeView(draggedView);*/
+
+                        // View view = (View) event.getLocalState();
+                        // view.setVisibility(View.VISIBLE);
+                        // view.setBackground(player1StationedIcon);
+                        /*ViewGroup owner = (ViewGroup) draggedView.getParent();
+                        owner.removeView(draggedView);*/
+                        //        }
+
+                        //      }
+
+                        //  view.setX(x_cord - (view.getWidth() / 2));
+                        // view.setY(y_cord - (view.getWidth() / 2));
 
 
-                // Does a getResult(), and displays what happened.
+                        // Does a getResult(), and displays what happened.
                /* if (event.getResult()) {
                     Toast.makeText(this, "The drop was handled.", Toast.LENGTH_SHORT).show();
 
@@ -235,15 +319,17 @@ public class MyDragEventListener implements View.OnDragListener {
 
                 }*/
 
-                // returns true; the value is ignored.
-                return true;
 
-            // An unknown action type was received.
+
+
+                // An unknown action type was received.
             default:
-                Log.e("DragDrop Example","Unknown action type received by OnDragListener.");
+                Log.e("DragDrop Example", "Unknown action type received by OnDragListener.");
                 break;
-        }
 
+
+
+        }
         return false;
     }
 

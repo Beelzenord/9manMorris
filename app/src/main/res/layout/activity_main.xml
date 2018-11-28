@@ -336,13 +336,15 @@
         />
 
 
+
+
     <View
     android:id="@+id/bottomCenterBallOuter"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/circle"
-    app:layout_constraintLeft_toLeftOf="@id/bottomRightBallOuter"
-    app:layout_constraintRight_toRightOf="@id/bottomLeftBallOuter"
+    app:layout_constraintLeft_toLeftOf="@id/outermost"
+    app:layout_constraintRight_toRightOf="@id/outermost"
     app:layout_constraintBottom_toBottomOf="@id/outermost"
     android:translationY="15dp"
     />
@@ -400,6 +402,20 @@
         app:layout_constraintTop_toBottomOf="@id/outermost">
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/binID"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/binnormal"
+        app:layout_constraintLeft_toRightOf="@id/playerPieces"
+        app:layout_constraintRight_toLeftOf="@id/playerPieces2"
+        app:layout_constraintTop_toBottomOf="@id/outermost"
+        android:layout_margin="30dp"
+        >
+
+
+    </FrameLayout>
 
 
 

@@ -29,7 +29,6 @@ public class MyTouchListener implements View.OnTouchListener{
             String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
             ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
 
-            System.out.println(" on Touch data " + data.toString()) ;
 
             System.out.print("touch shows game plan ");
             String tag = new String( (String) v.getTag().toString());
@@ -37,7 +36,6 @@ public class MyTouchListener implements View.OnTouchListener{
              //  System.out.println("Dragged Tag : " + (String) v.getTag() + " now: " + tag.charAt(2) );
             nineMenMorrisRules.showGamePlane();
             if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE){
-                System.out.println("You must delete something " + nineMenMorrisRules.getTurn() +" " + "turn " + viewID);
 
                 /*
                 * public static final int BLUE_MOVES = 1; if it's 1, RED DELETES
@@ -47,13 +45,13 @@ public class MyTouchListener implements View.OnTouchListener{
 
                 //block Blue from
                 //if it's red turns to delete from a blue but clicks a red
-                if(nineMenMorrisRules.getTurn()==1 && viewID ==2){
+                if(nineMenMorrisRules.getTurn()==2 && viewID ==2){
                     Toast.makeText(this.context,"Player 2 (red) must remove a piece",Toast.LENGTH_SHORT).show();
                     System.out.println("RED deletes ");
                     return false;
 
                 }
-                else if(nineMenMorrisRules.getTurn() == 2 && viewID==1){
+                else if(nineMenMorrisRules.getTurn() == 1 && viewID==1){
                     Toast.makeText(this.context,"Player 1 (blue) must remove a piece",Toast.LENGTH_SHORT).show();
                     System.out.println("BLUE deletes");
                     return false;

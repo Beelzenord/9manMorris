@@ -13,6 +13,8 @@ public class Util {
         view.setTranslationX(0);
         view.setTranslationY(0);
 
+        System.out.println("INVOKING BOARD POSITION " + view.getTag().toString());
+
 
         /*
          * The game board positions
@@ -29,9 +31,9 @@ public class Util {
 
         System.out.println("in switch ID " + id + " " + view.getTranslationX() + " " + view.getTranslationY());
         switch (id){
-            case 1:case 2:case 3: view.setTranslationX(-radius); view.setTranslationY(-radius);break;
-            case 4: case 5: case 6: view.setTranslationY(-radius);break;
-            case 7: case 8: case 9: view.setTranslationX(radius);view.setTranslationY(-radius); break;
+            case 1:  case 2:  case 3: view.setTranslationX(-radius); view.setTranslationY(-radius);break;
+            case 4:  case 5:  case 6: view.setTranslationY(-radius);break;
+            case 7:  case 8:  case 9: view.setTranslationX(radius);view.setTranslationY(-radius); break;
             case 10: case 11: case 12 : view.setTranslationX(radius);break;
             case 13: case 14: case 15 : view.setTranslationX(radius); view.setTranslationY(radius);break;
             case 16: case 17: case 18 : view.setTranslationY(radius);break;
@@ -43,12 +45,66 @@ public class Util {
     public static int getIDOfDraggable(String tag){
         return Integer.valueOf(tag.indexOf(2));
     }
+    public static boolean isThePieceOnThBoard(String tag){
+        if(tag.length() < 4){
+            System.out.println("not big enough");
+            return false;
+        }
+        else{
+         //   System.out.println("TAG : " + tag + " " + tag.charAt(3));
+            int l = tag.length();
+            String mini = tag.substring(3,tag.length());
+         //   System.out.println("mini  " + mini );
+         //   System.out.println("tag " + tag);
+            int miniID = Integer.parseInt(mini);
+        //    System.out.println("mini int " + mini);
+
+            if(miniID > 0 && miniID < 25){
+                return true;
+            }
+            return false;
+
+        }
+        }
+       // System.out.println("is piece on the board: " + tag.substring(3,tag.length()-1));
+
+        //int id = Integer.parseInt(tag.substring(3,tag.length()-1));
+      /*  if(id >0 && id < 25){
+            return true;
+        }
+        else{
+            return false;
+        }*/
 
     public static void numberPiecePositionOnBoard(View v, int id){
         String tag = (String)v.getTag();
 
+        String newID = String.valueOf(id);
         if(tag.length() > 3){
+            tag = tag.substring(0,2);
+            tag +=newID;
+       //     System.out.println("new tag: " + tag);
+            v.setTag(tag);
+        }
+        else{
 
+            tag +=newID;
+        //    System.out.println("new tag: " + tag);
+            v.setTag(tag);
+        }
+
+    }
+
+    public static int getIdNumberOfTheOccupiedPlaceHolder(String tag){
+        return Integer.parseInt(tag.substring(tag.length()-2));
+    }
+
+    public static int getColorOfDraggedPiece(String RorB){
+        if( RorB.charAt(0) == 'B'){
+            return 4;
+        }
+        else{
+            return 5;
         }
     }
 
