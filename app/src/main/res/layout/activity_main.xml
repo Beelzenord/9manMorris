@@ -47,7 +47,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/img_icon3"
             android:layout_gravity="center"
             />
-
     </FrameLayout>
 
 
@@ -353,8 +352,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/circle"
-    app:layout_constraintLeft_toLeftOf="@id/bottomRightBallMiddle"
-    app:layout_constraintRight_toRightOf="@id/bottomLeftBallMiddle"
+    app:layout_constraintLeft_toLeftOf="@id/middleLayer"
+    app:layout_constraintRight_toRightOf="@id/middleLayer"
     app:layout_constraintBottom_toBottomOf="@id/middleLayer"
     android:translationY="15dp"
     />
@@ -363,8 +362,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/circle"
-        app:layout_constraintLeft_toLeftOf="@id/bottomRightBallInner"
-        app:layout_constraintRight_toRightOf="@id/bottomLeftBallInner"
+        app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
+        app:layout_constraintRight_toRightOf="@id/innerMostFrame"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
         android:translationY="15dp"
         />
@@ -413,8 +412,6 @@
         app:layout_constraintTop_toBottomOf="@id/outermost"
         android:layout_margin="30dp"
         >
-
-
     </FrameLayout>
 
 

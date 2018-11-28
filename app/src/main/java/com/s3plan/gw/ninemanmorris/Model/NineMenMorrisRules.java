@@ -54,6 +54,7 @@ public class NineMenMorrisRules implements Serializable {
 	 * Returns true if a move is successful
 	 */
 	public boolean tryLegalMove(int To, int From, int color) {
+		System.out.println("TRY LEGAL MOVE " + color + " " + turn);
 		if (color == turn) {
 			if (turn == RED_MOVES) {
 				if (redmarker >= 0 || redonboardmarker <= 3) {
@@ -62,7 +63,6 @@ public class NineMenMorrisRules implements Serializable {
 						redmarker--;
 						redonboardmarker++;
 						turn = BLUE_MOVES;
-						System.out.println("RED made a move");
 						return true;
 					}
 				}
@@ -75,9 +75,11 @@ public class NineMenMorrisRules implements Serializable {
 						turn = BLUE_MOVES;
 						return true;
 					} else {
+						System.out.println("FIRST False");
 						return false;
 					}
 				} else {
+					System.out.println("SECOND False");
 					return false;
 				}
 			} else {
@@ -99,13 +101,16 @@ public class NineMenMorrisRules implements Serializable {
 						turn = RED_MOVES;
 						return true;
 					} else {
+							System.out.println("THIRD False");
 						return false;
 					}
 				} else {
+						System.out.println("FOURTH False");
 					return false;
 				}
 			}
 		} else {
+			System.out.println("FIFTH FALSE");
 			return false;
 		}
 	}
@@ -371,5 +376,25 @@ public class NineMenMorrisRules implements Serializable {
 		if(turn == BLUE_MOVES){
 			System.out.println("BLUE MOVES");
 		}
+	}
+
+    public boolean allCheckersOnTheBoard(int color){
+	   if(color == RED_MOVES){
+	   	 if(redmarker==0){
+	   	 	return true;
+		 }
+		 else{
+	   	 	return false;
+		 }
+	   }
+	   if(color == BLUE_MOVES){
+	   	    if(bluemarker==0){
+	   	    	return true;
+			}
+			else{
+	   	    	return false;
+			}
+	   }
+		    return false;
 	}
 }

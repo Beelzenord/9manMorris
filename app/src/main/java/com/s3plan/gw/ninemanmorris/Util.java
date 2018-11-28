@@ -78,18 +78,18 @@ public class Util {
 
     public static void numberPiecePositionOnBoard(View v, int id){
         String tag = (String)v.getTag();
-
+        System.out.println("CURRENT TAG " + tag);
         String newID = String.valueOf(id);
         if(tag.length() > 3){
-            tag = tag.substring(0,2);
+            System.out.println("substring: " +tag.substring(0,3));
+            tag = tag.substring(0,3);
             tag +=newID;
-       //     System.out.println("new tag: " + tag);
+            System.out.println("new tag(i): " + tag);
             v.setTag(tag);
         }
         else{
-
             tag +=newID;
-        //    System.out.println("new tag: " + tag);
+            System.out.println("new tag(ii): " + tag);
             v.setTag(tag);
         }
 
@@ -97,6 +97,14 @@ public class Util {
 
     public static int getIdNumberOfTheOccupiedPlaceHolder(String tag){
         return Integer.parseInt(tag.substring(tag.length()-2));
+    }
+
+    public static int getPlayerIdentiferFromCheckerPiece(String tag){
+        System.out.println("TAG is " + tag + " " + tag.charAt(2));
+        char tmp = tag.charAt(2);
+        int a=Character.getNumericValue(tmp);
+        return a;
+
     }
 
     public static int getColorOfDraggedPiece(String RorB){
