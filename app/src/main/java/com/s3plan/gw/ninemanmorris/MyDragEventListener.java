@@ -179,10 +179,6 @@ public class MyDragEventListener implements View.OnDragListener {
                     else if((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
                             nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
                         from = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
-                        premiseForMove = true;
-                    }
-                    else{
-                        premiseForMove = true;
                     }
                     if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
                         //if in DRAG STATE
