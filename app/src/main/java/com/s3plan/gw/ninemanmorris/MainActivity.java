@@ -135,8 +135,9 @@ public class MainActivity extends AppCompatActivity {
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
         gameHandler.setAIgame(false);
+        initTextViews();
         myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
-        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules);
+        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules, player1TextView, player2TextView);
         initCheckers();
         initPlaceHolders();
     }
@@ -150,8 +151,9 @@ public class MainActivity extends AppCompatActivity {
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
 //        gameHandler.setTheGame(nineMenMorrisRules);
         gameHandler.setAIgame(false);
+        initTextViews();
         myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
-        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules);
+        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules, player1TextView, player2TextView);
         initCheckersFromModel();
         initPlaceHolders();
         initBoardFromModel();
