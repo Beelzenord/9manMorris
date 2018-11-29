@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -226,156 +227,8 @@ public class MainActivity extends AppCompatActivity {
     private void initPlaceHolders() {
         bin.setOnDragListener(myDragEventListener);
         bin.setTag(BIN_TAG);
-        imageViews = new View[25];
-
-
-        imageViews[3] = findViewById(R.id.outerMostTopLeft);
-        imageViews[3].setId(3);
-        imageViews[3].setTag("HOLDER_03");
-        imageViews[3].setOnDragListener(myDragEventListener);
-
-
-        imageViews[6] = findViewById(R.id.outerMostTopCenter);
-        imageViews[6].setId(6);
-        imageViews[6].setTag("HOLDER_06");
-        imageViews[6].setOnDragListener(myDragEventListener);
-
-
-        imageViews[9] = findViewById(R.id.outerMostTopRight);
-        imageViews[9].setId(9);
-        imageViews[9].setTag("HOLDER_09");
-        imageViews[9].setOnDragListener(myDragEventListener);
-
-
-        imageViews[2] = findViewById(R.id.middleTopLeft);
-        imageViews[2].setId(2);
-        imageViews[2].setTag("HOLDER_02");
-        imageViews[2].setOnDragListener(myDragEventListener);
-
-        imageViews[5] = findViewById(R.id.middleMostTopCenter);
-        imageViews[5].setId(5);
-        imageViews[5].setTag("HOLDER_05");
-        imageViews[5].setOnDragListener(myDragEventListener);
-
-        imageViews[8] = findViewById(R.id.middleMostTopRight);
-        imageViews[8].setId(8);
-        imageViews[8].setTag("HOLDER_08");
-        imageViews[8].setOnDragListener(myDragEventListener);
-
-
-        imageViews[1] = findViewById(R.id.innerTopLeft);
-        imageViews[1].setId(1);
-        imageViews[1].setTag("HOLDER_01");
-        imageViews[1].setOnDragListener(myDragEventListener);
-
-        imageViews[4] = findViewById(R.id.innerMostTopCenter);
-        imageViews[4].setId(4);
-        imageViews[4].setTag("HOLDER_04");
-        imageViews[4].setOnDragListener(myDragEventListener);
-
-        imageViews[7] = findViewById(R.id.innerMostTopRight);
-        imageViews[7].setId(7);
-        imageViews[7].setTag("HOLDER_07");
-        imageViews[7].setOnDragListener(myDragEventListener);
-
-
-        imageViews[24] = findViewById(R.id.middleLeftBall);
-        imageViews[24].setId(24);
-        imageViews[24].setTag("HOLDER_24");
-        imageViews[24].setOnDragListener(myDragEventListener);
-
-        imageViews[23] = findViewById(R.id.middleLeftmiddle);
-        imageViews[23].setId(23);
-        imageViews[23].setTag("HOLDER_23");
-        imageViews[23].setOnDragListener(myDragEventListener);
-
-        imageViews[22] = findViewById(R.id.innerLeftmiddle);
-        imageViews[22].setId(22);
-        imageViews[22].setTag("HOLDER_22");
-        imageViews[22].setOnDragListener(myDragEventListener);
-
-        imageViews[10] = findViewById(R.id.innerRightmiddleBall);
-        imageViews[10].setId(10);
-        imageViews[10].setTag("HOLDER_10");
-        imageViews[10].setOnDragListener(myDragEventListener);
-
-        imageViews[11] = findViewById(R.id.middleRightmiddleBall);
-        imageViews[11].setId(11);
-        imageViews[11].setTag("HOLDER_11");
-        imageViews[11].setOnDragListener(myDragEventListener);
-
-        imageViews[12] = findViewById(R.id.middleRightBall);
-        imageViews[12].setId(12);
-        imageViews[12].setTag("HOLDER_12");
-        imageViews[12].setOnDragListener(myDragEventListener);
-
-        imageViews[19] = findViewById(R.id.bottomLeftBallInner);
-        imageViews[19].setId(19);
-        imageViews[19].setTag("HOLDER_19");
-        imageViews[19].setOnDragListener(myDragEventListener);
-
-
-        imageViews[16] = findViewById(R.id.bottomCenterBallInner);
-        imageViews[16].setId(16);
-        imageViews[16].setTag("HOLDER_16");
-        imageViews[16].setOnDragListener(myDragEventListener);
-
-        imageViews[13] = findViewById(R.id.bottomRightBallInner);
-        imageViews[13].setId(13);
-        imageViews[13].setTag("HOLDER_13");
-        imageViews[13].setOnDragListener(myDragEventListener);
-
-        imageViews[20] = findViewById(R.id.bottomLeftBallMiddle);
-        imageViews[20].setId(20);
-        imageViews[20].setTag("HOLDER_20");
-        imageViews[20].setOnDragListener(myDragEventListener);
-
-
-        imageViews[17] = findViewById(R.id.bottomCenterBallMiddle);
-        imageViews[17].setId(17);
-        imageViews[17].setTag("HOLDER_17");
-        imageViews[17].setOnDragListener(myDragEventListener);
-
-        imageViews[14] = findViewById(R.id.bottomRightBallMiddle);
-        imageViews[14].setId(14);
-        imageViews[14].setTag("HOLDER_14");
-        imageViews[14].setOnDragListener(myDragEventListener);
-
-
-        imageViews[21] = findViewById(R.id.bottomLeftBallOuter);
-        imageViews[21].setId(21);
-        imageViews[21].setTag("HOLDER_21");
-        imageViews[21].setOnDragListener(myDragEventListener);
-
-        imageViews[18] = findViewById(R.id.bottomCenterBallOuter);
-        imageViews[18].setId(18);
-        imageViews[18].setTag("HOLDER_18");
-        imageViews[18].setOnDragListener(myDragEventListener);
-
-        imageViews[15] = findViewById(R.id.bottomRightBallOuter);
-        imageViews[15].setId(15);
-        imageViews[15].setTag("HOLDER_15");
-        imageViews[15].setOnDragListener(myDragEventListener);
-
+        imageViews = Util.initViews(this, myDragEventListener);
         uiUpdaterForAi.setImageViews(imageViews);
-
-
-
-        /*
-         * The game board positions
-         *
-         * 03           06           09
-         *     02       05       08
-         *         01   04   07
-         * 24  23  22        10  11  12
-         *         19   16   13
-         *     20       17       14
-         * 21           18           15
-         *
-         *
-         */
-
-
     }
 
     private void initCheckers() {
@@ -475,9 +328,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_load_game:
                 Intent intent = new Intent(MainActivity.this, LoadGameActivity.class);
                 startActivityForResult(intent, SELECT_SAVEDGAME);
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
+            case R.id.menu_toggle_AI:
+                gameHandler.toggleAI();
+                return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void clearCheckers() {

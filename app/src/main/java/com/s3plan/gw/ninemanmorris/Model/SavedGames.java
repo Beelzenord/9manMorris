@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stores name for the saved games.
+ * Stores names for the saved games.
  */
 public class SavedGames implements Serializable {
     private List<String> savedGames;
