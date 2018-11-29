@@ -268,6 +268,31 @@ public class NineMenMorrisRules implements Serializable {
 	/**
 	 * Check whether this is a legal move.
 	 */
+	public boolean isValidMove(int to, int from, int color){
+		if(color == turn){
+			if(isValidMove(to,from)){
+				 if(turn == RED_MOVES){
+				 	this.gameplan[to] = RED_MARKER;
+				 	this.gameplan[from] = EMPTY_SPACE;
+				 	turn = BLUE_MOVES;
+				 	return true;
+				 }
+				 else{
+				 	this.gameplan[to] = BLUE_MARKER;
+				 	this.gameplan[from] = EMPTY_SPACE;
+				 	turn = RED_MOVES;
+				 	return true;
+				 }
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+
+	}
 	public boolean isValidMove(int to, int from) {
 		
 		if(this.gameplan[to] != EMPTY_SPACE) return false;

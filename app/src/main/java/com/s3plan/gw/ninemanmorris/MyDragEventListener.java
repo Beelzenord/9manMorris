@@ -73,6 +73,9 @@ public class MyDragEventListener implements View.OnDragListener {
             //When users entered droppable area
             case DragEvent.ACTION_DRAG_ENTERED:
 
+                System.out.println(nineMenMorrisRules.toString());
+                nineMenMorrisRules.showGamePlane();
+                System.out.println(nineMenMorrisRules.gameHandler.getGameState());
                 if (nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE) {
                     return false;
                 }
@@ -133,19 +136,23 @@ public class MyDragEventListener implements View.OnDragListener {
                    if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE){
                        if(Util.isThePieceOnThBoard((String)draggedView.getTag().toString())){
                            handleDelete(draggedView,v,event);
-
+                           int redOrBlue  = Util.getPlayerIdentiferFromCheckerPiece(draggedView.getTag().toString());
                            int idToBeDeleted = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
                            int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
                            if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
                                nineMenMorrisRules.showGamePlane();
                            }
-                           else{
+                           System.out.println("ID to be deleted " + redOrBlue);
+                           if(nineMenMorrisRules.win(redOrBlue)){
+                               playerWinToast(redOrBlue);
+                               return true;
                            }
                            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
                                return true;
                            }
                            if(nineMenMorrisRules.allCheckersOnTheBoard(1) && nineMenMorrisRules.allCheckersOnTheBoard(2)){
                                nineMenMorrisRules.gameHandler.setState(GameState.DRAG);
+                               return true;
                            }
                            else{
                                nineMenMorrisRules.gameHandler.setState(GameState.PLACE);
@@ -166,29 +173,46 @@ public class MyDragEventListener implements View.OnDragListener {
                     int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
 
                     int from = 0;
-                    boolean premiseForMove = false;
+                    boolean madeSuccessfulMove = false;
                     //false if taking from a board
 
                     //checkIfIts from the side
 
-                   //reject it
-                    if(Util.isThePieceOnThBoard(draggedView.getTag().toString()) && !nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)){
-                        Toast.makeText(this.context,"Use pieces outside the board",Toast.LENGTH_SHORT).show();
+                    //reject it
+
+
+                    /***/
+
+                    if (Util.isThePieceOnThBoard(draggedView.getTag().toString()) && !nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) {
+                        Toast.makeText(this.context, "Use pieces outside the board", Toast.LENGTH_SHORT).show();
                         return false;
-                    }
-                    else if((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
-                            nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
+                    } else if ((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
+                            nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG) {
                         from = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
+
+                        //do the move here
+                        if(nineMenMorrisRules.isValidMove(v.getId(),from,redOrBlue)){
+                            madeSuccessfulMove = true;
+                            updateNewPosition(draggedView, p, radius, rl, v);
+                        }
+                        else{
+                            Toast.makeText(this.context,"Can't make that move",Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
                     }
-                    if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
-                        //if in DRAG STATE
-                        if((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
-                                nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
-                            nineMenMorrisRules.switchPlace(from,playerPieceToBeRemoved);
+                    else if(nineMenMorrisRules.gameHandler.getGameState() == GameState.PLACE){
+                        if (nineMenMorrisRules.tryLegalMove(v.getId(), from, redOrBlue)) {
+                            updateNewPosition(draggedView, p, radius, rl, v);
+                            madeSuccessfulMove = true;
+
+                        } else {
+                            Toast.makeText(this.context, "Illegal Move ", Toast.LENGTH_SHORT).show();
+                            return false;
                         }
 
-                        updateNewPosition(draggedView,p,radius,rl,v);
-
+                    }
+                    if(madeSuccessfulMove){
+                        System.out.println("ID of successful move " + v.getId());
                         if (nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())) {
                             Toast.makeText(this.context, "MILL!", Toast.LENGTH_SHORT).show();
                             nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
@@ -199,23 +223,13 @@ public class MyDragEventListener implements View.OnDragListener {
                             } else {
                                 nineMenMorrisRules.setTurn(2);
                             }
-                            // nineMenMorrisRules.toggleTurn();
                             return true;
                         }
-
-                      return true;
                     }
-                    else{
-                        Toast.makeText(this.context,"Illegal Move ",Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-
-                    /*****/
 
 
                 }
 
-                /***/
 
 
 
@@ -246,6 +260,17 @@ public class MyDragEventListener implements View.OnDragListener {
 
         }
         return false;
+    }
+
+    private void playerWinToast(int loser) {
+        String winner;
+        if(loser ==1 ){
+            winner = "Player 2 (red) wins";
+        }
+        else{
+           winner = "Player 1 (blue) wins";
+        }
+        Toast.makeText(this.context, winner, Toast.LENGTH_SHORT).show();
     }
 
     private void updateNewPosition(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
