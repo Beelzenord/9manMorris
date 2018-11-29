@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.40"
         app:layout_constraintHorizontal_bias="0.15"
+
         >
 
         <android.support.constraint.Guideline

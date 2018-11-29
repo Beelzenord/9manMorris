@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
     private MyDragEventListener myDragEventListener;
 
+    private TextView player1TextView;
+
+    private TextView getPlayer2TextView;
 
     @Override
     protected void onStart() {
@@ -81,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Test" , "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gameHandler = GameHandler.getInstance();
+      //  player1TextView = (TextView) findViewById(R.id.)
+                gameHandler = GameHandler.getInstance();
         uiUpdaterForAi = UiUpdaterForAI.getInstance();
         if (!gameHandler.isOngoingGame()) {
             try { // might not need try catch but why not
@@ -90,18 +95,19 @@ public class MainActivity extends AppCompatActivity {
                 gameHandler.restartGame();
             }
         }
+
         gameHandler.setOngoingGame(true);
         savedGames = SavedGames.getInstance();
         if (savedGames.getSavedGames().size() <= 0) {
             SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
         }
         /** for testing **/
-//        gameHandler.tryLegalMove(1, 0, 2);
-//        addSavedGame("first");
-//        gameHandler.restartGame();
-//        gameHandler.tryLegalMove(2, 0, 2);
-//        gameHandler.tryLegalMove(3, 0, 1);
-//        addSavedGame("second");
+        gameHandler.tryLegalMove(1, 0, 2);
+        addSavedGame("first");
+        gameHandler.restartGame();
+        gameHandler.tryLegalMove(2, 0, 2);
+        gameHandler.tryLegalMove(3, 0, 1);
+        addSavedGame("second");
 
 
         // myDragEventListener = new MyDragEventListener();
@@ -352,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -514,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup vg = (ViewGroup) toView.getParent();
                 ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
                 ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
-                int radius = (view.getRight() - view.getLeft()) / 2;
+                int radius = (toView.getRight() - toView.getLeft()) / 2;
                 Util.updateNewPositionFromModel(view, p, radius, rl, toView);
             }
         }

@@ -67,11 +67,12 @@ public class UiUpdaterForAI {
             View fromView = null;
             for (int i = rl.getChildCount() - 1; i >= 0; i--) {
                 fromView = rl.getChildAt(i);
-                if (tag.toString().equals(fromView.getTag()))
+                if (tag.toString().equals(fromView.getTag())) //
                     break;
             }
             ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
-            int radius = (fromView.getRight() - fromView.getLeft()) / 2;
+            int radius = (toView.getRight() - toView.getLeft()) / 2;
+
             updateNewPosition(fromView, p, radius, rl, toView);
         }
         else {

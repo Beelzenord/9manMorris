@@ -223,7 +223,6 @@ public class NineMenMorrisRules implements Serializable {
 	 * Returns true if the marker where successfully removed
 	 */
 	public boolean remove(int From, int color) {
-		System.out.println("inside remove: " + From + " " + color + " "  +gameplan[From]);
 		if (gameplan[From] == color) {
 			gameplan[From] = EMPTY_SPACE;
 			if (color == BLUE_MARKER || color == BLUE_MOVES){
@@ -256,11 +255,11 @@ public class NineMenMorrisRules implements Serializable {
 
 	/**
 	 *  Returns true if the selected player have less than three markers left.
-	 */
+	 */                            //blue
 	public boolean win(int color) {
 		int countMarker = 0;
 		int count = 0;
-		while (count < 23) {
+		while (count < 23) {        // has something, red.
 			if (gameplan[count] != EMPTY_SPACE && gameplan[count] != color)
 				countMarker++;
 			count++;
@@ -269,6 +268,25 @@ public class NineMenMorrisRules implements Serializable {
 			return true;
 		else
 			return false;
+	}
+
+	public boolean lose(int color){
+		if(color == RED_MOVES){
+			if(redmarker <= 0 && redonboardmarker < 3){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			if(bluemarker <= 0 && blueonboardmarker <3 ){
+				return true;
+			}
+			else{
+			   return false;
+			}
+		}
 	}
 
 	/**
@@ -281,6 +299,31 @@ public class NineMenMorrisRules implements Serializable {
 	/**
 	 * Check whether this is a legal move.
 	 */
+	public boolean isValidMove(int to, int from, int color){
+		if(color == turn){
+			if(isValidMove(to,from)){
+				 if(turn == RED_MOVES){
+				 	this.gameplan[to] = RED_MARKER;
+				 	this.gameplan[from] = EMPTY_SPACE;
+				 	turn = BLUE_MOVES;
+				 	return true;
+				 }
+				 else{
+				 	this.gameplan[to] = BLUE_MARKER;
+				 	this.gameplan[from] = EMPTY_SPACE;
+				 	turn = RED_MOVES;
+				 	return true;
+				 }
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+
+	}
 	public boolean isValidMove(int to, int from) {
         if (to > 24 || from > 24) return false;
 		if(this.gameplan[to] != EMPTY_SPACE) return false;
@@ -435,6 +478,16 @@ public class NineMenMorrisRules implements Serializable {
 	   }
 	    System.out.println("return false 3");
 		    return false;
+	}
+
+	public int getRightColorMarker(int color){
+		if(color == RED_MOVES){
+			return BLUE_MARKER;
+		}
+		else{
+			return RED_MARKER;
+		}
+
 	}
 
 	private void setLatestMove(int to, int from) {
