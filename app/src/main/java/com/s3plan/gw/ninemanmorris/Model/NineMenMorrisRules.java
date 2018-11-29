@@ -59,6 +59,7 @@ public class NineMenMorrisRules implements Serializable {
 	 */
 	public boolean tryLegalMove(int To, int From, int color) {
 		System.out.println("TRY LEGAL MOVE " + color + " " + turn);
+        System.out.println("From: " + From + " To: " + To);
 		if (color == turn) {
 			if (turn == RED_MOVES) {
 				if (redmarker > 0 || redonboardmarker <= 3) {
@@ -265,7 +266,7 @@ public class NineMenMorrisRules implements Serializable {
 	 * Check whether this is a legal move.
 	 */
 	public boolean isValidMove(int to, int from) {
-		
+        if (to > 24 || from > 24) return false;
 		if(this.gameplan[to] != EMPTY_SPACE) return false;
 		
 		switch (to) {
