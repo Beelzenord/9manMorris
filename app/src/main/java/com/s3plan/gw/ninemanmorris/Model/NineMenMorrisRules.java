@@ -1,5 +1,7 @@
 package com.s3plan.gw.ninemanmorris.Model;
 
+import android.util.Log;
+
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 
@@ -28,6 +30,7 @@ public class NineMenMorrisRules implements Serializable {
 	private int[] gameplan;
 	private int bluemarker, redmarker;
 	private int blueonboardmarker, redonboardmarker;
+	private int latestTo, latestFrom, latestRemove;
 	private int turn; // player in turn
 
 	public static final int BLUE_MOVES = 1;
@@ -46,6 +49,7 @@ public class NineMenMorrisRules implements Serializable {
 		redmarker = 9;
 		blueonboardmarker = 0;
 		redonboardmarker = 0;
+		latestTo = -1; latestFrom = -1; latestRemove = -1;
 		turn = RED_MOVES;
 
 	}
@@ -57,13 +61,14 @@ public class NineMenMorrisRules implements Serializable {
 		System.out.println("TRY LEGAL MOVE " + color + " " + turn);
 		if (color == turn) {
 			if (turn == RED_MOVES) {
-				if (redmarker >= 0 || redonboardmarker <= 3) {
+				if (redmarker > 0 || redonboardmarker <= 3) {
 					if (gameplan[To] == EMPTY_SPACE) {
 						gameplan[To] = RED_MARKER;
 						if(redmarker!=0){
 						 	redmarker--;
 						}
 						redonboardmarker++;
+						setLatestMove(To, -1);
 						turn = BLUE_MOVES;
 						return true;
 					}
@@ -73,8 +78,9 @@ public class NineMenMorrisRules implements Serializable {
 					boolean valid = isValidMove(To, From);
 					if (valid == true) {
 						gameplan[To] = RED_MARKER;
-						redonboardmarker++;
+						gameplan[From] = EMPTY_SPACE;
 						turn = BLUE_MOVES;
+                        setLatestMove(To, From);
 						return true;
 					} else {
 						System.out.println("FIRST False");
@@ -85,7 +91,7 @@ public class NineMenMorrisRules implements Serializable {
 					return false;
 				}
 			} else {
-				if (bluemarker >= 0 || blueonboardmarker <= 3) {
+				if (bluemarker > 0 || blueonboardmarker <= 3) {
 					if (gameplan[To] == EMPTY_SPACE) {
 						gameplan[To] = BLUE_MARKER;
 						if(bluemarker!=0){
@@ -93,16 +99,20 @@ public class NineMenMorrisRules implements Serializable {
 						}
 						blueonboardmarker++;
 						turn = RED_MOVES;
+                        setLatestMove(To, -1);
 						System.out.println("blue made a move");
 						return true;
 					}
 				}
 				if (gameplan[To] == EMPTY_SPACE) {
+				    showGamePlane();
+				    Log.i("Test", "To: " + To + " From: " + From);
 					boolean valid = isValidMove(To, From);
 					if (valid == true) {
 						gameplan[To] = BLUE_MARKER;
-						blueonboardmarker++;
+                        gameplan[From] = EMPTY_SPACE;
 						turn = RED_MOVES;
+                        setLatestMove(To, From);
 						return true;
 					} else {
 							System.out.println("THIRD False");
@@ -208,21 +218,7 @@ public class NineMenMorrisRules implements Serializable {
 				redonboardmarker--;
 				turn = RED_MOVES;
 			}
-			return true;
-		} else
-			return false;
-	}
-
-	public boolean switchPlace(int From, int color) {
-		System.out.println("inside remove: " + From + " " + color + " "  +gameplan[From]);
-		if (gameplan[From] == color) {
-			gameplan[From] = EMPTY_SPACE;
-			if (color == BLUE_MARKER || color == BLUE_MOVES){
-			   	blueonboardmarker--;
-			}
-			else{
-				redonboardmarker--;
-			}
+			latestRemove = From;
 			return true;
 		} else
 			return false;
@@ -449,8 +445,24 @@ public class NineMenMorrisRules implements Serializable {
 		    return false;
 	}
 
+	private void setLatestMove(int to, int from) {
+	    latestTo = to;
+	    latestFrom = from;
+    }
 
-	@Override
+    public int getLatestTo() {
+        return latestTo;
+    }
+
+    public int getLatestFrom() {
+        return latestFrom;
+    }
+
+    public int getLatestRemove() {
+        return latestRemove;
+    }
+
+    @Override
 	public String toString() {
 		return "NineMenMorrisRules{" +
 				"bluemarker=" + bluemarker +

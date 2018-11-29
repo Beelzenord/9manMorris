@@ -1,25 +1,24 @@
 package com.s3plan.gw.ninemanmorris;
 
-import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 
 public class MyDragEventListener implements View.OnDragListener {
 
     private Context context;
+    private GameHandler gameHandler;
+    private UiUpdaterForAI uiUpdaterForAi;
 
     private Drawable player1StationedIcon;
 
@@ -33,6 +32,8 @@ public class MyDragEventListener implements View.OnDragListener {
         this.nineMenMorrisRules = nineMenMorrisRules;
         this.player1StationedIcon = this.context.getDrawable(R.drawable.playeronestationed);
         this.player2StationedIcon = this.context.getDrawable(R.drawable.playertwostationed);
+        this.gameHandler = GameHandler.getInstance();
+        this.uiUpdaterForAi = UiUpdaterForAI.getInstance();
     }
 
     @Override
@@ -73,9 +74,6 @@ public class MyDragEventListener implements View.OnDragListener {
             //When users entered droppable area
             case DragEvent.ACTION_DRAG_ENTERED:
 
-                System.out.println(nineMenMorrisRules.toString());
-                nineMenMorrisRules.showGamePlane();
-                System.out.println(nineMenMorrisRules.gameHandler.getGameState());
                 if (nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE) {
                     return false;
                 }
@@ -148,14 +146,21 @@ public class MyDragEventListener implements View.OnDragListener {
                                return true;
                            }
                            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
+                               if (gameHandler.isAIgame()) {
+                                   gameHandler.makeAIMove();
+                                   uiUpdaterForAi.doAIMove();
+                               }
                                return true;
                            }
                            if(nineMenMorrisRules.allCheckersOnTheBoard(1) && nineMenMorrisRules.allCheckersOnTheBoard(2)){
                                nineMenMorrisRules.gameHandler.setState(GameState.DRAG);
-                               return true;
                            }
                            else{
                                nineMenMorrisRules.gameHandler.setState(GameState.PLACE);
+                           }
+                           if (gameHandler.isAIgame()) {
+                               gameHandler.makeAIMove();
+                               uiUpdaterForAi.doAIMove();
                            }
                            return true;
                        }
@@ -200,6 +205,15 @@ public class MyDragEventListener implements View.OnDragListener {
                             return false;
                         }
                     }
+                   // Log.i("Test", "To: " + v.getId() + " From: " + from);
+                   /* if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
+                        //if in DRAG STATE
+//                        if((Util.isThePieceOnThBoard(draggedView.getTag().toString()) && nineMenMorrisRules.allCheckersOnTheBoard(redOrBlue)) ||
+//                                nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
+//                            nineMenMorrisRules.switchPlace(from,playerPieceToBeRemoved);
+//                        }
+
+                        updateNewPosition(draggedView,p,radius,rl,v);*/
                     else if(nineMenMorrisRules.gameHandler.getGameState() == GameState.PLACE){
                         if (nineMenMorrisRules.tryLegalMove(v.getId(), from, redOrBlue)) {
                             updateNewPosition(draggedView, p, radius, rl, v);
@@ -225,6 +239,16 @@ public class MyDragEventListener implements View.OnDragListener {
                             }
                             return true;
                         }
+                        if (gameHandler.isAIgame()) {
+                            gameHandler.makeAIMove();
+                            uiUpdaterForAi.doAIMove();
+                        }
+
+                      return true;
+                    }
+                    else{
+                        Toast.makeText(this.context,"Illegal Move ",Toast.LENGTH_SHORT).show();
+                        return false;
                     }
 
 

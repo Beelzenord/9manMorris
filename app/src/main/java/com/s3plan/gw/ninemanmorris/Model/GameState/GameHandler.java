@@ -19,6 +19,7 @@ public class GameHandler implements Serializable {
         theGame = new NineMenMorrisRules();
         ongoingGame = false;
         nineMenMorrisAI = new NineMenMorrisAI(theGame, NineMenMorrisRules.BLUE_MARKER);
+        isAIgame = false;
     }
 
     public static GameHandler getInstance() {
@@ -38,6 +39,14 @@ public class GameHandler implements Serializable {
         this.theGame = gameHandler.theGame;
         this.ongoingGame = gameHandler.ongoingGame;
 //        this.gameHandler = gameHandler;
+    }
+
+    public boolean makeAIMove() {
+        return nineMenMorrisAI.makeMove();
+    }
+
+    public boolean makeAIRemove() {
+        return nineMenMorrisAI.remove();
     }
 
     public GameState getState() {
@@ -90,5 +99,18 @@ public class GameHandler implements Serializable {
 
     public void setTheGame(NineMenMorrisRules theGame) {
         this.theGame = theGame;
+        nineMenMorrisAI.setGame(theGame);
+    }
+
+    public NineMenMorrisRules getTheGame() {
+        return theGame;
+    }
+
+    public boolean isAIgame() {
+        return isAIgame;
+    }
+
+    public void setAIgame(boolean AIgame) {
+        isAIgame = AIgame;
     }
 }

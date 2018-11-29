@@ -1,5 +1,7 @@
 package com.s3plan.gw.ninemanmorris.Model;
 
+import android.util.Log;
+
 import java.util.Random;
 
 /**
@@ -34,14 +36,19 @@ public class NineMenMorrisAI {
         }
     }
 
+    public void setGame(NineMenMorrisRules nmmr) {
+        this.nmmr = nmmr;
+    }
+
     /**
      * The AI will make a move, using the place feature if available, otherwise the move feature
      * @return Returns true is the move was successful.
      */
     public boolean makeMove() {
         gameplan = nmmr.getGameplan();
+        nmmr.showGamePlane();
         boolean res;
-        if (nmmr.getMarker(myMarker) >= 0 || ((nmmr.getOnboardMarker(myMarker) == 3) && (nmmr.getMarker(myMarker) <= 0))) {
+        if (nmmr.getMarker(myMarker) > 0 || ((nmmr.getOnboardMarker(myMarker) == 3) && (nmmr.getMarker(myMarker) <= 0))) {
             // this may be false if nmmr.tryLegalMove return false -> still AI's turn
             res = tryPlaceMakeMill(1, myMarker);
         }
@@ -111,23 +118,28 @@ public class NineMenMorrisAI {
      * @return Return true if the remove was successful.
      */
     private boolean tryMoveMakeMill(int pos, int from, int marker) {
-        if (gameplan[from] != myMarker)
-            return tryMoveMakeMill(1, from++, marker);
+        if (gameplan[from] != myMarker && from < 24)
+            return tryMoveMakeMill(1, ++from, marker);
         if (nmmr.isValidMove(pos, from)) {
             gameplan[pos] = marker;
+            gameplan[from] = nmmr.EMPTY_SPACE;
             if (nmmr.isThreeInARowAtPositionTo(pos)) {
                 gameplan[pos] = NineMenMorrisRules.EMPTY_SPACE;
+                gameplan[from] = marker;
                 return nmmr.tryLegalMove(pos, from, myTurn);
             }
             gameplan[pos] = NineMenMorrisRules.EMPTY_SPACE;
+            gameplan[from] = marker;
         }
         if (pos >= 24 && from < 24)
-            return tryMoveMakeMill(1, from++, marker);
+            return tryMoveMakeMill(1, ++from, marker);
         // try to block opponents mill
         if (pos >= 24 && from >= 24 && marker == myMarker)
             return tryMoveMakeMill(1, 1, opMarker);
         if (pos >= 24 && from >= 24 && marker == opMarker)
             return tryMoveAnyRandomizedMove(1, 1);
+//        if (pos >= 24 && from >= 24)
+//            return tryMoveAnyRandomizedMove(1, 1);
         return tryMoveMakeMill(++pos, from, marker);
     }
 
@@ -138,15 +150,15 @@ public class NineMenMorrisAI {
      * @return Return true if the remove was successful.
      */
     private boolean tryMoveAnyRandomizedMove(int pos, int from) {
-        if (gameplan[from] != myMarker)
-            return tryMoveAnyRandomizedMove(1, from++);
+        if (gameplan[from] != myMarker && from < 24)
+            return tryMoveAnyRandomizedMove(1, ++from);
         if (nmmr.isValidMove(pos, from)) {
             if (moveRandomizer(gameplan.length - pos, gameplan.length - from)) {
                 return nmmr.tryLegalMove(pos, from, myTurn);
             }
         }
         if (pos >= 24 && from < 24)
-            return tryMoveAnyRandomizedMove(1, from++);
+            return tryMoveAnyRandomizedMove(1, ++from);
 //        if (pos >= 24 && from >= 24 && marker == myMarker)
 //            return tryMoveAnyRandomizedMove(1, 1, opMarker);
 //        if (pos >= 24 && from >= 24 && marker == opMarker)
@@ -163,14 +175,14 @@ public class NineMenMorrisAI {
      * @return Return true if the remove was successful.
      */
     private boolean tryMoveAnyMove(int pos, int from) {
-        if (gameplan[from] != myMarker)
-            return tryMoveAnyMove(pos, from++);
+        if (gameplan[from] != myMarker && from < 24)
+            return tryMoveAnyMove(1, ++from);
         if (nmmr.isValidMove(pos, from)) {
             return nmmr.tryLegalMove(pos, from, myTurn);
         }
 
         if (pos >= 24 && from < 24)
-            return tryMoveAnyMove(1, from++);
+            return tryMoveAnyMove(1, ++from);
         if (pos >= 24 && from >= 24)
             return false;
         return tryMoveAnyMove(++pos, from);
