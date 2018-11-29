@@ -57,6 +57,10 @@ public class MyTouchListener implements View.OnTouchListener{
                     return false;
                 }
             }
+            else if(nineMenMorrisRules.gameHandler.getGameState() == GameState.GAMEOVER){
+                Toast.makeText(this.context,"Game is over",Toast.LENGTH_SHORT).show();
+                return false;
+            }
            // event.getClipData().getItemAt(0);
 
 

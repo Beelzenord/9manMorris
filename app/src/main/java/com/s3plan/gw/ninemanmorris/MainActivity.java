@@ -30,6 +30,8 @@ import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 import com.s3plan.gw.ninemanmorris.Model.SavedGames;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     public static final int SELECT_SAVEDGAME = 0;
     public static final String SAVEDGAME_RESULT = "SAVEDGAME_RESULT";
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView player1TextView;
 
-    private TextView getPlayer2TextView;
+    private TextView player2TextView;
 
     @Override
     protected void onStart() {
@@ -85,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Test" , "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      //  player1TextView = (TextView) findViewById(R.id.)
+
+
                 gameHandler = GameHandler.getInstance();
         uiUpdaterForAi = UiUpdaterForAI.getInstance();
         if (!gameHandler.isOngoingGame()) {
@@ -113,19 +116,20 @@ public class MainActivity extends AppCompatActivity {
         // myDragEventListener = new MyDragEventListener();
         bin = (FrameLayout) findViewById(R.id.binID);
 
-        imageView = (View) findViewById(R.id.middleRightBall);
+
         linearLayoutPlayer1 = (LinearLayout) findViewById(R.id.playerPieces);
         linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
 
 
         nineMenMorrisRules = new NineMenMorrisRules();
+        initTextViews();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
         gameHandler.setAIgame(false);
         myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
 
 
-        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules);
+        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules,player1TextView,player2TextView);
         //imageView.setOnDragListener(myDragEventListener);
 
         initCheckers();
@@ -135,6 +139,31 @@ public class MainActivity extends AppCompatActivity {
         //now the model objects
 
 
+    }
+
+    private void findStuff(ViewGroup viewGroup, ArrayList<View> views, ArrayList<ViewGroup> viewGroups) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                viewGroup.addView((ViewGroup) child);
+                findStuff((ViewGroup) child,views,viewGroups);
+            }
+            else if(child instanceof View){
+                views.add((View)child);
+            }
+        }
+    }
+
+    private void initTextViews() {
+
+        player1TextView = (TextView) findViewById(R.id.player1Textfield);
+        player2TextView = (TextView) findViewById(R.id.player2Textfield);
+        if (nineMenMorrisRules.getTurn() == 2) {
+            player2TextView.setText("Your turn");
+        } else {
+
+            player1TextView.setText("Your turn");
+        }
     }
 
 
@@ -426,6 +455,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+       /* ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+        ArrayList<View> view = new ArrayList<View>();
+        ArrayList<ViewGroup> viewGroups = new ArrayList<ViewGroup>();
+        viewGroup.addView(viewGroup);
+        findStuff(viewGroup,view,viewGroups);
+        for(int i = 0  ; i < viewGroups.size() ; i++){
+            System.out.println("VIEWGROUP " + viewGroups.get(i));
+        }*/
     }
 
     public void addSavedGame(String name) {
@@ -520,6 +557,7 @@ public class MainActivity extends AppCompatActivity {
                 View toView = imageViews[m];
                 ViewGroup vg = (ViewGroup) toView.getParent();
                 ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
+
                 ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
                 int radius = (toView.getRight() - toView.getLeft()) / 2;
                 Util.updateNewPositionFromModel(view, p, radius, rl, toView);
