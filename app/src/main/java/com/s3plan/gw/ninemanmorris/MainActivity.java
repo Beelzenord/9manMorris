@@ -2,6 +2,7 @@ package com.s3plan.gw.ninemanmorris;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -53,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ImageButton> viewsBlue;
     private ArrayList<ImageButton> viewsRed;
 
+    private LinearLayout linearLayoutSave;
+
+    private Button button;
+
+
+    //pop up
+
+    private Dialog dialog;
 
     int x;
     int y;
@@ -79,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView player2TextView;
 
+    private EditText saveText;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -92,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         gameHandler = GameHandler.getInstance();
         uiUpdaterForAi = UiUpdaterForAI.getInstance();
-
+        savedGames = SavedGames.getInstance();
 
         if (!gameHandler.isOngoingGame()) {
             if (SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile))) {
@@ -105,12 +118,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
-        /*gameHandler.setOngoingGame(true);
+        button = (Button) findViewById(R.id.saveID);
+        dialog = new Dialog(this);
+        button.setOnClickListener(this::showPopUp);
+        //gameHandler.setOngoingGame(true);
         savedGames = SavedGames.getInstance();
         if (savedGames.getSavedGames().size() <= 0) {
             SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
-        }*/
+        }
 
 
 
@@ -371,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addSavedGame(String name) {
-        if (!savedGames.getSavedGames().contains(name)) {
+
             StringBuilder sb = new StringBuilder();
             sb.append(getResources().getString(R.string.pathToSaveFilePrefix));
             sb.append(name);
@@ -379,12 +394,8 @@ public class MainActivity extends AppCompatActivity {
             SaveHandler.createSaveFile(this, sb.toString());
             savedGames.add(name);
             SaveHandler.createSavedGamesFile(this, getResources().getString(R.string.pathToSavedGamesFile));
-        } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append(name);
-            sb.append(getResources().getString(R.string.toastNameAlreadyExists));
-            showToast(sb.toString());
-        }
+
+
 
     }
 
@@ -491,6 +502,34 @@ public class MainActivity extends AppCompatActivity {
         btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         viewsRed.add(btnTag);
         return btnTag;
+    }
+
+    private void showPopUp(View v){
+
+        dialog.setContentView(R.layout.savepopup);
+
+        LinearLayout.LayoutParams saveParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        linearLayoutSave = (LinearLayout) dialog.findViewById(R.id.popID); //v.findViewById(R.id.popID);
+
+        saveText = new EditText(dialog.getContext());
+        saveText.setHint("new Save");
+        Button button = new Button(dialog.getContext());
+        button.setText("Save");
+        button.setOnClickListener(this::doSaveFromPopUp);
+        saveText.setLayoutParams(saveParams);
+        button.setLayoutParams(saveParams);
+        linearLayoutSave.addView(saveText);
+        linearLayoutSave.addView(button);
+        dialog.show();
+
+    }
+    private void doSaveFromPopUp(View v){
+        String nameSaved = saveText.getText().toString();
+        if(nameSaved.length()==0 || nameSaved.equals("")){
+            return;
+        }
+        addSavedGame(nameSaved);
+
     }
 }
 
