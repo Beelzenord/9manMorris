@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 public class Util {
     /**
-     * uses the radius of the imagebutton to drag itself out
+     * uses the radius of the imagebutton to partially drag itself out of the pie
      * @param id
      * @param view
      * @param radius
