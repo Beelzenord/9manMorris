@@ -138,13 +138,14 @@ public class MyDragEventListener implements View.OnDragListener {
                            int idToBeDeleted = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
                            int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
                            if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
+                               if(nineMenMorrisRules.win(nineMenMorrisRules.getRightColorMarker(redOrBlue))){
+                                   System.out.println("win");
+                                   playerWinToast(redOrBlue);
+                                   return true;
+                               }
                                nineMenMorrisRules.showGamePlane();
                            }
                            System.out.println("ID to be deleted " + redOrBlue);
-                           if(nineMenMorrisRules.win(redOrBlue)){
-                               playerWinToast(redOrBlue);
-                               return true;
-                           }
                            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
                                if (gameHandler.isAIgame()) {
                                    gameHandler.makeAIMove();

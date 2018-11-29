@@ -445,6 +445,16 @@ public class NineMenMorrisRules implements Serializable {
 		    return false;
 	}
 
+	public int getRightColorMarker(int color){
+		if(color == RED_MOVES){
+			return RED_MARKER;
+		}
+		else{
+			return BLUE_MARKER;
+		}
+
+	}
+
 	private void setLatestMove(int to, int from) {
 	    latestTo = to;
 	    latestFrom = from;
