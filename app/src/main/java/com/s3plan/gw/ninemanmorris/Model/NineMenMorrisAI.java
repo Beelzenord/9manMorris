@@ -134,12 +134,12 @@ public class NineMenMorrisAI {
         if (pos >= 24 && from < 24)
             return tryMoveMakeMill(1, ++from, marker);
         // try to block opponents mill
-        if (pos >= 24 && from >= 24 && marker == myMarker)
-            return tryMoveMakeMill(1, 1, opMarker);
-        if (pos >= 24 && from >= 24 && marker == opMarker)
-            return tryMoveAnyRandomizedMove(1, 1);
-//        if (pos >= 24 && from >= 24)
+//        if (pos >= 24 && from >= 24 && marker == myMarker)
+//            return tryMoveMakeMill(1, 1, opMarker);
+//        if (pos >= 24 && from >= 24 && marker == opMarker)
 //            return tryMoveAnyRandomizedMove(1, 1);
+        if (pos >= 24 && from >= 24)
+            return tryMoveAnyMove(1, 1);
         return tryMoveMakeMill(++pos, from, marker);
     }
 

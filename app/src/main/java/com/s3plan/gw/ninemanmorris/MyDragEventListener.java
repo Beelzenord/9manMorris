@@ -148,8 +148,7 @@ public class MyDragEventListener implements View.OnDragListener {
                            System.out.println("ID to be deleted " + redOrBlue);
                            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
                                if (gameHandler.isAIgame()) {
-                                   gameHandler.makeAIMove();
-                                   uiUpdaterForAi.doAIMove();
+                                   makeAiMove();
                                }
                                return true;
                            }
@@ -160,8 +159,7 @@ public class MyDragEventListener implements View.OnDragListener {
                                nineMenMorrisRules.gameHandler.setState(GameState.PLACE);
                            }
                            if (gameHandler.isAIgame()) {
-                               gameHandler.makeAIMove();
-                               uiUpdaterForAi.doAIMove();
+                               makeAiMove();
                            }
                            return true;
                        }
@@ -241,8 +239,7 @@ public class MyDragEventListener implements View.OnDragListener {
                             return true;
                         }
                         if (gameHandler.isAIgame()) {
-                            gameHandler.makeAIMove();
-                            uiUpdaterForAi.doAIMove();
+                            makeAiMove();
                         }
 
                       return true;
@@ -321,6 +318,14 @@ public class MyDragEventListener implements View.OnDragListener {
         }
         else{
             boardView.setBackground(this.player2StationedIcon);
+        }
+    }
+
+    private void makeAiMove() {
+        if (gameHandler.makeAIMove()) {
+            uiUpdaterForAi.doAIMove();
+        } else {
+            Toast.makeText(this.context,"AI cannot Move ",Toast.LENGTH_SHORT).show();
         }
     }
 }
