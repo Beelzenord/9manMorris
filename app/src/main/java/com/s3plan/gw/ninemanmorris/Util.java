@@ -144,13 +144,13 @@ public class Util {
 
     @SuppressLint("ResourceType")
     public static View[] initViews(Activity activity, MyDragEventListener myDragEventListener){
-
+/*
         int orientation = activity.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             System.out.println("Landscape");
         } else {
             System.out.println("Portrait");
-        }
+        }*/
 
         View[] imageViews = new View[25];
         imageViews[3] = activity.findViewById(R.id.outerMostTopLeft);

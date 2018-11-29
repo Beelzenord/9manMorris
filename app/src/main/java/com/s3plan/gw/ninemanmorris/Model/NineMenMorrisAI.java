@@ -1,7 +1,5 @@
 package com.s3plan.gw.ninemanmorris.Model;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.Random;
 

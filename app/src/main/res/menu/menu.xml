@@ -9,4 +9,7 @@
     <item android:id="@+id/menu_load_game"
         android:title="@string/loadGameString"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menu_toggle_AI"
+        android:title="@string/toggleAIstring" />
 </menu>

@@ -54,6 +54,12 @@ public class FileManager {
         }
     }
 
+    /**
+     * Writes to a file asynchronously.
+     * @param activity The activity to use to open the file.
+     * @param object The object to write to file.
+     * @param fileName The file name of the file.
+     */
     public static void writeSync(Activity activity, Object object, String fileName) {
         if (object != null) {
             FileOutputStream outputStream = null;
@@ -89,10 +95,7 @@ public class FileManager {
         try {
             inputStream = activity.openFileInput(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-//            Reader r = new InputStreamReader(inputStream);
-//            BufferedReader br = new BufferedReader(r);
             j = objectInputStream.readObject();
-//            SaveHandler.SaveFile j = (SaveHandler.SaveFile)objectInputStream.readObject();
             if (j != null)
                 result = new FileManager.Result(j);
             else
