@@ -96,7 +96,7 @@ public class Util {
     }
 
     public static int getIdNumberOfTheOccupiedPlaceHolder(String tag){
-        return Integer.parseInt(tag.substring(tag.length()-2));
+        return Integer.parseInt(tag.substring(3));
     }
 
     public static int getPlayerIdentiferFromCheckerPiece(String tag){

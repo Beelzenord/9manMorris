@@ -189,8 +189,8 @@
         android:layout_height="30dp"
         android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
-        app:layout_constraintLeft_toLeftOf="@id/outerMostTopRight"
-        app:layout_constraintRight_toRightOf="@id/outerMostTopLeft"
+        app:layout_constraintLeft_toLeftOf="@id/outermost"
+        app:layout_constraintRight_toRightOf="@id/outermost"
         android:translationY="-15dp"
         />
 
@@ -203,7 +203,7 @@
         android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
-        app:layout_constraintLeft_toLeftOf="@id/outerMostTopLeft"
+        app:layout_constraintLeft_toLeftOf="@id/outermost"
         android:translationX="-15dp"
         />
     <View
@@ -213,7 +213,7 @@
         android:background="@drawable/circle"
     app:layout_constraintTop_toTopOf="@id/middleLayer"
     app:layout_constraintBottom_toBottomOf="@id/middleLayer"
-    app:layout_constraintLeft_toLeftOf="@id/middleTopLeft"
+    app:layout_constraintLeft_toLeftOf="@id/middleLayer"
     android:translationX="-15dp"
 
     />
@@ -224,7 +224,7 @@
         android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
-        app:layout_constraintLeft_toLeftOf="@id/innerTopLeft"
+        app:layout_constraintLeft_toLeftOf="@id/innerMostFrame"
         android:translationX="-15dp"
 
         />
@@ -235,7 +235,7 @@
         android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/outermost"
         app:layout_constraintBottom_toBottomOf="@id/outermost"
-        app:layout_constraintRight_toRightOf="@id/outerMostTopRight"
+        app:layout_constraintRight_toRightOf="@id/outermost"
         android:translationX="15dp"
         />
     <!-- <ImageView
@@ -256,7 +256,7 @@
         android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/middleLayer"
         app:layout_constraintBottom_toBottomOf="@id/middleLayer"
-        app:layout_constraintRight_toRightOf="@id/middleMostTopRight"
+        app:layout_constraintRight_toRightOf="@id/middleLayer"
         android:translationX="15dp"
         />
     <View
@@ -266,7 +266,7 @@
         android:background="@drawable/circle"
         app:layout_constraintTop_toTopOf="@id/innerMostFrame"
         app:layout_constraintBottom_toBottomOf="@id/innerMostFrame"
-        app:layout_constraintRight_toRightOf="@id/innerMostTopRight"
+        app:layout_constraintRight_toRightOf="@id/innerMostFrame"
         android:translationX="15dp"
         />
 

@@ -1,39 +1,31 @@
 package com.s3plan.gw.ninemanmorris;
 
-import android.annotation.SuppressLint;import android.content.ClipData;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.FileObserver;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.s3plan.gw.ninemanmorris.IO.FileManager;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 import com.s3plan.gw.ninemanmorris.Model.SavedGames;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final int SELECT_SAVEDGAME = 0;
@@ -49,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String BIN_TAG = "BIN_TAG";
     private View imageView;
     private NineMenMorrisRules nineMenMorrisRules;
-    private AIMover aiMover;
+    private UiUpdaterForAI uiUpdaterForAi;
 
 
     int x;
@@ -88,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gameHandler = GameHandler.getInstance();
-        aiMover = AIMover.getInstance();
+        uiUpdaterForAi = UiUpdaterForAI.getInstance();
         if (!gameHandler.isOngoingGame()) {
             try { // might not need try catch but why not
                 SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile));
@@ -124,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         nineMenMorrisRules = new NineMenMorrisRules();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
+        gameHandler.setAIgame(false);
         myTouchListener = new MyTouchListener(nineMenMorrisRules,this);
 
 
@@ -290,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
          imageViews[15].setTag("HOLDER_15");
         imageViews[15].setOnDragListener(myDragEventListener);
 
-        aiMover.setImageViews(imageViews);
+        uiUpdaterForAi.setImageViews(imageViews);
 
 
 
@@ -359,8 +352,8 @@ public class MainActivity extends AppCompatActivity {
             }
             linearLayoutPlayer2.addView(row);
         }
-        aiMover.setLinearLayoutPlayer1(linearLayoutPlayer1);
-        aiMover.setLinearLayoutPlayer2(linearLayoutPlayer2);
+        uiUpdaterForAi.setLinearLayoutPlayer1(linearLayoutPlayer1);
+        uiUpdaterForAi.setLinearLayoutPlayer2(linearLayoutPlayer2);
 
     }
 
