@@ -521,6 +521,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Remove old checkers from the board.
+     */
+    private void clearLayout() {
+        View view = imageViews[1];
+        ViewGroup vg = (ViewGroup)view.getParent();
+        ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
+        for (int i = 0; i< rl.getChildCount(); i++) {
+            View v = rl.getChildAt(0);
+            String tag = (String)v.getTag();
+            if (tag.contains("R,2") || tag.contains("B,1"))
+                rl.removeView(v);
+        }
+    }
+
     private View makeBlueView() {
         ImageButton btnTag = new ImageButton(this);
         btnTag.setOnTouchListener(myTouchListener);
