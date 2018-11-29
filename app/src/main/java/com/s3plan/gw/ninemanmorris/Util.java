@@ -15,10 +15,13 @@ import android.view.ViewGroup;
 
 public class Util {
     /**
-     * uses the radius of the imagebutton to partially drag itself out of the pie
-     * @param id
-     * @param view
-     * @param radius
+     * uses the radius of the imagebutton to partially drag itself out of it's corresponding
+     * FrameLayout to the extent if it's radius value.
+     * To do that we must use the numberings of the board to determine if x or y values will be added
+     * to the piece to pull it from inside the FrameLayout
+     * @param id  : the position of the board
+     * @param view : the player piece
+     * @param radius: the radius of that player piece
      */
     public static void boardPosition(int id, View view, int radius){
 
@@ -58,22 +61,32 @@ public class Util {
         }
     }
 
+    /**
+     * extracts the number from the string
+     * returning an indicator if it's player 1 or 2
+     * @param tag : originates from the tag of the piece where we can derive the ID.
+     * @return
+     */
     public static int getIDOfDraggable(String tag){
         return Integer.valueOf(tag.indexOf(2));
     }
+
+    /**
+     * determines if the the piece is from outside the board or inside
+     * @param tag: derived from the tags view. If it's on the board, the position is appended to the tag.
+     * @return
+     */
     public static boolean isThePieceOnThBoard(String tag){
         if(tag.length() < 4){
             System.out.println("not big enough");
             return false;
         }
         else{
-         //   System.out.println("TAG : " + tag + " " + tag.charAt(3));
+
             int l = tag.length();
             String mini = tag.substring(3,tag.length());
-         //   System.out.println("mini  " + mini );
-         //   System.out.println("tag " + tag);
+
             int miniID = Integer.parseInt(mini);
-        //    System.out.println("mini int " + mini);
 
             if(miniID > 0 && miniID < 25){
                 return true;
@@ -82,47 +95,62 @@ public class Util {
 
         }
         }
-       // System.out.println("is piece on the board: " + tag.substring(3,tag.length()-1));
 
-        //int id = Integer.parseInt(tag.substring(3,tag.length()-1));
-      /*  if(id >0 && id < 25){
-            return true;
-        }
-        else{
-            return false;
-        }*/
+    /**
+     * Adds to the view's tag information of the position of the piece
+     * that is currently on the board.
+     * @param v the player piece
+     * @param id the number of the place holder that the piece is currently on
+     */
 
     public static void numberPiecePositionOnBoard(View v, int id){
         String tag = (String)v.getTag();
-        System.out.println("CURRENT TAG " + tag);
+
         String newID = String.valueOf(id);
         if(tag.length() > 3){
-            System.out.println("substring: " +tag.substring(0,3));
+
             tag = tag.substring(0,3);
             tag +=newID;
-            System.out.println("new tag(i): " + tag);
+
             v.setTag(tag);
         }
         else{
             tag +=newID;
-            System.out.println("new tag(ii): " + tag);
+
             v.setTag(tag);
         }
 
     }
 
+    /**
+     * Identifies the position of board where a player's piece is sitting
+     * @param tag : String that originates with the tag contained by the piece
+     * @return
+     */
     public static int getIdNumberOfTheOccupiedPlaceHolder(String tag){
         return Integer.parseInt(tag.substring(3));
     }
 
+    /**
+     * Identifies which player the piece belongs
+     * @param tag: String from the tag that contains information as to which player it belongs
+     * @return
+     */
     public static int getPlayerIdentiferFromCheckerPiece(String tag){
-        System.out.println("TAG is " + tag + " " + tag.charAt(2));
         char tmp = tag.charAt(2);
         int a=Character.getNumericValue(tmp);
         return a;
 
     }
 
+    /**
+     * Updates UI regarding piece movement, used from save file
+     * @param draggedView : the player piece that is dragged
+     * @param p layout parameters
+     * @param radius : radius of the piece
+     * @param rl : Constraint layout
+     * @param v : the place holder
+     */
     public static void updateNewPositionFromModel(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
         draggedView.setLayoutParams(p);
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
@@ -133,6 +161,11 @@ public class Util {
         draggedView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Extracts the color of the piece that's dragged
+     * @param RorB
+     * @return
+     */
     public static int getColorOfDraggedPiece(String RorB){
         if( RorB.charAt(0) == 'B'){
             return 4;
@@ -141,6 +174,15 @@ public class Util {
             return 5;
         }
     }
+
+    /**
+     * Initialize 24 views that correspond to the 24 place holders as indicated by
+     * Jonas's code and specification. We also enable drag event listeners since these
+     * placeholders will respond to drag events.
+     * @param activity
+     * @param myDragEventListener
+     * @return
+     */
 
     @SuppressLint("ResourceType")
     public static View[] initViews(Activity activity, MyDragEventListener myDragEventListener){

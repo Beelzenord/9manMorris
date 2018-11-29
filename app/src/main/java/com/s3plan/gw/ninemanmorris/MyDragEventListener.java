@@ -33,6 +33,13 @@ public class MyDragEventListener implements View.OnDragListener {
 
 
 //    private  NineMenMorrisRules nineMenMorrisRules;
+
+    /**
+     *
+     * @param context : context from mainActivity
+     * @param player1TextView: TextView on the corner left for player 1
+     * @param player2TextView : TextView on the corner right for player 2
+     */
     public MyDragEventListener(Context context, TextView player1TextView, TextView player2TextView) {
         this.context = context;
         this.player1StationedIcon = this.context.getDrawable(R.drawable.playeronestationed);
@@ -44,6 +51,12 @@ public class MyDragEventListener implements View.OnDragListener {
         this.player2TextView = player2TextView;
     }
 
+    /**
+     * Handles events based on the logic provided by GameState and player's actions
+     * @param v : view of the object that was dragged on
+     * @param event :
+     * @return
+     */
     @Override
     public boolean onDrag(View v, DragEvent event) {
         if (gameHandler.getGameState().equals(GameState.GAMEOVER))
@@ -279,8 +292,12 @@ public class MyDragEventListener implements View.OnDragListener {
         return false;
     }
 
-
-
+    /**
+     * Updates the TextView when a player has made a move
+     * @param player1TextView
+     * @param player2TextView
+     * @param madeAMill
+     */
     private void showWhosTurn(TextView player1TextView, TextView player2TextView, boolean madeAMill) {
         int newTurn = gameHandler.getTheGame().getTurn();
         String yourTurn = "Your Turn";
@@ -307,6 +324,12 @@ public class MyDragEventListener implements View.OnDragListener {
 
     }
 
+    /**
+     * Update the TextView when the player has one.
+     * @param winner
+     * @param player1TextView
+     * @param player2TextView
+     */
     private void playerWinToast(int winner, TextView player1TextView, TextView player2TextView) {
         String winnerText = "you win";
         if(winner == 4){
@@ -320,6 +343,16 @@ public class MyDragEventListener implements View.OnDragListener {
 
     }
 
+    /**
+     * Remove the view from it's original position through view parent and places it
+     * on a new position somewhere on the board
+     *
+     * @param draggedView : player's piece
+     * @param p : layout params for Constraint Layout
+     * @param radius : radius of the circular piece
+     * @param rl : Constraint layout
+     * @param v : the placeholder.
+     */
     private void updateNewPosition(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
         ViewGroup owner = (ViewGroup) draggedView.getParent();
         owner.removeView(draggedView);
@@ -330,6 +363,12 @@ public class MyDragEventListener implements View.OnDragListener {
         rl.addView(draggedView);
     }
 
+    /**
+     * Remove the player piece from the board externally
+     * @param draggedView
+     * @param v
+     * @param event
+     */
     private void handleDelete(View draggedView, View v, DragEvent event) {
         draggedView.setVisibility(View.INVISIBLE);
         View view = (View) event.getLocalState();
@@ -337,15 +376,9 @@ public class MyDragEventListener implements View.OnDragListener {
         owner.removeView(view);
     }
 
-    private void updateBoardButton(int redOrBlue, View boardView) {
-        if(redOrBlue==1){ // BLUE == 1
-           boardView.setBackground(this.player1StationedIcon);
-        }
-        else{
-            boardView.setBackground(this.player2StationedIcon);
-        }
-    }
-
+    /**
+     * AI makes a move logically and then it is shown visually
+     */
     private void makeAiMove() {
         if (gameHandler.makeAIMove()) {
             uiUpdaterForAi.updateViewFromAIMove();

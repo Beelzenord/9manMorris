@@ -420,6 +420,7 @@
         app:layout_constraintLeft_toRightOf="@id/playerPieces2"
         app:layout_constraintBottom_toTopOf="@id/playerPieces"
         app:layout_constraintTop_toBottomOf="@id/playerPieces2"
+        app:layout_constraintRight_toLeftOf="@id/saveID"
         android:layout_margin="30dp"
         >
     </FrameLayout>
@@ -442,6 +443,17 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/saveID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

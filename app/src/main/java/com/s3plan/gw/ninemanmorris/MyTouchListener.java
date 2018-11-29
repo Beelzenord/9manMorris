@@ -15,11 +15,21 @@ public class MyTouchListener implements View.OnTouchListener{
     private Context context;
     private GameHandler gameHandler;
 
+    /**
+     *
+     * @param context : context from main.
+     */
     public MyTouchListener(Context context) {
         this.gameHandler = GameHandler.getInstance();
         this.context = context;
     }
 
+    /**
+     *
+     * @param v : the view, the object we are affecting through touch
+     * @param event : Identifies/indicates the type of touch event
+     * @return
+     */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
