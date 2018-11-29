@@ -1,5 +1,6 @@
 package com.s3plan.gw.ninemanmorris;
 
+import android.app.Activity;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
+import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 
 public class MyDragEventListener implements View.OnDragListener {
 
@@ -148,15 +150,6 @@ public class MyDragEventListener implements View.OnDragListener {
                                    return true;
                                }
                                nineMenMorrisRules.showGamePlane();
-                               int won = nineMenMorrisRules.win();
-                               if (won > 0) {
-                                   gameHandler.setState(GameState.GAMEOVER);
-                                   if (won == nineMenMorrisRules.BLUE_MARKER)
-                                       Toast.makeText(this.context,"BLUE PLAYER WON",Toast.LENGTH_LONG).show();
-                                   else
-                                       Toast.makeText(this.context,"RED PLAYER WON",Toast.LENGTH_LONG).show();
-                                    return true;
-                               }
                            }
                            System.out.println("ID to be deleted " + redOrBlue);
                            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
@@ -209,7 +202,7 @@ public class MyDragEventListener implements View.OnDragListener {
                         from = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
 
                         //do the move here
-                        if(nineMenMorrisRules.isValidMove(v.getId(),from,redOrBlue)){
+                        if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
                             madeSuccessfulMove = true;
                             updateNewPosition(draggedView, p, radius, rl, v);
                         }
@@ -310,6 +303,8 @@ public class MyDragEventListener implements View.OnDragListener {
     }
 
     private void updateNewPosition(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
+        SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
+
         ViewGroup owner = (ViewGroup) draggedView.getParent();
         owner.removeView(draggedView);
         draggedView.setLayoutParams(p);
@@ -317,6 +312,21 @@ public class MyDragEventListener implements View.OnDragListener {
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
         Util.boardPosition(v.getId(), draggedView, radius);
         rl.addView(draggedView);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i< rl.getChildCount(); i++) {
+            View v1 = rl.getChildAt(i);
+            if (v != null) {
+                String tag = (String) v1.getTag();
+                if (tag != null) {
+                    if (tag.contains("R,2") || tag.contains("B,1")) {
+                        Log.i("Test", "Found: " + tag);
+                    }
+                }
+            }
+            sb.append((String)v1.getTag() + " ");
+        }
+        Log.i("Test", "sb: " + sb);
+
     }
 
     private void handleDelete(View draggedView, View v, DragEvent event) {

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private NineMenMorrisRules nineMenMorrisRules;
     private UiUpdaterForAI uiUpdaterForAi;
     private View[] imageViews;
+    private boolean useSavedUI;
 
 
     int x;
@@ -82,61 +83,83 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("Test" , "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      //  player1TextView = (TextView) findViewById(R.id.)
-                gameHandler = GameHandler.getInstance();
+        gameHandler = GameHandler.getInstance();
         uiUpdaterForAi = UiUpdaterForAI.getInstance();
+
+
         if (!gameHandler.isOngoingGame()) {
-            try { // might not need try catch but why not
-                SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile));
-            } catch (Exception e) {
-                gameHandler.restartGame();
+            if (SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile))) {
+//                initSavedGame();
+                useSavedUI = true;
+            }
+            else {
+                useSavedUI = false;
+                initFresh();
             }
         }
 
-        gameHandler.setOngoingGame(true);
+
+        /*gameHandler.setOngoingGame(true);
         savedGames = SavedGames.getInstance();
         if (savedGames.getSavedGames().size() <= 0) {
             SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
-        }
+        }*/
+
+
+
+
         /** for testing **/
-        gameHandler.tryLegalMove(1, 0, 2);
-        addSavedGame("first");
-        gameHandler.restartGame();
-        gameHandler.tryLegalMove(2, 0, 2);
-        gameHandler.tryLegalMove(3, 0, 1);
-        addSavedGame("second");
+//        gameHandler.tryLegalMove(1, 0, 2);
+//        addSavedGame("first");
+//        gameHandler.restartGame();
+//        gameHandler.tryLegalMove(2, 0, 2);
+//        gameHandler.tryLegalMove(3, 0, 1);
+//        addSavedGame("second");
 
 
         // myDragEventListener = new MyDragEventListener();
-        bin = (FrameLayout) findViewById(R.id.binID);
 
+    }
+
+    private void initFresh() {
+        bin = (FrameLayout) findViewById(R.id.binID);
         imageView = (View) findViewById(R.id.middleRightBall);
         linearLayoutPlayer1 = (LinearLayout) findViewById(R.id.playerPieces);
         linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
-
-
         nineMenMorrisRules = new NineMenMorrisRules();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
         gameHandler.setAIgame(false);
         myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
-
-
         myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules);
-        //imageView.setOnDragListener(myDragEventListener);
-
         initCheckers();
         initPlaceHolders();
-
-
-        //now the model objects
-
-
     }
 
+    private void initSavedGame() {
+        bin = (FrameLayout) findViewById(R.id.binID);
+        imageView = (View) findViewById(R.id.middleRightBall);
+        linearLayoutPlayer1 = (LinearLayout) findViewById(R.id.playerPieces);
+        linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
+        nineMenMorrisRules = gameHandler.getTheGame();
+        nineMenMorrisRules.gameHandlerCohesion(gameHandler);
+//        gameHandler.setTheGame(nineMenMorrisRules);
+        gameHandler.setAIgame(false);
+        myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
+        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules);
+        initCheckersFromModel();
+        initPlaceHolders();
+        initBoardFromModel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("Test", "onDestroy");
+        SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
+    }
 
     @SuppressLint("ResourceType")
     private void initPlaceHolders() {
@@ -188,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
         imageViews[4].setId(4);
         imageViews[4].setTag("HOLDER_04");
         imageViews[4].setOnDragListener(myDragEventListener);
-
 
         imageViews[7] = findViewById(R.id.innerMostTopRight);
         imageViews[7].setId(7);
@@ -277,7 +299,6 @@ public class MainActivity extends AppCompatActivity {
         uiUpdaterForAi.setImageViews(imageViews);
 
 
-
         /*
          * The game board positions
          *
@@ -350,6 +371,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        if (useSavedUI) {
+            initSavedGame();
+        }
        /* if (hasFocus) {
             System.out.println("Right:"+outerMost.getRight());
             System.out.println("Left:"+outerMost.getLeft());
@@ -368,12 +392,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Handle Drag Events
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
-    }
 
     /**
      * The options menu for the activity is created.
@@ -462,6 +480,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initCheckersFromModel() {
         NineMenMorrisRules nineMenMorrisRules2 = gameHandler.getTheGame();
+        nineMenMorrisRules2.gameHandlerCohesion(gameHandler);
         int c = nineMenMorrisRules2.getBluemarker();
         linearLayoutPlayer1.removeAllViews();
         LinearLayout[] rows = new LinearLayout[3];
@@ -504,20 +523,20 @@ public class MainActivity extends AppCompatActivity {
         }
         uiUpdaterForAi.setLinearLayoutPlayer1(linearLayoutPlayer1);
         uiUpdaterForAi.setLinearLayoutPlayer2(linearLayoutPlayer2);
-        initBoardFromModel();
     }
 
     private void initBoardFromModel() {
         View view;
         int[] board = gameHandler.getTheGame().getGameplan();
+        gameHandler.getTheGame().showGamePlane();
         for (int i = 1; i < 25; i++) {
             int m;
             if ((m = board[i]) > 0) {
-                if (m == 4)
+                if (m == gameHandler.getTheGame().BLUE_MARKER)
                     view = makeBlueView();
                 else
                     view = makeRedView();
-                View toView = imageViews[m];
+                View toView = imageViews[i];
                 ViewGroup vg = (ViewGroup) toView.getParent();
                 ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
                 ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
@@ -534,13 +553,29 @@ public class MainActivity extends AppCompatActivity {
     private void clearLayout() {
         View view = imageViews[1];
         ViewGroup vg = (ViewGroup)view.getParent();
-        ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
+        ConstraintLayout rl = vg.findViewById(R.id.mainConstraint);
+//        setContentView(findViewById(R.id.mainConstraint));
+//        rl.removeAllViews();
+        if (true)
+            return;
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i< rl.getChildCount(); i++) {
-            View v = rl.getChildAt(0);
-            String tag = (String)v.getTag();
-            if (tag.contains("R,2") || tag.contains("B,1"))
-                rl.removeView(v);
+            View v = rl.getChildAt(i);
+            if (v != null) {
+                String tag = (String) v.getTag();
+                if (tag != null) {
+                    if (tag.contains(PLAYER2_RED) || tag.contains(PLAYER1_BLUE)) {
+//                        ViewGroup vg1 = (ViewGroup)v.getParent();
+                        Log.i("Test", "Found: " + tag);
+                        v.setVisibility(View.INVISIBLE);
+                        vg.removeView(v);
+//                        rl.removeView(v);
+                    }
+                }
+            }
+            sb.append((String)v.getTag() + " ");
         }
+        Log.i("Test", "sb: " + sb);
     }
 
     private View makeBlueView() {

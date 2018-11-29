@@ -26,17 +26,18 @@ public class SaveHandler {
      * @param activity The activity used to load the file.
      * @param filePath The file path to the file.
      */
-    public static void readSaveFile(Activity activity, String filePath) {
+    public static boolean readSaveFile(Activity activity, String filePath) {
         GameHandler gameHandler = GameHandler.getInstance();
         FileManager.Result result = FileManager.readFile(activity, filePath);
         if (result.msg != null) {
             SaveHandler.SaveFile saveFile = (SaveHandler.SaveFile)result.msg;
             gameHandler.setGameHandler(saveFile.getGameHandler());
             Log.i("Main", "Pos: " + gameHandler.typeOfCheckerAtPosition(1));
+            return true;
         }
         else {
-            gameHandler.restartGame();
             Log.i("Main", "Could not load savefile");
+            return false;
         }
     }
 
@@ -59,15 +60,18 @@ public class SaveHandler {
      * @param filePath The file path to the file.
      */
     public static void readSavedGames(Activity activity, String filePath) {
-        SavedGames savedGames = SavedGames.getInstance();
-        FileManager.Result result = FileManager.readFile(activity, filePath);
-        if (result.msg != null) {
-            ArrayList<String> list = (ArrayList<String>) result.msg;
-            savedGames.setSavedGames(list);
-        }
-        else {
-            savedGames.setSavedGames(new ArrayList<String>());
-            Log.i("Main", "no saved games");
+        try {
+            SavedGames savedGames = SavedGames.getInstance();
+            FileManager.Result result = FileManager.readFile(activity, filePath);
+            if (result.msg != null) {
+                ArrayList<String> list = (ArrayList<String>) result.msg;
+                savedGames.setSavedGames(list);
+            } else {
+                savedGames.setSavedGames(new ArrayList<String>());
+                Log.i("Main", "no saved games");
+            }
+        } catch (Exception e) {
+            createSavedGamesFile(activity, filePath);
         }
     }
 

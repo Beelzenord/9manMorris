@@ -45,13 +45,18 @@ public class UiUpdaterForAI {
         View tmp = imageViews[1];
         ViewGroup vg = (ViewGroup) tmp.getParent();
         ConstraintLayout rl = vg.findViewById(R.id.mainConstraint);
+        StringBuilder sb = new StringBuilder();
         View view = null;
         for (int i = rl.getChildCount() - 1; i >= 0; i--) {
             view = rl.getChildAt(i);
-            if (tag.toString().equals(view.getTag()))
-                break;
+            if (view != null) {
+                if (tag.toString().equals(view.getTag()))
+                    break;
+            }
+        sb.append(view.getTag() + " ");
         }
         Log.i("Test", "the tag: " + view.getTag());
+        Log.i("Test", "Arr: " + sb.toString());
         view.setVisibility(View.INVISIBLE);
         vg.removeView(view);
     }

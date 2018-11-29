@@ -3,6 +3,7 @@ package com.s3plan.gw.ninemanmorris.IO;
 import android.app.Activity;
 import android.content.Context;
 
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,18 +60,24 @@ public class FileManager {
     public static Result readFile(Activity activity, String fileName) {
         FileManager.Result result = null;
         FileInputStream inputStream = null;
+        Object j = null;
         try {
             inputStream = activity.openFileInput(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 //            Reader r = new InputStreamReader(inputStream);
 //            BufferedReader br = new BufferedReader(r);
-            Object j = objectInputStream.readObject();
+            j = objectInputStream.readObject();
 //            SaveHandler.SaveFile j = (SaveHandler.SaveFile)objectInputStream.readObject();
             if (j != null)
                 result = new FileManager.Result(j);
             else
                 result = new FileManager.Result(new NullPointerException());
 
+        } catch (EOFException e) {
+            if (j != null)
+                result = new FileManager.Result(j);
+            else
+                result = new FileManager.Result(new NullPointerException());
         } catch (FileNotFoundException e) {
 //            e.printStackTrace();
             result = new FileManager.Result(e);
