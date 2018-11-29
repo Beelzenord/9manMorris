@@ -2,16 +2,21 @@ package com.s3plan.gw.ninemanmorris;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.res.Configuration;
+import android.support.constraint.ConstraintLayout;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class Util {
 
-    public static void boardPosition(int id, View view, int radius, Context context){
+    public static void boardPosition(int id, View view, int radius){
 
-
+        System.out.println("obtained radius " + radius);
 
         //reset translation
 
@@ -49,7 +54,6 @@ public class Util {
             case 19: case 20: case 21 : view.setTranslationX(-radius);view.setTranslationY(radius); break;
             case 22: case 23: case 24 : view.setTranslationX(-radius);
         }
-
     }
 
     public static int getIDOfDraggable(String tag){
@@ -115,6 +119,14 @@ public class Util {
         int a=Character.getNumericValue(tmp);
         return a;
 
+    }
+
+    public static void updateNewPositionFromModel(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
+        draggedView.setLayoutParams(p);
+        draggedView.setVisibility(View.VISIBLE);
+        Util.numberPiecePositionOnBoard(draggedView, v.getId());
+        Util.boardPosition(v.getId(), draggedView, radius);
+        rl.addView(draggedView);
     }
 
     public static int getColorOfDraggedPiece(String RorB){

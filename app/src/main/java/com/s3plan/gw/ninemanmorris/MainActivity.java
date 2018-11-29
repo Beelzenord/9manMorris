@@ -11,11 +11,13 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private View imageView;
     private NineMenMorrisRules nineMenMorrisRules;
     private UiUpdaterForAI uiUpdaterForAi;
+    private View[] imageViews;
 
 
     int x;
@@ -70,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView getPlayer2TextView;
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("Test" , "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
       //  player1TextView = (TextView) findViewById(R.id.)
@@ -108,10 +110,7 @@ public class MainActivity extends AppCompatActivity {
 //        addSavedGame("second");
 
 
-
-
-
-       // myDragEventListener = new MyDragEventListener();
+        // myDragEventListener = new MyDragEventListener();
         bin = (FrameLayout) findViewById(R.id.binID);
 
         imageView = (View) findViewById(R.id.middleRightBall);
@@ -122,12 +121,11 @@ public class MainActivity extends AppCompatActivity {
         nineMenMorrisRules = new NineMenMorrisRules();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
-        gameHandler.setAIgame(true);
-        myTouchListener = new MyTouchListener(nineMenMorrisRules,this);
+        gameHandler.setAIgame(false);
+        myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
 
 
-
-        myDragEventListener = new MyDragEventListener(this,nineMenMorrisRules);
+        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules);
         //imageView.setOnDragListener(myDragEventListener);
 
         initCheckers();
@@ -137,28 +135,14 @@ public class MainActivity extends AppCompatActivity {
         //now the model objects
 
 
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
 
 
     @SuppressLint("ResourceType")
     private void initPlaceHolders() {
         bin.setOnDragListener(myDragEventListener);
         bin.setTag(BIN_TAG);
-        View[] imageViews = new View[25];
-       // imageViews = Util.initViews(this,myDragEventListener);
+        imageViews = new View[25];
 
 
         imageViews[3] = findViewById(R.id.outerMostTopLeft);
@@ -197,18 +181,18 @@ public class MainActivity extends AppCompatActivity {
 
         imageViews[1] = findViewById(R.id.innerTopLeft);
         imageViews[1].setId(1);
-         imageViews[1].setTag("HOLDER_01");
+        imageViews[1].setTag("HOLDER_01");
         imageViews[1].setOnDragListener(myDragEventListener);
 
         imageViews[4] = findViewById(R.id.innerMostTopCenter);
         imageViews[4].setId(4);
-         imageViews[4].setTag("HOLDER_04");
+        imageViews[4].setTag("HOLDER_04");
         imageViews[4].setOnDragListener(myDragEventListener);
 
 
         imageViews[7] = findViewById(R.id.innerMostTopRight);
         imageViews[7].setId(7);
-         imageViews[7].setTag("HOLDER_07");
+        imageViews[7].setTag("HOLDER_07");
         imageViews[7].setOnDragListener(myDragEventListener);
 
 
@@ -219,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageViews[23] = findViewById(R.id.middleLeftmiddle);
         imageViews[23].setId(23);
-         imageViews[23].setTag("HOLDER_23");
+        imageViews[23].setTag("HOLDER_23");
         imageViews[23].setOnDragListener(myDragEventListener);
 
         imageViews[22] = findViewById(R.id.innerLeftmiddle);
@@ -234,12 +218,12 @@ public class MainActivity extends AppCompatActivity {
 
         imageViews[11] = findViewById(R.id.middleRightmiddleBall);
         imageViews[11].setId(11);
-         imageViews[11].setTag("HOLDER_11");
+        imageViews[11].setTag("HOLDER_11");
         imageViews[11].setOnDragListener(myDragEventListener);
 
         imageViews[12] = findViewById(R.id.middleRightBall);
         imageViews[12].setId(12);
-         imageViews[12].setTag("HOLDER_12");
+        imageViews[12].setTag("HOLDER_12");
         imageViews[12].setOnDragListener(myDragEventListener);
 
         imageViews[19] = findViewById(R.id.bottomLeftBallInner);
@@ -255,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageViews[13] = findViewById(R.id.bottomRightBallInner);
         imageViews[13].setId(13);
-         imageViews[13].setTag("HOLDER_13");
+        imageViews[13].setTag("HOLDER_13");
         imageViews[13].setOnDragListener(myDragEventListener);
 
         imageViews[20] = findViewById(R.id.bottomLeftBallMiddle);
@@ -266,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageViews[17] = findViewById(R.id.bottomCenterBallMiddle);
         imageViews[17].setId(17);
-         imageViews[17].setTag("HOLDER_17");
+        imageViews[17].setTag("HOLDER_17");
         imageViews[17].setOnDragListener(myDragEventListener);
 
         imageViews[14] = findViewById(R.id.bottomRightBallMiddle);
@@ -277,17 +261,17 @@ public class MainActivity extends AppCompatActivity {
 
         imageViews[21] = findViewById(R.id.bottomLeftBallOuter);
         imageViews[21].setId(21);
-         imageViews[21].setTag("HOLDER_21");
+        imageViews[21].setTag("HOLDER_21");
         imageViews[21].setOnDragListener(myDragEventListener);
 
         imageViews[18] = findViewById(R.id.bottomCenterBallOuter);
         imageViews[18].setId(18);
-         imageViews[18].setTag("HOLDER_18");
+        imageViews[18].setTag("HOLDER_18");
         imageViews[18].setOnDragListener(myDragEventListener);
 
         imageViews[15] = findViewById(R.id.bottomRightBallOuter);
         imageViews[15].setId(15);
-         imageViews[15].setTag("HOLDER_15");
+        imageViews[15].setTag("HOLDER_15");
         imageViews[15].setOnDragListener(myDragEventListener);
 
         uiUpdaterForAi.setImageViews(imageViews);
@@ -306,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
          * 21           18           15
          *
          */
-
 
 
     }
@@ -329,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.addView(btnTag);
         }*/
 
-       // initialize checkers for player 1
+        // initialize checkers for player 1
         for (int i = 0; i < 3; i++) {
             LinearLayout row = new LinearLayout(this);
             row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -375,7 +358,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -394,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * The options menu for the activity is created.
+     *
      * @param menu The menu to be created.
      * @return
      */
@@ -406,17 +389,18 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Handles a click on the options menu.
+     *
      * @param item The item clicked on.
      * @return true.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_new_game :
+            case R.id.menu_new_game:
                 gameHandler.restartGame();
                 //TODO: update view
                 return true;
-            case R.id.menu_load_game :
+            case R.id.menu_load_game:
                 Intent intent = new Intent(MainActivity.this, LoadGameActivity.class);
                 startActivityForResult(intent, SELECT_SAVEDGAME);
             default:
@@ -430,12 +414,14 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case SELECT_SAVEDGAME:
+                    Log.i("Test", "Intent result");
                     String name = result.getStringExtra(SAVEDGAME_RESULT);
                     StringBuilder sb = new StringBuilder();
                     sb.append(getResources().getString(R.string.pathToSaveFilePrefix));
                     sb.append(name);
                     sb.append(getResources().getString(R.string.pathToSaveFileSuffix));
                     SaveHandler.readSaveFile(this, sb.toString());
+                    initCheckersFromModel();
                     break;
             }
         }
@@ -450,8 +436,7 @@ public class MainActivity extends AppCompatActivity {
             SaveHandler.createSaveFile(this, sb.toString());
             savedGames.add(name);
             SaveHandler.createSavedGamesFile(this, getResources().getString(R.string.pathToSavedGamesFile));
-        }
-        else {
+        } else {
             StringBuilder sb = new StringBuilder();
             sb.append(name);
             sb.append(getResources().getString(R.string.toastNameAlreadyExists));
@@ -462,6 +447,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Shows a short toast message in the middle of the screen.
+     *
      * @param msg The message to show.
      */
     private void showToast(String msg) {
@@ -471,6 +457,93 @@ public class MainActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, getResources().getInteger(R.integer.toastOffsetX), getResources().getInteger(R.integer.toastOffsetY));
         toast.getView().getBackground().setColorFilter(getResources().getColor(R.color.toastBackground), PorterDuff.Mode.SRC.SRC_IN);
         toast.show();
+    }
+
+    private void initCheckersFromModel() {
+        NineMenMorrisRules nineMenMorrisRules2 = gameHandler.getTheGame();
+        int c = nineMenMorrisRules2.getBluemarker();
+        linearLayoutPlayer1.removeAllViews();
+        LinearLayout[] rows = new LinearLayout[3];
+        for (int i = 0; i < 3; i++) {
+            rows[i] = new LinearLayout(this);
+            rows[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            linearLayoutPlayer1.addView(rows[i]);
+        }
+        while (c > 0) {
+            if (c != 0)
+                rows[0].addView(makeBlueView());
+            c--;
+            if (c != 0)
+                rows[1].addView(makeBlueView());
+            c--;
+            if (c != 0)
+                rows[2].addView(makeBlueView());
+            c--;
+        }
+
+
+        int c2 = nineMenMorrisRules2.getRedmarker();
+        linearLayoutPlayer2.removeAllViews();
+        LinearLayout[] rows2 = new LinearLayout[3];
+        for (int i = 0; i < 3; i++) {
+            rows2[i] = new LinearLayout(this);
+            rows2[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            linearLayoutPlayer2.addView(rows2[i]);
+        }
+        while (c2 > 0) {
+            if (c2 != 0)
+                rows2[0].addView(makeRedView());
+            c2--;
+            if (c2 != 0)
+                rows2[1].addView(makeRedView());
+            c2--;
+            if (c2 != 0)
+                rows2[2].addView(makeRedView());
+            c2--;
+        }
+        uiUpdaterForAi.setLinearLayoutPlayer1(linearLayoutPlayer1);
+        uiUpdaterForAi.setLinearLayoutPlayer2(linearLayoutPlayer2);
+        initBoardFromModel();
+    }
+
+    private void initBoardFromModel() {
+        View view;
+        int[] board = gameHandler.getTheGame().getGameplan();
+        for (int i = 1; i < 25; i++) {
+            int m;
+            if ((m = board[i]) > 0) {
+                if (m == 4)
+                    view = makeBlueView();
+                else
+                    view = makeRedView();
+                View toView = imageViews[m];
+                ViewGroup vg = (ViewGroup) toView.getParent();
+                ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
+                ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
+                int radius = (view.getRight() - view.getLeft()) / 2;
+                Util.updateNewPositionFromModel(view, p, radius, rl, toView);
+            }
+        }
+
+    }
+
+    private View makeBlueView() {
+        ImageButton btnTag = new ImageButton(this);
+        btnTag.setOnTouchListener(myTouchListener);
+        btnTag.setImageResource(R.drawable.circleplayerone);
+        btnTag.setBackgroundColor(Color.TRANSPARENT);
+        btnTag.setTag(PLAYER1_BLUE);
+        btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        return btnTag;
+    }
+    private View makeRedView() {
+        ImageButton btnTag = new ImageButton(this);
+        btnTag.setOnTouchListener(myTouchListener);
+        btnTag.setImageResource(R.drawable.circleplayertwo);
+        btnTag.setBackgroundColor(Color.TRANSPARENT);
+        btnTag.setTag(PLAYER2_RED);
+        btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        return btnTag;
     }
 }
 

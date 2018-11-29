@@ -12,7 +12,7 @@ import java.util.Random;
  * then place their checker at a random free spot
  * then place their checker at any free spot.
  */
-public class NineMenMorrisAI implements Serializable{
+public class NineMenMorrisAI implements Serializable {
     private NineMenMorrisRules nmmr;
     private int myTurn;
     private int myMarker;
@@ -140,7 +140,7 @@ public class NineMenMorrisAI implements Serializable{
 //        if (pos >= 24 && from >= 24 && marker == opMarker)
 //            return tryMoveAnyRandomizedMove(1, 1);
         if (pos >= 24 && from >= 24)
-            return tryMoveAnyMove(1, 1);
+            return tryMoveAnyRandomizedMove(1, 1);
         return tryMoveMakeMill(++pos, from, marker);
     }
 
@@ -250,7 +250,7 @@ public class NineMenMorrisAI implements Serializable{
      * @return Returns true if the randomization was successful.
      */
     private boolean moveRandomizer(int p, int f) {
-        int c = (p + f) / 4;
+        int c = (p + f) / 6;
         if (c < 2) c = 1;
         return 1 == random.nextInt(c);
     }
@@ -262,8 +262,8 @@ public class NineMenMorrisAI implements Serializable{
      * @return Returns true if the randomization was successful.
      */
     private boolean randomizer(int c) {
+        c = c / 6;
         if (c < 2) c = 1;
-        else c = c / 2;
         return 1 == random.nextInt(c);
     }
 }
