@@ -71,7 +71,8 @@ public class UiUpdaterForAI {
                     break;
             }
             ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
-            int radius = (fromView.getRight() - fromView.getLeft()) / 2;
+            int radius = (toView.getRight() - toView.getLeft()) / 2;
+
             updateNewPosition(fromView, p, radius, rl, toView);
         }
         else {
@@ -97,7 +98,7 @@ public class UiUpdaterForAI {
         draggedView.setLayoutParams(p);
         draggedView.setVisibility(View.VISIBLE);
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
-        Util.boardPosition(v.getId(), draggedView, radius,v.getContext());
+        Util.boardPosition(v.getId(), draggedView, radius);
         rl.addView(draggedView);
     }
 

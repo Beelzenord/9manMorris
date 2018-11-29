@@ -315,7 +315,7 @@ public class MyDragEventListener implements View.OnDragListener {
         draggedView.setLayoutParams(p);
         draggedView.setVisibility(View.VISIBLE);
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
-        Util.boardPosition(v.getId(), draggedView, radius,v.getContext());
+        Util.boardPosition(v.getId(), draggedView, radius);
         rl.addView(draggedView);
     }
 

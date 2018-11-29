@@ -102,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
             SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
         }
         /** for testing **/
-//        gameHandler.tryLegalMove(1, 0, 2);
-//        addSavedGame("first");
-//        gameHandler.restartGame();
-//        gameHandler.tryLegalMove(2, 0, 2);
-//        gameHandler.tryLegalMove(3, 0, 1);
-//        addSavedGame("second");
+        gameHandler.tryLegalMove(1, 0, 2);
+        addSavedGame("first");
+        gameHandler.restartGame();
+        gameHandler.tryLegalMove(2, 0, 2);
+        gameHandler.tryLegalMove(3, 0, 1);
+        addSavedGame("second");
 
 
         // myDragEventListener = new MyDragEventListener();
@@ -358,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -520,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup vg = (ViewGroup) toView.getParent();
                 ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
                 ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
-                int radius = (view.getRight() - view.getLeft()) / 2;
+                int radius = (toView.getRight() - toView.getLeft()) / 2;
                 Util.updateNewPositionFromModel(view, p, radius, rl, toView);
             }
         }

@@ -46,7 +46,8 @@ public class Util {
 
         switch (id){
             case 1:  case 2:  case 3: view.setTranslationX(-radius); view.setTranslationY(-radius);break;
-            case 4:  case 5:  case 6: view.setTranslationY(-radius);break;
+            case 4:  case 5:  case 6:
+                System.out.println("Make translation here"); view.setTranslationY(-radius);break;
             case 7:  case 8:  case 9: view.setTranslationX(radius);view.setTranslationY(-radius); break;
             case 10: case 11: case 12 : view.setTranslationX(radius);break;
             case 13: case 14: case 15 : view.setTranslationX(radius); view.setTranslationY(radius);break;
@@ -123,10 +124,12 @@ public class Util {
 
     public static void updateNewPositionFromModel(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
         draggedView.setLayoutParams(p);
-        draggedView.setVisibility(View.VISIBLE);
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
+        //Util.boardPosition(v.getId(), draggedView, radius);
+        System.out.println("Updating new position " +v.getId()  + " " + draggedView.getTag().toString() + " " + radius);
         Util.boardPosition(v.getId(), draggedView, radius);
         rl.addView(draggedView);
+        draggedView.setVisibility(View.VISIBLE);
     }
 
     public static int getColorOfDraggedPiece(String RorB){
