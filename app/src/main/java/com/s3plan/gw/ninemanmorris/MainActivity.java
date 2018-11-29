@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 useSavedUI = false;
-                initFresh();
+                initFreshGame();
             }
         }
 
@@ -127,21 +127,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initFresh() {
+    private void initFreshGame() {
         bin = (FrameLayout) findViewById(R.id.binID);
         imageView = (View) findViewById(R.id.middleRightBall);
         linearLayoutPlayer1 = (LinearLayout) findViewById(R.id.playerPieces);
         linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
-        nineMenMorrisRules = new NineMenMorrisRules();
-        initTextViews();
-        nineMenMorrisRules.gameHandlerCohesion(gameHandler);
-        gameHandler.setTheGame(nineMenMorrisRules);
+        gameHandler.restartGame();
         gameHandler.setAIgame(false);
         initTextViews();
-        myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
-        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules, player1TextView, player2TextView);
+        myTouchListener = new MyTouchListener(this);
+        myDragEventListener = new MyDragEventListener(this, player1TextView, player2TextView);
         initCheckers();
         initPlaceHolders();
+    }
+
+    private void resetFreshGame() {
+        gameHandler.restartGame();
+        myTouchListener = null;
+        myTouchListener = new MyTouchListener(this);
+        myDragEventListener = null;
+        myDragEventListener = new MyDragEventListener(this, player1TextView, player2TextView);
+        initTextViews();
+        initCheckers();
     }
 
     private void initSavedGame() {
@@ -149,15 +156,20 @@ public class MainActivity extends AppCompatActivity {
         imageView = (View) findViewById(R.id.middleRightBall);
         linearLayoutPlayer1 = (LinearLayout) findViewById(R.id.playerPieces);
         linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
-        nineMenMorrisRules = gameHandler.getTheGame();
-        nineMenMorrisRules.gameHandlerCohesion(gameHandler);
-//        gameHandler.setTheGame(nineMenMorrisRules);
         gameHandler.setAIgame(false);
         initTextViews();
-        myTouchListener = new MyTouchListener(nineMenMorrisRules, this);
-        myDragEventListener = new MyDragEventListener(this, nineMenMorrisRules, player1TextView, player2TextView);
+        myTouchListener = new MyTouchListener(this);
+        myDragEventListener = new MyDragEventListener(this, player1TextView, player2TextView);
         initCheckersFromModel();
         initPlaceHolders();
+        initBoardFromModel();
+    }
+
+    private void resetSavedGame() {
+        initTextViews();
+        myTouchListener = new MyTouchListener(this);
+        myDragEventListener = new MyDragEventListener(this, player1TextView, player2TextView);
+        initCheckersFromModel();
         initBoardFromModel();
     }
 
@@ -165,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.i("Test", "onDestroy");
-        SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
+//        SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
     }
 
     private void findStuff(ViewGroup viewGroup, ArrayList<View> views, ArrayList<ViewGroup> viewGroups) {
@@ -185,11 +197,12 @@ public class MainActivity extends AppCompatActivity {
 
         player1TextView = (TextView) findViewById(R.id.player1Textfield);
         player2TextView = (TextView) findViewById(R.id.player2Textfield);
-        if (nineMenMorrisRules.getTurn() == 2) {
+        if (gameHandler.getTheGame().getTurn() == 2) {
             player2TextView.setText("Your turn");
+            player1TextView.setText("");
         } else {
-
             player1TextView.setText("Your turn");
+            player2TextView.setText("");
         }
     }
 
@@ -353,24 +366,6 @@ public class MainActivity extends AppCompatActivity {
     private void initCheckers() {
         viewsBlue = new ArrayList<ImageButton>();
         viewsRed = new ArrayList<ImageButton>();
-        View[] viewsPlayer1 = new View[9];
-        View[] viewsPlayer2 = new View[9];
-        Drawable drawable = getDrawable(R.drawable.circleplayerone);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
-       /* for(View v : viewsPlayer1){
-
-
-            ImageButton btnTag = new ImageButton(this);
-
-            btnTag.setOnTouchListener(myTouchListener);
-            btnTag.setImageResource(R.drawable.circleplayerone);
-            btnTag.setBackgroundColor(Color.TRANSPARENT);
-            btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            linearLayout.addView(btnTag);
-        }*/
-
-        // initialize checkers for player 1
 
         for (int i = 0; i < 3; i++) {
             LinearLayout row = new LinearLayout(this);
@@ -413,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         if (useSavedUI) {
             initSavedGame();
+            useSavedUI = false;
         }
        /* if (hasFocus) {
             System.out.println("Right:"+outerMost.getRight());
@@ -459,8 +455,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_new_game:
                 clearCheckers();
                 gameHandler.restartGame();
-
-                //TODO: update view
+                resetFreshGame();
                 return true;
             case R.id.menu_load_game:
                 Intent intent = new Intent(MainActivity.this, LoadGameActivity.class);
@@ -475,12 +470,18 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         for(ImageButton  im : viewsRed){
-            ViewGroup viewGroup = (ViewGroup) im.getParent();
-            viewGroup.removeView(im);
+            if (im != null) {
+                ViewGroup viewGroup = (ViewGroup) im.getParent();
+                if (viewGroup != null)
+                    viewGroup.removeView(im);
+            }
         }
         for(ImageButton  im : viewsBlue){
-            ViewGroup viewGroup = (ViewGroup) im.getParent();
-            viewGroup.removeView(im);
+            if (im != null) {
+                ViewGroup viewGroup = (ViewGroup) im.getParent();
+                if (viewGroup != null)
+                    viewGroup.removeView(im);
+            }
         }
     }
 
@@ -497,7 +498,8 @@ public class MainActivity extends AppCompatActivity {
                     sb.append(name);
                     sb.append(getResources().getString(R.string.pathToSaveFileSuffix));
                     SaveHandler.readSaveFile(this, sb.toString());
-                    initCheckersFromModel();
+                    clearCheckers();
+                    resetSavedGame();
                     break;
             }
         }
@@ -545,8 +547,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initCheckersFromModel() {
+        viewsBlue = new ArrayList<ImageButton>();
+        viewsRed = new ArrayList<ImageButton>();
+
         NineMenMorrisRules nineMenMorrisRules2 = gameHandler.getTheGame();
-        nineMenMorrisRules2.gameHandlerCohesion(gameHandler);
         int c = nineMenMorrisRules2.getBluemarker();
         linearLayoutPlayer1.removeAllViews();
         LinearLayout[] rows = new LinearLayout[3];
@@ -619,6 +623,7 @@ public class MainActivity extends AppCompatActivity {
         btnTag.setBackgroundColor(Color.TRANSPARENT);
         btnTag.setTag(PLAYER1_BLUE);
         btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        viewsBlue.add(btnTag);
         return btnTag;
     }
     private View makeRedView() {
@@ -628,6 +633,7 @@ public class MainActivity extends AppCompatActivity {
         btnTag.setBackgroundColor(Color.TRANSPARENT);
         btnTag.setTag(PLAYER2_RED);
         btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        viewsRed.add(btnTag);
         return btnTag;
     }
 }

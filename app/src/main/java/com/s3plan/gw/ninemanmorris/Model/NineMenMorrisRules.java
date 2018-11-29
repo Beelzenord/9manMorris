@@ -40,8 +40,6 @@ public class NineMenMorrisRules implements Serializable {
 	public static final int BLUE_MARKER = 4;
 	public static final int RED_MARKER = 5;
 
-	public GameHandler gameHandler;
-
 
 	public NineMenMorrisRules() {
 		gameplan = new int[25]; // zeroes
@@ -425,10 +423,6 @@ public class NineMenMorrisRules implements Serializable {
 		System.out.println("Player 1 (Blue) " + bluemarker + ", Player 2 (Red) " + redmarker);
 	}
 
-	public void gameHandlerCohesion(GameHandler gameHandler){
-		this.gameHandler = gameHandler;
-
-	}
     public void toggleTurn(){
 		if(turn==RED_MOVES){
 			turn = BLUE_MOVES;

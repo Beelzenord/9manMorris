@@ -21,8 +21,7 @@ public class NineMenMorrisAI implements Serializable {
     private int[] gameplan;
     Random random;
 
-    public NineMenMorrisAI(NineMenMorrisRules nmmr, int myColor) {
-        this.nmmr = nmmr;
+    public NineMenMorrisAI(int myColor) {
         this.random = new Random();
         if (myColor == NineMenMorrisRules.BLUE_MARKER) {
             myTurn = NineMenMorrisRules.BLUE_MOVES;
@@ -37,15 +36,12 @@ public class NineMenMorrisAI implements Serializable {
         }
     }
 
-    public void setGame(NineMenMorrisRules nmmr) {
-        this.nmmr = nmmr;
-    }
-
     /**
      * The AI will make a move, using the place feature if available, otherwise the move feature
      * @return Returns true is the move was successful.
      */
-    public boolean makeMove() {
+    public boolean makeMove(NineMenMorrisRules nmmr) {
+        this.nmmr = nmmr;
         gameplan = nmmr.getGameplan();
         nmmr.showGamePlane();
         boolean res;

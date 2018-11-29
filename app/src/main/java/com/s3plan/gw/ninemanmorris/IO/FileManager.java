@@ -2,6 +2,7 @@ package com.s3plan.gw.ninemanmorris.IO;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.JetPlayer;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -53,6 +54,30 @@ public class FileManager {
         }
     }
 
+    public static void writeSync(Activity activity, Object object, String fileName) {
+        if (object != null) {
+            FileOutputStream outputStream = null;
+            ObjectOutputStream objectOutputStream;
+            try {
+                outputStream = activity.openFileOutput(fileName, Context.MODE_PRIVATE);
+                objectOutputStream = new ObjectOutputStream(outputStream);
+                objectOutputStream.writeObject(object);
+//                    outputStream.write(object.toString().getBytes());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (outputStream != null) {
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Reads Synchronously from a file.

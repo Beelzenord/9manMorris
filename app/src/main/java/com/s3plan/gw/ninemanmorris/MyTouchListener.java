@@ -7,16 +7,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 
 public class MyTouchListener implements View.OnTouchListener{
-    private NineMenMorrisRules nineMenMorrisRules;
     private Context context;
+    private GameHandler gameHandler;
 
-    public MyTouchListener(NineMenMorrisRules nineMenMorrisRules, Context context) {
-          this.nineMenMorrisRules = nineMenMorrisRules;
-          this.context = context;
+    public MyTouchListener(Context context) {
+        this.gameHandler = GameHandler.getInstance();
+        this.context = context;
     }
 
     @Override
@@ -34,8 +35,8 @@ public class MyTouchListener implements View.OnTouchListener{
             String tag = new String( (String) v.getTag().toString());
             int viewID =  tag.charAt(2) - '0';
              //  System.out.println("Dragged Tag : " + (String) v.getTag() + " now: " + tag.charAt(2) );
-            nineMenMorrisRules.showGamePlane();
-            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE){
+            gameHandler.getTheGame().showGamePlane();
+            if(gameHandler.getGameState() == GameState.DELETE){
 
                 /*
                 * public static final int BLUE_MOVES = 1; if it's 1, RED DELETES
@@ -45,19 +46,19 @@ public class MyTouchListener implements View.OnTouchListener{
 
                 //block Blue from
                 //if it's red turns to delete from a blue but clicks a red
-                if(nineMenMorrisRules.getTurn()==2 && viewID ==2){
+                if(gameHandler.getTheGame().getTurn()==2 && viewID ==2){
                     Toast.makeText(this.context,"Player 2 (red) must remove a piece",Toast.LENGTH_SHORT).show();
                     System.out.println("RED deletes ");
                     return false;
 
                 }
-                else if(nineMenMorrisRules.getTurn() == 1 && viewID==1){
+                else if(gameHandler.getTheGame().getTurn() == 1 && viewID==1){
                     Toast.makeText(this.context,"Player 1 (blue) must remove a piece",Toast.LENGTH_SHORT).show();
                     System.out.println("BLUE deletes");
                     return false;
                 }
             }
-            else if(nineMenMorrisRules.gameHandler.getGameState() == GameState.GAMEOVER){
+            else if(gameHandler.getGameState() == GameState.GAMEOVER){
                 Toast.makeText(this.context,"Game is over",Toast.LENGTH_SHORT).show();
                 return false;
             }

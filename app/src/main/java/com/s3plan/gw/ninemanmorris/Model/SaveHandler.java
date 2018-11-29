@@ -17,8 +17,8 @@ public class SaveHandler {
      */
     public static void createSaveFile(Activity activity, String filePath) {
         GameHandler gameHandler = GameHandler.getInstance();
-        FileManager.Write write = new FileManager.Write(activity, new SaveFile(gameHandler), filePath);
-        write.run();
+        FileManager.writeSync(activity, new SaveFile(gameHandler), filePath);
+//        write.run();
     }
 
     /**
