@@ -67,7 +67,7 @@ public class UiUpdaterForAI {
             View fromView = null;
             for (int i = rl.getChildCount() - 1; i >= 0; i--) {
                 fromView = rl.getChildAt(i);
-                if (tag.toString().equals(fromView.getTag()))
+                if (tag.toString().equals(fromView.getTag())) //
                     break;
             }
             ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) toView.getLayoutParams();
@@ -97,7 +97,7 @@ public class UiUpdaterForAI {
         draggedView.setLayoutParams(p);
         draggedView.setVisibility(View.VISIBLE);
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
-        Util.boardPosition(v.getId(), draggedView, radius);
+        Util.boardPosition(v.getId(), draggedView, radius,v.getContext());
         rl.addView(draggedView);
     }
 

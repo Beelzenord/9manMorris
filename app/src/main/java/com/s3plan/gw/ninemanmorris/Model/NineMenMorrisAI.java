@@ -2,6 +2,7 @@ package com.s3plan.gw.ninemanmorris.Model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Random;
  * then place their checker at a random free spot
  * then place their checker at any free spot.
  */
-public class NineMenMorrisAI {
+public class NineMenMorrisAI implements Serializable{
     private NineMenMorrisRules nmmr;
     private int myTurn;
     private int myMarker;

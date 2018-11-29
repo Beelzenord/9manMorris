@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
     private MyDragEventListener myDragEventListener;
 
+    private TextView player1TextView;
+
+    private TextView getPlayer2TextView;
 
 
 
@@ -79,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gameHandler = GameHandler.getInstance();
+      //  player1TextView = (TextView) findViewById(R.id.)
+                gameHandler = GameHandler.getInstance();
         uiUpdaterForAi = UiUpdaterForAI.getInstance();
         if (!gameHandler.isOngoingGame()) {
             try { // might not need try catch but why not
@@ -88,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 gameHandler.restartGame();
             }
         }
+
         gameHandler.setOngoingGame(true);
         savedGames = SavedGames.getInstance();
         if (savedGames.getSavedGames().size() <= 0) {
@@ -116,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         nineMenMorrisRules = new NineMenMorrisRules();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
-        gameHandler.setAIgame(false);
+        gameHandler.setAIgame(true);
         myTouchListener = new MyTouchListener(nineMenMorrisRules,this);
 
 
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         bin.setOnDragListener(myDragEventListener);
         bin.setTag(BIN_TAG);
         View[] imageViews = new View[25];
+       // imageViews = Util.initViews(this,myDragEventListener);
 
 
         imageViews[3] = findViewById(R.id.outerMostTopLeft);

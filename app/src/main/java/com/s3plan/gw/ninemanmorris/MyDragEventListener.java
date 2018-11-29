@@ -74,6 +74,8 @@ public class MyDragEventListener implements View.OnDragListener {
             //When users entered droppable area
             case DragEvent.ACTION_DRAG_ENTERED:
 
+                System.out.println(nineMenMorrisRules.toString());
+
                 if (nineMenMorrisRules.gameHandler.getGameState() == GameState.DELETE) {
                     return false;
                 }
@@ -138,7 +140,7 @@ public class MyDragEventListener implements View.OnDragListener {
                            int idToBeDeleted = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
                            int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
                            if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
-                               if(nineMenMorrisRules.win(nineMenMorrisRules.getRightColorMarker(redOrBlue))){
+                               if(nineMenMorrisRules.win()>-1){
                                    System.out.println("win");
                                    playerWinToast(redOrBlue);
                                    return true;
@@ -170,6 +172,7 @@ public class MyDragEventListener implements View.OnDragListener {
                    return false;
                 }
                 else {
+
                     String data = event.getClipDescription().getLabel().toString();
                     int radius = (v.getRight() - v.getLeft()) / 2;
                     //identify which piece (blue or red)
@@ -301,7 +304,7 @@ public class MyDragEventListener implements View.OnDragListener {
         draggedView.setLayoutParams(p);
         draggedView.setVisibility(View.VISIBLE);
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
-        Util.boardPosition(v.getId(), draggedView, radius);
+        Util.boardPosition(v.getId(), draggedView, radius,v.getContext());
         rl.addView(draggedView);
     }
 

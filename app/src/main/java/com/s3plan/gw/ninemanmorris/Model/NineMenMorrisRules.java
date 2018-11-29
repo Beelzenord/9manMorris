@@ -207,7 +207,6 @@ public class NineMenMorrisRules implements Serializable {
 	 * Returns true if the marker where successfully removed
 	 */
 	public boolean remove(int From, int color) {
-		System.out.println("inside remove: " + From + " " + color + " "  +gameplan[From]);
 		if (gameplan[From] == color) {
 			gameplan[From] = EMPTY_SPACE;
 			if (color == BLUE_MARKER || color == BLUE_MOVES){
@@ -240,11 +239,11 @@ public class NineMenMorrisRules implements Serializable {
 
 	/**
 	 *  Returns true if the selected player have less than three markers left.
-	 */
+	 */                            //blue
 	public boolean win(int color) {
 		int countMarker = 0;
 		int count = 0;
-		while (count < 23) {
+		while (count < 23) {        // has something, red.
 			if (gameplan[count] != EMPTY_SPACE && gameplan[count] != color)
 				countMarker++;
 			count++;
@@ -253,6 +252,25 @@ public class NineMenMorrisRules implements Serializable {
 			return true;
 		else
 			return false;
+	}
+
+	public boolean lose(int color){
+		if(color == RED_MOVES){
+			if(redmarker <= 0 && redonboardmarker < 3){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			if(bluemarker <= 0 && blueonboardmarker <3 ){
+				return true;
+			}
+			else{
+			   return false;
+			}
+		}
 	}
 
 	/**
@@ -448,10 +466,10 @@ public class NineMenMorrisRules implements Serializable {
 
 	public int getRightColorMarker(int color){
 		if(color == RED_MOVES){
-			return RED_MARKER;
+			return BLUE_MARKER;
 		}
 		else{
-			return BLUE_MARKER;
+			return RED_MARKER;
 		}
 
 	}
