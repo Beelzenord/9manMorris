@@ -419,18 +419,6 @@ public class NineMenMorrisRules implements Serializable {
 		System.out.println(Arrays.toString(gameplan));
 	}
 
-	public void getBlueRedMarker(){
-		System.out.println("Player 1 (Blue) " + bluemarker + ", Player 2 (Red) " + redmarker);
-	}
-
-    public void toggleTurn(){
-		if(turn==RED_MOVES){
-			turn = BLUE_MOVES;
-		}
-		if(turn ==BLUE_MOVES){
-			turn = RED_MOVES;
-		}
-	}
     public int getTurn() {
         return turn;
     }
@@ -501,6 +489,37 @@ public class NineMenMorrisRules implements Serializable {
         return latestRemove;
     }
 
+	/**
+	 * Return true if player with color marker can't make another move.
+	 * @param color The marker color for the player to check.
+	 * @return Return true if no more moves can be made.
+	 */
+	public boolean noMoveMoves(int color) {
+		if (color == RED_MARKER) {
+			if (redmarker > 0)
+				return false;
+			if (redmarker <= 0 && redonboardmarker <= 3)
+				return false;
+		}
+		if (color == BLUE_MARKER) {
+			if (bluemarker > 0)
+				return false;
+			if (bluemarker <= 0 && blueonboardmarker <= 3)
+				return false;
+		}
+		for (int i = 1; i < gameplan.length; i++) {
+			Log.i("Test", "gp " + gameplan[i] + "color: " +color);
+			if (gameplan[i] == color) {
+				Log.i("Test", "isdoing");
+				boolean result = isValidMove(i);
+				if (result == true)
+					return false;
+				Log.i("Test", "bool: " + result);
+			}
+		}
+		return true;
+	}
+
     @Override
 	public String toString() {
 		return "NineMenMorrisRules{" +
@@ -510,5 +529,65 @@ public class NineMenMorrisRules implements Serializable {
 				", redonboardmarker=" + redonboardmarker +
 				", turn=" + turn +
 				'}';
+	}
+
+
+	/**
+	 * Checks if there are any valid moves from position from.
+	 * @param from The position check.
+	 * @return Return true if there is a valid move from position from.
+	 */
+	public boolean isValidMove(int from) {
+		switch (from) {
+			case 1:
+				return (gameplan[4] == EMPTY_SPACE || gameplan[22] == EMPTY_SPACE);
+			case 2:
+				return (gameplan[5] == EMPTY_SPACE || gameplan[23] == EMPTY_SPACE);
+			case 3:
+				return (gameplan[6] == EMPTY_SPACE || gameplan[24] == EMPTY_SPACE);
+			case 4:
+				return (gameplan[1] == EMPTY_SPACE || gameplan[7] == EMPTY_SPACE || gameplan[5] == EMPTY_SPACE);
+			case 5:
+				return (gameplan[4] == EMPTY_SPACE || gameplan[6] == EMPTY_SPACE || gameplan[2] == EMPTY_SPACE || gameplan[8] == EMPTY_SPACE);
+			case 6:
+				return (gameplan[3] == EMPTY_SPACE || gameplan[5] == EMPTY_SPACE || gameplan[9] == EMPTY_SPACE);
+			case 7:
+				return (gameplan[4] == EMPTY_SPACE || gameplan[10] == EMPTY_SPACE);
+			case 8:
+				return (gameplan[5] == EMPTY_SPACE || gameplan[11] == EMPTY_SPACE);
+			case 9:
+				return (gameplan[6] == EMPTY_SPACE || gameplan[12] == EMPTY_SPACE);
+			case 10:
+				return (gameplan[11] == EMPTY_SPACE || gameplan[7] == EMPTY_SPACE || gameplan[13] == EMPTY_SPACE);
+			case 11:
+				return (gameplan[10] == EMPTY_SPACE || gameplan[12] == EMPTY_SPACE || gameplan[8] == EMPTY_SPACE || gameplan[14] == EMPTY_SPACE);
+			case 12:
+				return (gameplan[11] == EMPTY_SPACE || gameplan[15] == EMPTY_SPACE || gameplan[9] == EMPTY_SPACE);
+			case 13:
+				return (gameplan[16] == EMPTY_SPACE || gameplan[10] == EMPTY_SPACE);
+			case 14:
+				return (gameplan[11] == EMPTY_SPACE || gameplan[17] == EMPTY_SPACE);
+			case 15:
+				return (gameplan[12] == EMPTY_SPACE || gameplan[18] == EMPTY_SPACE);
+			case 16:
+				return (gameplan[13] == EMPTY_SPACE || gameplan[17] == EMPTY_SPACE || gameplan[19] == EMPTY_SPACE);
+			case 17:
+				return (gameplan[14] == EMPTY_SPACE || gameplan[16] == EMPTY_SPACE || gameplan[20] == EMPTY_SPACE || gameplan[18] == EMPTY_SPACE);
+			case 18:
+				return (gameplan[17] == EMPTY_SPACE || gameplan[21] == EMPTY_SPACE || gameplan[15] == EMPTY_SPACE);
+			case 19:
+				return (gameplan[16] == EMPTY_SPACE || gameplan[22] == EMPTY_SPACE);
+			case 20:
+				return (gameplan[17] == EMPTY_SPACE || gameplan[23] == EMPTY_SPACE);
+			case 21:
+				return (gameplan[18] == EMPTY_SPACE || gameplan[24] == EMPTY_SPACE);
+			case 22:
+				return (gameplan[1] == EMPTY_SPACE || gameplan[19] == EMPTY_SPACE || gameplan[23] == EMPTY_SPACE);
+			case 23:
+				return (gameplan[2] == EMPTY_SPACE || gameplan[22] == EMPTY_SPACE || gameplan[20] == EMPTY_SPACE || gameplan[24] == EMPTY_SPACE);
+			case 24:
+				return (gameplan[3] == EMPTY_SPACE || gameplan[21] == EMPTY_SPACE || gameplan[23] == EMPTY_SPACE);
+		}
+		return true;
 	}
 }

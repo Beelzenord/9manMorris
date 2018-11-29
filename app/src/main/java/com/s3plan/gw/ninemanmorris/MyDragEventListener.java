@@ -175,6 +175,9 @@ public class MyDragEventListener implements View.OnDragListener {
                                    SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
                                    return true;
                                }
+                               int winner = Util.checkForNoMoreMoves(gameHandler);
+                               if (winner > 0)
+                                   playerWinToast(winner, player1TextView, player2TextView);
                                else{
                                    showWhosTurn(player1TextView,player2TextView,false);
                                }
@@ -260,8 +263,15 @@ public class MyDragEventListener implements View.OnDragListener {
                             SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
                             return true;
                         }
+                        int winner = Util.checkForNoMoreMoves(gameHandler);
+                        if (winner > 0)
+                            playerWinToast(winner, player1TextView, player2TextView);
+
                         if (gameHandler.isAIgame()) {
                             makeAiMove();
+                            int winner2 = Util.checkForNoMoreMoves(gameHandler);
+                            if (winner2 > 0)
+                                playerWinToast(winner2, player1TextView, player2TextView);
                         }
                         SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
                         return true;
@@ -382,6 +392,16 @@ public class MyDragEventListener implements View.OnDragListener {
     private void makeAiMove() {
         if (gameHandler.makeAIMove()) {
             uiUpdaterForAi.updateViewFromAIMove();
+            int winner = Util.checkForNoMoreMoves(gameHandler);
+            if (winner > 0)
+                playerWinToast(winner, player1TextView, player2TextView);
+            int won = gameHandler.getTheGame().win();
+            if (won > 0) {
+                gameHandler.setState(GameState.GAMEOVER);
+                playerWinToast(won,player1TextView,player2TextView);
+                gameHandler.restartGame();
+                SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
+            }
             SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
         } else {
             Toast.makeText(this.context,"AI cannot Move ",Toast.LENGTH_SHORT).show();

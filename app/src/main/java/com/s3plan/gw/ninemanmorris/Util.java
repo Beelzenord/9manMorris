@@ -12,6 +12,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
+import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
 
 public class Util {
     /**
@@ -325,6 +329,18 @@ public class Util {
         imageViews[15].setOnDragListener(myDragEventListener);
 
         return  imageViews;
+    }
+
+    public static int checkForNoMoreMoves(GameHandler gameHandler) {
+        if (gameHandler.getTheGame().noMoveMoves(gameHandler.getTheGame().BLUE_MARKER)) {
+            gameHandler.setState(GameState.GAMEOVER);
+            return gameHandler.getTheGame().RED_MARKER;
+        }
+        if (gameHandler.getTheGame().noMoveMoves(gameHandler.getTheGame().RED_MARKER)) {
+            gameHandler.setState(GameState.GAMEOVER);
+            return gameHandler.getTheGame().BLUE_MARKER;
+        }
+        return -1;
     }
 
 
