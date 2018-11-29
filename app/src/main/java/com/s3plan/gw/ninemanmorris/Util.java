@@ -1,6 +1,8 @@
 package com.s3plan.gw.ninemanmorris;
 
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class Util {
 
@@ -105,6 +107,14 @@ public class Util {
         int a=Character.getNumericValue(tmp);
         return a;
 
+    }
+
+    public static void updateNewPositionFromModel(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
+        draggedView.setLayoutParams(p);
+        draggedView.setVisibility(View.VISIBLE);
+        Util.numberPiecePositionOnBoard(draggedView, v.getId());
+        Util.boardPosition(v.getId(), draggedView, radius);
+        rl.addView(draggedView);
     }
 
     public static int getColorOfDraggedPiece(String RorB){

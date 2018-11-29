@@ -38,6 +38,8 @@ public class MyDragEventListener implements View.OnDragListener {
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
+        if (gameHandler.getGameState().equals(GameState.GAMEOVER))
+            return false;
         final int action = event.getAction();
 
         // Handles each of the expected events
@@ -139,6 +141,15 @@ public class MyDragEventListener implements View.OnDragListener {
                            int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
                            if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
                                nineMenMorrisRules.showGamePlane();
+                               int won = nineMenMorrisRules.win();
+                               if (won > 0) {
+                                   gameHandler.setState(GameState.GAMEOVER);
+                                   if (won == nineMenMorrisRules.BLUE_MARKER)
+                                       Toast.makeText(this.context,"BLUE PLAYER WON",Toast.LENGTH_LONG).show();
+                                   else
+                                       Toast.makeText(this.context,"RED PLAYER WON",Toast.LENGTH_LONG).show();
+                                    return true;
+                               }
                            }
                            else{
                            }

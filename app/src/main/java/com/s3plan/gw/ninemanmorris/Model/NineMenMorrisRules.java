@@ -60,9 +60,11 @@ public class NineMenMorrisRules implements Serializable {
 	public boolean tryLegalMove(int To, int From, int color) {
 		System.out.println("TRY LEGAL MOVE " + color + " " + turn);
         System.out.println("From: " + From + " To: " + To);
+        if (gameplan[To] != EMPTY_SPACE)
+        	return false;
 		if (color == turn) {
 			if (turn == RED_MOVES) {
-				if (redmarker > 0 || redonboardmarker <= 3) {
+				if (redmarker > 0) {
 					if (gameplan[To] == EMPTY_SPACE) {
 						gameplan[To] = RED_MARKER;
 						if(redmarker!=0){
@@ -73,6 +75,13 @@ public class NineMenMorrisRules implements Serializable {
 						turn = BLUE_MOVES;
 						return true;
 					}
+				}
+				if (redmarker <= 0 && redonboardmarker <= 3) {
+					gameplan[To] = RED_MARKER;
+					gameplan[From] = EMPTY_SPACE;
+					setLatestMove(To, From);
+					turn = BLUE_MOVES;
+					return true;
 				}
 				/*else*/
 				if (gameplan[To] == EMPTY_SPACE) {
@@ -92,7 +101,7 @@ public class NineMenMorrisRules implements Serializable {
 					return false;
 				}
 			} else {
-				if (bluemarker > 0 || blueonboardmarker <= 3) {
+				if (bluemarker > 0) {
 					if (gameplan[To] == EMPTY_SPACE) {
 						gameplan[To] = BLUE_MARKER;
 						if(bluemarker!=0){
@@ -104,6 +113,13 @@ public class NineMenMorrisRules implements Serializable {
 						System.out.println("blue made a move");
 						return true;
 					}
+				}
+				if (bluemarker <= 0 && blueonboardmarker <= 3) {
+					gameplan[To] = BLUE_MARKER;
+					gameplan[From] = EMPTY_SPACE;
+					setLatestMove(To, From);
+					turn = RED_MOVES;
+					return true;
 				}
 				if (gameplan[To] == EMPTY_SPACE) {
 				    showGamePlane();
