@@ -14,17 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class Util {
-
+    /**
+     * uses the radius of the imagebutton to drag itself out
+     * @param id
+     * @param view
+     * @param radius
+     */
     public static void boardPosition(int id, View view, int radius){
-
-        System.out.println("obtained radius " + radius);
-
-        //reset translation
 
         view.setTranslationX(0);
         view.setTranslationY(0);
 
-        System.out.println("INVOKING BOARD POSITION " + view.getTag().toString());
 
 
         /*

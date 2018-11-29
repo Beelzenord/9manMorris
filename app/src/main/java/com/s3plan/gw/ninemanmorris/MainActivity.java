@@ -606,6 +606,10 @@ public class MainActivity extends AppCompatActivity {
         uiUpdaterForAi.setLinearLayoutPlayer2(linearLayoutPlayer2);
     }
 
+    /**
+     *
+     */
+
     private void initBoardFromModel() {
         View view;
         int[] board = gameHandler.getTheGame().getGameplan();
@@ -627,6 +631,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Initialise imageButton programmatically from a drawable image.
+     * @return
+     */
+
     private View makeBlueView() {
         ImageButton btnTag = new ImageButton(this);
         btnTag.setOnTouchListener(myTouchListener);
@@ -637,6 +646,11 @@ public class MainActivity extends AppCompatActivity {
         viewsBlue.add(btnTag);
         return btnTag;
     }
+
+    /**
+     * Initialise imageButton programmatically from a drawable image.
+     * @return
+     */
     private View makeRedView() {
         ImageButton btnTag = new ImageButton(this);
         btnTag.setOnTouchListener(myTouchListener);
@@ -648,6 +662,10 @@ public class MainActivity extends AppCompatActivity {
         return btnTag;
     }
 
+    /**
+     * Prepares a pop up window for save files
+     * @param v
+     */
     private void showPopUp(View v){
 
         dialog.setContentView(R.layout.savepopup);
@@ -667,6 +685,12 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
+    /**
+     * Executes addSaved game when user clicks to save from the
+     * pop up window.
+     * @param v
+     */
     private void doSaveFromPopUp(View v){
         String nameSaved = saveText.getText().toString();
         if(nameSaved.length()==0 || nameSaved.equals("")){
