@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private UiUpdaterForAI uiUpdaterForAi;
     private View[] imageViews;
     private boolean useSavedUI;
+    private ArrayList<ImageButton> viewsBlue;
+    private ArrayList<ImageButton> viewsRed;
 
 
     int x;
@@ -342,12 +344,15 @@ public class MainActivity extends AppCompatActivity {
          *     20       17       14
          * 21           18           15
          *
+         *
          */
 
 
     }
 
     private void initCheckers() {
+        viewsBlue = new ArrayList<ImageButton>();
+        viewsRed = new ArrayList<ImageButton>();
         View[] viewsPlayer1 = new View[9];
         View[] viewsPlayer2 = new View[9];
         Drawable drawable = getDrawable(R.drawable.circleplayerone);
@@ -366,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         // initialize checkers for player 1
+
         for (int i = 0; i < 3; i++) {
             LinearLayout row = new LinearLayout(this);
             row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -377,6 +383,7 @@ public class MainActivity extends AppCompatActivity {
                 btnTag.setTag(PLAYER1_BLUE);
                 btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 row.addView(btnTag);
+                viewsBlue.add(btnTag);
             }
             linearLayoutPlayer1.addView(row);
         }
@@ -392,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
                 btnTag.setTag(PLAYER2_RED);
                 btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 row.addView(btnTag);
+                viewsRed.add(btnTag);
             }
             linearLayoutPlayer2.addView(row);
         }
@@ -446,9 +454,12 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.menu_new_game:
+                clearCheckers();
                 gameHandler.restartGame();
+
                 //TODO: update view
                 return true;
             case R.id.menu_load_game:
@@ -456,6 +467,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, SELECT_SAVEDGAME);
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void clearCheckers() {
+        if(viewsRed ==null || viewsBlue == null ){
+            return;
+        }
+        for(ImageButton  im : viewsRed){
+            ViewGroup viewGroup = (ViewGroup) im.getParent();
+            viewGroup.removeView(im);
+        }
+        for(ImageButton  im : viewsBlue){
+            ViewGroup viewGroup = (ViewGroup) im.getParent();
+            viewGroup.removeView(im);
         }
     }
 
@@ -476,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+
        /* ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
         ArrayList<View> view = new ArrayList<View>();
         ArrayList<ViewGroup> viewGroups = new ArrayList<ViewGroup>();
@@ -584,37 +610,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    /**
-     * Remove old checkers from the board.
-     */
-    private void clearLayout() {
-        View view = imageViews[1];
-        ViewGroup vg = (ViewGroup)view.getParent();
-        ConstraintLayout rl = vg.findViewById(R.id.mainConstraint);
-//        setContentView(findViewById(R.id.mainConstraint));
-//        rl.removeAllViews();
-        if (true)
-            return;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i< rl.getChildCount(); i++) {
-            View v = rl.getChildAt(i);
-            if (v != null) {
-                String tag = (String) v.getTag();
-                if (tag != null) {
-                    if (tag.contains(PLAYER2_RED) || tag.contains(PLAYER1_BLUE)) {
-//                        ViewGroup vg1 = (ViewGroup)v.getParent();
-                        Log.i("Test", "Found: " + tag);
-                        v.setVisibility(View.INVISIBLE);
-                        vg.removeView(v);
-//                        rl.removeView(v);
-                    }
-                }
-            }
-            sb.append((String)v.getTag() + " ");
-        }
-        Log.i("Test", "sb: " + sb);
     }
 
     private View makeBlueView() {
