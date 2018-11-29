@@ -420,6 +420,7 @@
         app:layout_constraintLeft_toRightOf="@id/playerPieces2"
         app:layout_constraintBottom_toTopOf="@id/playerPieces"
         app:layout_constraintTop_toBottomOf="@id/playerPieces2"
+        app:layout_constraintRight_toLeftOf="@id/saveID"
         android:layout_margin="30dp"
         >
     </FrameLayout>
