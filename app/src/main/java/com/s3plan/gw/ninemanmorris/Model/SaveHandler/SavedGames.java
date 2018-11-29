@@ -1,4 +1,4 @@
-package com.s3plan.gw.ninemanmorris.Model;
+package com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 
 import java.io.Serializable;
 import java.util.ArrayList;

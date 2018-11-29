@@ -1,4 +1,4 @@
-package com.s3plan.gw.ninemanmorris.Model;
+package com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 
 import android.app.Activity;
 import android.util.Log;

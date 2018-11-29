@@ -1,4 +1,4 @@
-package com.s3plan.gw.ninemanmorris;
+package com.s3plan.gw.ninemanmorris.Events;
 
 import android.content.ClipData;
 import android.content.ClipDescription;

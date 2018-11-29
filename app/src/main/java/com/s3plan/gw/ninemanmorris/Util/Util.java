@@ -1,21 +1,14 @@
-package com.s3plan.gw.ninemanmorris;
+package com.s3plan.gw.ninemanmorris.Util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.support.constraint.ConstraintLayout;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
+import com.s3plan.gw.ninemanmorris.Events.MyDragEventListener;
+import com.s3plan.gw.ninemanmorris.R;
 
 public class Util {
     /**

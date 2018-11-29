@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.s3plan.gw.ninemanmorris.Model.SavedGames;
+import com.s3plan.gw.ninemanmorris.Model.SaveHandler.SavedGames;
 
 import java.util.ArrayList;
 import java.util.List;

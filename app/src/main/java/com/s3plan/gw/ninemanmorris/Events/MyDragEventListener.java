@@ -1,4 +1,4 @@
-package com.s3plan.gw.ninemanmorris;
+package com.s3plan.gw.ninemanmorris.Events;
 
 import android.app.Activity;
 import android.content.ClipDescription;
@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
-import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
+import com.s3plan.gw.ninemanmorris.Model.SaveHandler.SaveHandler;
+import com.s3plan.gw.ninemanmorris.R;
+import com.s3plan.gw.ninemanmorris.AIUI.UiUpdaterForAI;
+import com.s3plan.gw.ninemanmorris.Util.Util;
 
 public class MyDragEventListener implements View.OnDragListener {
 

@@ -1,4 +1,4 @@
-package com.s3plan.gw.ninemanmorris;
+package com.s3plan.gw.ninemanmorris.AIUI;
 
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -6,10 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
+import com.s3plan.gw.ninemanmorris.R;
+import com.s3plan.gw.ninemanmorris.Util.Util;
 
 import java.util.ArrayList;
 
