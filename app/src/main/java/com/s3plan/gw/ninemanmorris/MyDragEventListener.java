@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameState;
-import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 
 public class MyDragEventListener implements View.OnDragListener {
@@ -349,7 +348,7 @@ public class MyDragEventListener implements View.OnDragListener {
 
     private void makeAiMove() {
         if (gameHandler.makeAIMove()) {
-            uiUpdaterForAi.doAIMove();
+            uiUpdaterForAi.updateViewFromAIMove();
             SaveHandler.createSaveFile((Activity)context, (context).getResources().getString(R.string.pathToSaveFile));
         } else {
             Toast.makeText(this.context,"AI cannot Move ",Toast.LENGTH_SHORT).show();

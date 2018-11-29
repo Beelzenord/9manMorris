@@ -4,17 +4,24 @@ import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
 import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 
+import java.util.ArrayList;
+
+/**
+ * This class is used to update the UI for AI moves.
+ */
 public class UiUpdaterForAI {
     private static UiUpdaterForAI uiUpdaterForAi;
     private View[] imageViews;
-    private LinearLayout linearLayoutPlayer1;
-    private LinearLayout linearLayoutPlayer2;
     private static GameHandler gameHandler;
+    private ArrayList<ImageButton> redCheckers;
+    private ArrayList<ImageButton> blueCheckers;
 
     private UiUpdaterForAI() {
         gameHandler = GameHandler.getInstance();
@@ -30,14 +37,10 @@ public class UiUpdaterForAI {
         this.imageViews = imageViews;
     }
 
-    public void setLinearLayoutPlayer1(LinearLayout linearLayoutPlayer1) {
-        this.linearLayoutPlayer1 = linearLayoutPlayer1;
-    }
-
-    public void setLinearLayoutPlayer2(LinearLayout linearLayoutPlayer2) {
-        this.linearLayoutPlayer2 = linearLayoutPlayer2;
-    }
-
+    /**
+     * Updates the view when the AI removed a checkers from the board.
+     * @param pos The position of the checker that was moved.
+     */
     public void handleDelete(int pos) {
         StringBuilder tag = new StringBuilder();
         tag.append("R,2");
@@ -61,6 +64,11 @@ public class UiUpdaterForAI {
         vg.removeView(view);
     }
 
+    /**
+     * Updates the view from an AI move.
+     * @param to To position moved to.
+     * @param from The position moved from.
+     */
     public void updateUIfromAImove(int to, int from) {
         if (from > 0) {
             StringBuilder tag = new StringBuilder();
@@ -93,10 +101,17 @@ public class UiUpdaterForAI {
                 View v = rl.getChildAt(i);
                 sb.append((String)v.getTag() + " ");
             }
-//            Log.i("Test", "tags: " + sb.toString());
         }
     }
 
+    /**
+     * Updates the position of the board when the AI moved a checkers.
+     * @param draggedView The checker moved.
+     * @param p The parameters for the constraint layout.
+     * @param radius The radius of the checker.
+     * @param rl The constraintlayout.
+     * @param v The view the checker is to be placed on.
+     */
     private void updateNewPosition(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
         ViewGroup owner = (ViewGroup) draggedView.getParent();
         owner.removeView(draggedView);
@@ -108,24 +123,36 @@ public class UiUpdaterForAI {
     }
 
     private View getFromView() {
-        int t = gameHandler.getTheGame().getBluemarker() % 3;
-        LinearLayout row = (LinearLayout)linearLayoutPlayer1.getChildAt(t);
-        View view = row.getChildAt(0);
-        return view;
+        for (ImageView im : blueCheckers) {
+            if (im != null) {
+                if (((String)im.getTag()).length() <=3)
+                    return im;
+            }
+        }
+        return null;
     }
 
-    public void doAIMove() {
+    /**
+     * Updates the view for the move that was just made by the AI.
+     */
+    public void updateViewFromAIMove() {
         NineMenMorrisRules nineMenMorrisRules = gameHandler.getTheGame();
         updateUIfromAImove(nineMenMorrisRules.getLatestTo(), nineMenMorrisRules.getLatestFrom());
         if (nineMenMorrisRules.isThreeInARowAtPositionTo(nineMenMorrisRules.getLatestTo())) {
             nineMenMorrisRules.showGamePlane();
-            nineMenMorrisRules.setTurn(1);
+            nineMenMorrisRules.setTurn(nineMenMorrisRules.BLUE_MOVES);
             gameHandler.makeAIRemove();
             uiUpdaterForAi.handleDelete(nineMenMorrisRules.getLatestRemove());
-            nineMenMorrisRules.setTurn(2);
+            nineMenMorrisRules.setTurn(nineMenMorrisRules.RED_MOVES);
             nineMenMorrisRules.showGamePlane();
-            // nineMenMorrisRules.toggleTurn();
         }
     }
 
+    public void setRedCheckers(ArrayList<ImageButton> redCheckers) {
+        this.redCheckers = redCheckers;
+    }
+
+    public void setBlueCheckers(ArrayList<ImageButton> blueCheckers) {
+        this.blueCheckers = blueCheckers;
+    }
 }

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,15 +38,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String SAVEDGAME_RESULT = "SAVEDGAME_RESULT";
     private GameHandler gameHandler;
     private SavedGames savedGames;
-    private ImageView nmnImg;
-    private ImageButton pinkButton;
-    private ConstraintLayout constraintLayout;
-    private FrameLayout outerMost;
     private FrameLayout bin;
-    private static final String IMAGEVIEW_TAG = "icon bitmap";
     private static final String BIN_TAG = "BIN_TAG";
     private View imageView;
-    private NineMenMorrisRules nineMenMorrisRules;
     private UiUpdaterForAI uiUpdaterForAi;
     private View[] imageViews;
     private boolean useSavedUI;
@@ -59,37 +50,18 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayoutSave;
 
     private Button button;
-
-
-    //pop up
-
     private Dialog dialog;
-
-    int x;
-    int y;
-    int leftMost;
-    int rightMost;
 
     private static final String PLAYER2_RED = "R,2";
     private static final String PLAYER1_BLUE = "B,1";
 
-
-    //private MyDragEventListener myDragEventListener;
-
     private MyTouchListener myTouchListener;
+    private MyDragEventListener myDragEventListener;
     private LinearLayout linearLayoutPlayer1;
     private LinearLayout linearLayoutPlayer2;
 
-
-    //Version 2
-
-
-    private MyDragEventListener myDragEventListener;
-
     private TextView player1TextView;
-
     private TextView player2TextView;
-
     private EditText saveText;
 
     @Override
@@ -99,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Gets the singleton model classes.
+     * Initiates a view depending on if there is an on going game or not.
+     * @param savedInstanceState The saved bundle.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (!gameHandler.isOngoingGame()) {
             if (SaveHandler.readSaveFile(this, getResources().getString(R.string.pathToSaveFile))) {
-//                initSavedGame();
                 useSavedUI = true;
             }
             else {
@@ -121,28 +97,15 @@ public class MainActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.saveID);
         dialog = new Dialog(this);
         button.setOnClickListener(this::showPopUp);
-        //gameHandler.setOngoingGame(true);
         savedGames = SavedGames.getInstance();
         if (savedGames.getSavedGames().size() <= 0) {
             SaveHandler.readSavedGames(this, getResources().getString(R.string.pathToSavedGamesFile));
         }
-
-
-
-
-        /** for testing **/
-//        gameHandler.tryLegalMove(1, 0, 2);
-//        addSavedGame("first");
-//        gameHandler.restartGame();
-//        gameHandler.tryLegalMove(2, 0, 2);
-//        gameHandler.tryLegalMove(3, 0, 1);
-//        addSavedGame("second");
-
-
-        // myDragEventListener = new MyDragEventListener();
-
     }
 
+    /**
+     * Initiates the view and starts a new fresh game.
+     */
     private void initFreshGame() {
         bin = (FrameLayout) findViewById(R.id.binID);
         imageView = (View) findViewById(R.id.middleRightBall);
@@ -157,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
         initPlaceHolders();
     }
 
+    /**
+     * Resets the view and start a new fresh game.
+     */
     private void resetFreshGame() {
         gameHandler.restartGame();
         myTouchListener = null;
@@ -167,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
         initCheckers();
     }
 
+    /**
+     * Initiates the view and loads a saved game.
+     */
     private void initSavedGame() {
         bin = (FrameLayout) findViewById(R.id.binID);
         imageView = (View) findViewById(R.id.middleRightBall);
@@ -181,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
         initBoardFromModel();
     }
 
+    /**
+     * Resets the view and loads a saved game.
+     */
     private void resetSavedGame() {
         initTextViews();
         myTouchListener = new MyTouchListener(this);
@@ -189,28 +161,10 @@ public class MainActivity extends AppCompatActivity {
         initBoardFromModel();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("Test", "onDestroy");
-//        SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
-    }
-
-    private void findStuff(ViewGroup viewGroup, ArrayList<View> views, ArrayList<ViewGroup> viewGroups) {
-        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                viewGroup.addView((ViewGroup) child);
-                findStuff((ViewGroup) child,views,viewGroups);
-            }
-            else if(child instanceof View){
-                views.add((View)child);
-            }
-        }
-    }
-
+    /**
+     * Creates textviews for whos turn it is.
+     */
     private void initTextViews() {
-
         player1TextView = (TextView) findViewById(R.id.player1Textfield);
         player2TextView = (TextView) findViewById(R.id.player2Textfield);
         if (gameHandler.getTheGame().getTurn() == 2) {
@@ -222,7 +176,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Creates placeholder for the places on the board that can hold checkers.
+     */
     @SuppressLint("ResourceType")
     private void initPlaceHolders() {
         bin.setOnDragListener(myDragEventListener);
@@ -231,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
         uiUpdaterForAi.setImageViews(imageViews);
     }
 
+    /**
+     * Creates 9 checkers for each player to use.
+     */
     private void initCheckers() {
         viewsBlue = new ArrayList<ImageButton>();
         viewsRed = new ArrayList<ImageButton>();
@@ -266,11 +225,16 @@ public class MainActivity extends AppCompatActivity {
             }
             linearLayoutPlayer2.addView(row);
         }
-        uiUpdaterForAi.setLinearLayoutPlayer1(linearLayoutPlayer1);
-        uiUpdaterForAi.setLinearLayoutPlayer2(linearLayoutPlayer2);
+        uiUpdaterForAi.setBlueCheckers(viewsBlue);
+        uiUpdaterForAi.setRedCheckers(viewsRed);
 
     }
 
+    /**
+     * When data views has been loaded.
+     * The saved data get be placed on the view.
+     * @param hasFocus
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -278,11 +242,6 @@ public class MainActivity extends AppCompatActivity {
             initSavedGame();
             useSavedUI = false;
         }
-       /* if (hasFocus) {
-            System.out.println("Right:"+outerMost.getRight());
-            System.out.println("Left:"+outerMost.getLeft());
-            System.out.println("Top:"+outerMost.getTop());
-        }*/
     }
 
 
@@ -294,12 +253,9 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
     }
 
-    // Handle Drag Events
-
 
     /**
      * The options menu for the activity is created.
-     *
      * @param menu The menu to be created.
      * @return
      */
@@ -312,13 +268,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Handles a click on the options menu.
-     *
      * @param item The item clicked on.
      * @return true.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.menu_new_game:
                 clearCheckers();
@@ -336,6 +290,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Clears the board of checkers.
+     */
     private void clearCheckers() {
         if(viewsRed ==null || viewsBlue == null ){
             return;
@@ -356,6 +313,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Is callen when another activity sends a result to this activity.
+     * If a saved game was selected: download the data of that game from file.
+     * @param requestCode The code of the request.
+     * @param resultCode The code of the result
+     * @param result The data sent from the other activity to this activity.
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
         super.onActivityResult(requestCode, resultCode, result);
 
@@ -385,18 +349,18 @@ public class MainActivity extends AppCompatActivity {
         }*/
     }
 
+    /**
+     * Saves the data of an ongoing game.
+     * @param name The name of the saved game.
+     */
     public void addSavedGame(String name) {
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(getResources().getString(R.string.pathToSaveFilePrefix));
-            sb.append(name);
-            sb.append(getResources().getString(R.string.pathToSaveFileSuffix));
-            SaveHandler.createSaveFile(this, sb.toString());
-            savedGames.add(name);
-            SaveHandler.createSavedGamesFile(this, getResources().getString(R.string.pathToSavedGamesFile));
-
-
-
+        StringBuilder sb = new StringBuilder();
+        sb.append(getResources().getString(R.string.pathToSaveFilePrefix));
+        sb.append(name);
+        sb.append(getResources().getString(R.string.pathToSaveFileSuffix));
+        SaveHandler.createSaveFile(this, sb.toString());
+        savedGames.add(name);
+        SaveHandler.createSavedGamesFile(this, getResources().getString(R.string.pathToSavedGamesFile));
     }
 
     /**
@@ -413,6 +377,9 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
+    /**
+     * Creates the appropriate number of checkers based on data from the model.
+     */
     private void initCheckersFromModel() {
         viewsBlue = new ArrayList<ImageButton>();
         viewsRed = new ArrayList<ImageButton>();
@@ -458,14 +425,13 @@ public class MainActivity extends AppCompatActivity {
                 rows2[2].addView(makeRedView());
             c2--;
         }
-        uiUpdaterForAi.setLinearLayoutPlayer1(linearLayoutPlayer1);
-        uiUpdaterForAi.setLinearLayoutPlayer2(linearLayoutPlayer2);
+        uiUpdaterForAi.setBlueCheckers(viewsBlue);
+        uiUpdaterForAi.setRedCheckers(viewsRed);
     }
 
     /**
-     *
+     * Initiates the board with checkers using data from the model.
      */
-
     private void initBoardFromModel() {
         View view;
         int[] board = gameHandler.getTheGame().getGameplan();
@@ -491,7 +457,6 @@ public class MainActivity extends AppCompatActivity {
      * Initialise imageButton programmatically from a drawable image.
      * @return
      */
-
     private View makeBlueView() {
         ImageButton btnTag = new ImageButton(this);
         btnTag.setOnTouchListener(myTouchListener);

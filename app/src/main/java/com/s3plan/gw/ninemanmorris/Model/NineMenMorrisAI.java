@@ -121,7 +121,8 @@ public class NineMenMorrisAI implements Serializable {
             if (nmmr.isThreeInARowAtPositionTo(pos)) {
                 gameplan[pos] = NineMenMorrisRules.EMPTY_SPACE;
                 gameplan[from] = marker;
-                return nmmr.tryLegalMove(pos, from, myTurn);
+                if (pos != 24)
+                    return nmmr.tryLegalMove(pos, from, myTurn);
             }
             gameplan[pos] = NineMenMorrisRules.EMPTY_SPACE;
             gameplan[from] = marker;
@@ -149,7 +150,8 @@ public class NineMenMorrisAI implements Serializable {
             return tryMoveAnyRandomizedMove(1, ++from);
         if (nmmr.isValidMove(pos, from)) {
             if (moveRandomizer(gameplan.length - pos, gameplan.length - from)) {
-                return nmmr.tryLegalMove(pos, from, myTurn);
+                if (pos != 24)
+                    return nmmr.tryLegalMove(pos, from, myTurn);
             }
         }
         if (pos >= 24 && from < 24)
@@ -173,7 +175,8 @@ public class NineMenMorrisAI implements Serializable {
         if (gameplan[from] != myMarker && from < 24)
             return tryMoveAnyMove(1, ++from);
         if (nmmr.isValidMove(pos, from)) {
-            return nmmr.tryLegalMove(pos, from, myTurn);
+            if (pos != 24)
+                return nmmr.tryLegalMove(pos, from, myTurn);
         }
 
         if (pos >= 24 && from < 24)
