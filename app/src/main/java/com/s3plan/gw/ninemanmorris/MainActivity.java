@@ -30,6 +30,8 @@ import com.s3plan.gw.ninemanmorris.Model.NineMenMorrisRules;
 import com.s3plan.gw.ninemanmorris.Model.SaveHandler;
 import com.s3plan.gw.ninemanmorris.Model.SavedGames;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     public static final int SELECT_SAVEDGAME = 0;
     public static final String SAVEDGAME_RESULT = "SAVEDGAME_RESULT";
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView player1TextView;
 
-    private TextView getPlayer2TextView;
+    private TextView player2TextView;
 
     @Override
     protected void onStart() {
@@ -129,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutPlayer1 = (LinearLayout) findViewById(R.id.playerPieces);
         linearLayoutPlayer2 = (LinearLayout) findViewById(R.id.playerPieces2);
         nineMenMorrisRules = new NineMenMorrisRules();
+        initTextViews();
         nineMenMorrisRules.gameHandlerCohesion(gameHandler);
         gameHandler.setTheGame(nineMenMorrisRules);
         gameHandler.setAIgame(false);
@@ -160,6 +163,32 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Test", "onDestroy");
         SaveHandler.createSaveFile(this, getResources().getString(R.string.pathToSaveFile));
     }
+
+    private void findStuff(ViewGroup viewGroup, ArrayList<View> views, ArrayList<ViewGroup> viewGroups) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                viewGroup.addView((ViewGroup) child);
+                findStuff((ViewGroup) child,views,viewGroups);
+            }
+            else if(child instanceof View){
+                views.add((View)child);
+            }
+        }
+    }
+
+    private void initTextViews() {
+
+        player1TextView = (TextView) findViewById(R.id.player1Textfield);
+        player2TextView = (TextView) findViewById(R.id.player2Textfield);
+        if (nineMenMorrisRules.getTurn() == 2) {
+            player2TextView.setText("Your turn");
+        } else {
+
+            player1TextView.setText("Your turn");
+        }
+    }
+
 
     @SuppressLint("ResourceType")
     private void initPlaceHolders() {
@@ -297,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
         imageViews[15].setOnDragListener(myDragEventListener);
 
         uiUpdaterForAi.setImageViews(imageViews);
+
 
 
         /*
@@ -444,6 +474,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+       /* ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+        ArrayList<View> view = new ArrayList<View>();
+        ArrayList<ViewGroup> viewGroups = new ArrayList<ViewGroup>();
+        viewGroup.addView(viewGroup);
+        findStuff(viewGroup,view,viewGroups);
+        for(int i = 0  ; i < viewGroups.size() ; i++){
+            System.out.println("VIEWGROUP " + viewGroups.get(i));
+        }*/
     }
 
     public void addSavedGame(String name) {
@@ -528,7 +566,6 @@ public class MainActivity extends AppCompatActivity {
     private void initBoardFromModel() {
         View view;
         int[] board = gameHandler.getTheGame().getGameplan();
-        gameHandler.getTheGame().showGamePlane();
         for (int i = 1; i < 25; i++) {
             int m;
             if ((m = board[i]) > 0) {

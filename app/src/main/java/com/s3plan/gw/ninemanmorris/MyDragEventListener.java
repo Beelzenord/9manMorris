@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.s3plan.gw.ninemanmorris.Model.GameState.GameHandler;
@@ -27,15 +28,21 @@ public class MyDragEventListener implements View.OnDragListener {
     private static final String BIN_TAG = "BIN_TAG";
     private Drawable player2StationedIcon;
 
+    private TextView player1TextView;
+
+    private TextView player2TextView;
+
 
     private  NineMenMorrisRules nineMenMorrisRules;
-    public MyDragEventListener(Context context, NineMenMorrisRules nineMenMorrisRules) {
+    public MyDragEventListener(Context context, NineMenMorrisRules nineMenMorrisRules, TextView player1TextView, TextView player2TextView) {
         this.context = context;
         this.nineMenMorrisRules = nineMenMorrisRules;
         this.player1StationedIcon = this.context.getDrawable(R.drawable.playeronestationed);
         this.player2StationedIcon = this.context.getDrawable(R.drawable.playertwostationed);
         this.gameHandler = GameHandler.getInstance();
         this.uiUpdaterForAi = UiUpdaterForAI.getInstance();
+        this.player1TextView = player1TextView;
+        this.player2TextView = player2TextView;
     }
 
     @Override
@@ -53,6 +60,8 @@ public class MyDragEventListener implements View.OnDragListener {
         ViewGroup vg = (ViewGroup) v.getParent();
         ConstraintLayout rl = (ConstraintLayout) vg.findViewById(R.id.mainConstraint);
         ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) v.getLayoutParams();
+
+        boolean madeAMill = false;
 
 
         switch (action) {
@@ -144,12 +153,17 @@ public class MyDragEventListener implements View.OnDragListener {
                            int idToBeDeleted = Util.getIdNumberOfTheOccupiedPlaceHolder(draggedView.getTag().toString());
                            int playerPieceToBeRemoved = Util.getColorOfDraggedPiece(draggedView.getTag().toString());
                            if(nineMenMorrisRules.remove(idToBeDeleted,playerPieceToBeRemoved)){
-                               if(nineMenMorrisRules.win()>-1){
-                                   System.out.println("win");
-                                   playerWinToast(redOrBlue);
-                                   return true;
-                               }
                                nineMenMorrisRules.showGamePlane();
+                               int won = nineMenMorrisRules.win();
+                               if (won > 0) {
+                                   gameHandler.setState(GameState.GAMEOVER);
+                                   playerWinToast(won,player1TextView,player2TextView);
+                                    return true;
+                               }
+                               else{
+                                   showWhosTurn(player1TextView,player2TextView,false);
+                               }
+
                            }
                            System.out.println("ID to be deleted " + redOrBlue);
                            if(nineMenMorrisRules.gameHandler.getGameState() == GameState.DRAG){
@@ -204,6 +218,7 @@ public class MyDragEventListener implements View.OnDragListener {
                         //do the move here
                         if(nineMenMorrisRules.tryLegalMove(v.getId(),from,redOrBlue)){
                             madeSuccessfulMove = true;
+                            showWhosTurn(player1TextView,player2TextView, madeAMill);
                             updateNewPosition(draggedView, p, radius, rl, v);
                         }
                         else{
@@ -223,6 +238,7 @@ public class MyDragEventListener implements View.OnDragListener {
                     else if(nineMenMorrisRules.gameHandler.getGameState() == GameState.PLACE){
                         if (nineMenMorrisRules.tryLegalMove(v.getId(), from, redOrBlue)) {
                             updateNewPosition(draggedView, p, radius, rl, v);
+                            showWhosTurn(player1TextView,player2TextView, madeAMill);
                             madeSuccessfulMove = true;
 
                         } else {
@@ -235,6 +251,7 @@ public class MyDragEventListener implements View.OnDragListener {
                         System.out.println("ID of successful move " + v.getId());
                         if (nineMenMorrisRules.isThreeInARowAtPositionTo(v.getId())) {
                             Toast.makeText(this.context, "MILL!", Toast.LENGTH_SHORT).show();
+                            madeAMill = true;
                             nineMenMorrisRules.gameHandler.setState(GameState.DELETE);
 
                             nineMenMorrisRules.showGamePlane();
@@ -243,6 +260,7 @@ public class MyDragEventListener implements View.OnDragListener {
                             } else {
                                 nineMenMorrisRules.setTurn(2);
                             }
+                            showWhosTurn(player1TextView,player2TextView,madeAMill);
                             return true;
                         }
                         if (gameHandler.isAIgame()) {
@@ -265,7 +283,7 @@ public class MyDragEventListener implements View.OnDragListener {
 
             case DragEvent.ACTION_DRAG_ENDED:
 
-
+                 System.out.println("Who's turn now " + nineMenMorrisRules.getTurn());
 
                 // ViewGroup owner = (ViewGroup) draggedView.getParent();
                 if(v.getTag().toString().equals(BIN_TAG)){
@@ -291,15 +309,45 @@ public class MyDragEventListener implements View.OnDragListener {
         return false;
     }
 
-    private void playerWinToast(int loser) {
-        String winner;
-        if(loser ==1 ){
-            winner = "Player 2 (red) wins";
+
+
+    private void showWhosTurn(TextView player1TextView, TextView player2TextView, boolean madeAMill) {
+        int newTurn = nineMenMorrisRules.getTurn();
+        String yourTurn = "Your Turn";
+        String takeAPiece = "Remove one your opponents pieces";
+        if(newTurn == 1){
+            if(madeAMill){
+                player1TextView.setText(takeAPiece);
+            }
+            else{
+                player1TextView.setText(yourTurn);
+            }
+            player2TextView.setText("");
         }
         else{
-           winner = "Player 1 (blue) wins";
+
+            if(madeAMill){
+                player2TextView.setText(takeAPiece);
+            }
+            else{
+                player2TextView.setText(yourTurn);
+            }
+            player1TextView.setText("");
         }
-        Toast.makeText(this.context, winner, Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void playerWinToast(int winner, TextView player1TextView, TextView player2TextView) {
+        String winnerText = "you win";
+        if(winner == 4){
+            player1TextView.setText(winnerText);
+            Toast.makeText(this.context,"BLUE PLAYER WON",Toast.LENGTH_LONG).show();
+        }
+        if(winner == 5){
+            player2TextView.setText(winnerText);
+            Toast.makeText(this.context,"RED PLAYER WON",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void updateNewPosition(View draggedView, ConstraintLayout.LayoutParams p, int radius, ConstraintLayout rl, View v) {
@@ -312,21 +360,6 @@ public class MyDragEventListener implements View.OnDragListener {
         Util.numberPiecePositionOnBoard(draggedView, v.getId());
         Util.boardPosition(v.getId(), draggedView, radius);
         rl.addView(draggedView);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i< rl.getChildCount(); i++) {
-            View v1 = rl.getChildAt(i);
-            if (v != null) {
-                String tag = (String) v1.getTag();
-                if (tag != null) {
-                    if (tag.contains("R,2") || tag.contains("B,1")) {
-                        Log.i("Test", "Found: " + tag);
-                    }
-                }
-            }
-            sb.append((String)v1.getTag() + " ");
-        }
-        Log.i("Test", "sb: " + sb);
-
     }
 
     private void handleDelete(View draggedView, View v, DragEvent event) {
